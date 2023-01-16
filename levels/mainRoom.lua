@@ -2,12 +2,15 @@ local mainRoom = {}
 
 mainRoom.input = require("lib.bindMe")
 mainRoom.cameraFactory = require("lib.camera")
+mainRoom.tilemapRenderer = require("lib.tilemap.tilemapRenderer")
 
 function mainRoom.load()
     mainRoom.input:Bind("EXIT", "escape")
         
     GameplayCamera = mainRoom.cameraFactory:New()
     UiCamera = mainRoom.cameraFactory:New(100, "Fill", 1366, 768)
+
+    mainRoom.tilemapRenderer:LoadResources()    
 
 end
 
@@ -23,6 +26,7 @@ function mainRoom.draw()
     
     GameplayCamera:BeginDraw()
     -- Gameplay rendering
+    mainRoom.tilemapRenderer:Draw()
     GameplayCamera:EndDraw()
 
     UiCamera:BeginDraw()

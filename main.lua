@@ -1,3 +1,4 @@
+---@diagnostic disable: redundant-parameter, undefined-field
 require "scene"
 
 local FIRST_SCENE = "mainRoom"
