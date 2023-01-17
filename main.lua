@@ -5,6 +5,16 @@ require "lib.debug.tableInspect"
 local FIRST_SCENE = "mainRoom"
 
 function love.load()
+
+    local limits = love.graphics.getSystemLimits()
+    local name, version, vendor, device = love.graphics.getRendererInfo()
+	print("")
+	print("HW Render backend: " .. name .. " " .. version)
+    print("HW GPU and GPU vendor: " .. vendor .. " " .. device)
+    print("HW Limit max texture size(px): " .. limits.texturesize)
+	print("")
+	
+
 	Scene.Load(FIRST_SCENE)
 end
 

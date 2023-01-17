@@ -8,19 +8,34 @@ Atlas.TextureWidth = 0
 Atlas.TextureHeight = 0
 Atlas.QuadsCount = 0
 
+Atlas.SpriteBatch = nil
+
 function Atlas:New(path, quadWidth, quadHeight)
     local newInstance = {}
     setmetatable(newInstance, self)
-    self.__index = self    
+    self.__index = self
 
     newInstance.Texture = love.graphics.newImage(path)
+    newInstance.Texture:setFilter("nearest", "linear")
     newInstance.TextureWidth = newInstance.Texture:getWidth()
     newInstance.TextureHeight = newInstance.Texture:getHeight()
-    
+
     newInstance.QuadWidth = quadWidth
     newInstance.QuadHeight = quadHeight
 
     return newInstance
+end
+
+function Atlas:BeginBatch()
+    self.SpriteBatch:clear()
+end
+
+function Atlas:AddBatchQuads(index, x, y)
+    self.SpriteBatch:add(self.Quads[index], x, y)
+end
+
+function Atlas:EndBatch()
+    self.SpriteBatch:flush()
 end
 
 function Atlas:CutQuads()
@@ -29,20 +44,30 @@ function Atlas:CutQuads()
     local columns = (self.TextureWidth / self.QuadWidth) - 1
     local rows = (self.TextureHeight / self.QuadHeight) - 1
 
+    self.SpriteBatch = love.graphics.newSpriteBatch(self.Texture, columns * rows)
+
+
     for x = 0, rows, 1 do
         for y = 0, columns, 1 do
 
-            local quadX = y * self.QuadWidth 
+            local quadX = y * self.QuadWidth
             local quadY = x * self.QuadHeight
-            
-            table.insert(self.Quads, love.graphics.newQuad(quadX, quadY, self.QuadWidth, self.QuadHeight, self.TextureWidth, self.TextureHeight))
-            self.QuadsCount = self.QuadsCount + 1            
+            local quad = love.graphics.newQuad(quadX, quadY, self.QuadWidth, self.QuadHeight, self.TextureWidth, self.TextureHeight)
+            table.insert(self.Quads, quad)
+
+            self.QuadsCount = self.QuadsCount + 1
         end
-    end        
+    end
+
+
 end
 
-function Atlas:DrawQuad(index, x, y)    
+function Atlas:DrawQuad(index, x, y)
     love.graphics.draw(self.Texture, self.Quads[index], x, y)
+end
+
+function Atlas:DrawBatch(x,y)
+    love.graphics.draw(self.SpriteBatch, x, y)    
 end
 
 return Atlas
