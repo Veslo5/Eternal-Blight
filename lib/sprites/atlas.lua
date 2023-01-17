@@ -11,7 +11,7 @@ Atlas.QuadsCount = 0
 function Atlas:New(path, quadWidth, quadHeight)
     local newInstance = {}
     setmetatable(newInstance, self)
-    self.__index = self
+    self.__index = self    
 
     newInstance.Texture = love.graphics.newImage(path)
     newInstance.TextureWidth = newInstance.Texture:getWidth()
@@ -25,20 +25,20 @@ end
 
 function Atlas:CutQuads()
 
-    local columns = self.TextureWidth / self.QuadWidth
-    local rows = self.TextureHeight / self.QuadHeight
+    -- -1 because lua arrays starting from 1 and we are using starting index as 0
+    local columns = (self.TextureWidth / self.QuadWidth) - 1
+    local rows = (self.TextureHeight / self.QuadHeight) - 1
 
-    for x = 1, columns, 1 do
-        for y = 1, rows, 1 do
-            local quadX = (x - 1) * self.QuadWidth
-            local quadY = (y - 1) * self.QuadHeight            
+    for x = 0, rows, 1 do
+        for y = 0, columns, 1 do
 
+            local quadX = y * self.QuadWidth 
+            local quadY = x * self.QuadHeight
+            
             table.insert(self.Quads, love.graphics.newQuad(quadX, quadY, self.QuadWidth, self.QuadHeight, self.TextureWidth, self.TextureHeight))
-            self.QuadsCount = self.QuadsCount + 1
-                    
+            self.QuadsCount = self.QuadsCount + 1            
         end
-    end
-
+    end        
 end
 
 function Atlas:DrawQuad(index, x, y)    

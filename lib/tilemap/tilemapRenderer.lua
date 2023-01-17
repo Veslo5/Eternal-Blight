@@ -18,18 +18,23 @@ function TileMapRenderer.UnloadResources()
 end
 
 function TileMapRenderer:Draw()
+    local layer = self.TilemapLoader.TileMapMetadata.layers[1]
 
-    local layer = self.TilemapLoader.TileMapMetadata.layers[1]    
-    for column = 1, 10, 1 do
-        for row = 1, 10, 1 do
-            --10 is height
+    -- aand -1 for indexes again
+    local layerHeight = layer.height
+    local width = layer.width - 1
+    local height = layer.height - 1
 
-            print((row * 10) + column)
-            local tileNumber = layer.data[(row * 10) + column]            
+    for column = 0, width, 1 do
+        for row = 0, height, 1 do
+            -- + 1 coz indexes         
+            local index = ((row * layerHeight) + column) + 1                                    
+
+            local tileNumber = layer.data[index]            
             self.TileSetAtlas:DrawQuad(tileNumber, column * 32, row * 32)
         end
     end
-
+    
 end
 
 return TileMapRenderer

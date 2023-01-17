@@ -1,5 +1,6 @@
 ---@diagnostic disable: redundant-parameter, undefined-field
 require "scene"
+require "lib.debug.tableInspect"
 
 local FIRST_SCENE = "mainRoom"
 

@@ -6,6 +6,12 @@ mainRoom.tilemapRenderer = require("lib.tilemap.tilemapRenderer")
 
 function mainRoom.load()
     mainRoom.input:Bind("EXIT", "escape")
+
+    mainRoom.input:Bind("UP", "w", "up")
+    mainRoom.input:Bind("DOWN", "s", "down")
+    mainRoom.input:Bind("LEFT", "a", "left")
+    mainRoom.input:Bind("RIGHT", "d", "right")
+
         
     GameplayCamera = mainRoom.cameraFactory:New()
     UiCamera = mainRoom.cameraFactory:New(100, "Fill", 1366, 768)
@@ -18,6 +24,22 @@ function mainRoom.update(dt)
     if (mainRoom.input:IsActionPressed("EXIT")) then
         love.event.quit()
     end
+
+    if (mainRoom.input:IsActionDown("UP")) then
+         GameplayCamera.VirtualY = GameplayCamera.VirtualY - dt * 100
+    end
+
+    if (mainRoom.input:IsActionDown("DOWN")) then
+        GameplayCamera.VirtualY = GameplayCamera.VirtualY + dt * 100
+    end
+
+    if (mainRoom.input:IsActionDown("LEFT")) then
+        GameplayCamera.VirtualX = GameplayCamera.VirtualX - dt * 100
+    end
+
+    if (mainRoom.input:IsActionDown("RIGHT")) then
+        GameplayCamera.VirtualX = GameplayCamera.VirtualX + dt * 100
+    end
 end
 
 function mainRoom.draw()
@@ -28,11 +50,13 @@ function mainRoom.draw()
     -- Gameplay rendering
     mainRoom.tilemapRenderer:Draw()
     GameplayCamera:EndDraw()
-
+    local stats = love.graphics.getStats()
+    
     UiCamera:BeginDraw()
     -- UI rendering    
 
-    love.graphics.print("TOTO JE TESTOVACI",0,0)
+    love.graphics.print(love.timer.getFPS(), 0, 0)
+    love.graphics.print(stats.drawcalls, 0, 10)
     UiCamera:EndDraw()
 end
 
