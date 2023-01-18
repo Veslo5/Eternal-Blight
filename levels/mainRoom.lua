@@ -26,19 +26,19 @@ function mainRoom.update(dt)
     end
 
     if (mainRoom.input:IsActionDown("UP")) then
-         GameplayCamera.VirtualY = GameplayCamera.VirtualY - dt * 100
+         GameplayCamera.VirtualY = GameplayCamera.VirtualY - dt * 500
     end
 
     if (mainRoom.input:IsActionDown("DOWN")) then
-        GameplayCamera.VirtualY = GameplayCamera.VirtualY + dt * 100
+        GameplayCamera.VirtualY = GameplayCamera.VirtualY + dt * 500
     end
 
     if (mainRoom.input:IsActionDown("LEFT")) then
-        GameplayCamera.VirtualX = GameplayCamera.VirtualX - dt * 100
+        GameplayCamera.VirtualX = GameplayCamera.VirtualX - dt * 500
     end
 
     if (mainRoom.input:IsActionDown("RIGHT")) then
-        GameplayCamera.VirtualX = GameplayCamera.VirtualX + dt * 100
+        GameplayCamera.VirtualX = GameplayCamera.VirtualX + dt * 500
     end
 end
 

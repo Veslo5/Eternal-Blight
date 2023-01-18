@@ -6,7 +6,7 @@ TileMapLoader.TilesetMetadata = nil
 
 function TileMapLoader:LoadTileset(name)
     -- TODO: Check for errors with Pcall
-    local chunk = love.filesystem.load("data/test_map001.lua")    
+    local chunk = love.filesystem.load(name)    
     local tileMapMetadata = chunk()
 
     local tilesetFileName = tileMapMetadata.tilesets[1].exportfilename
@@ -20,6 +20,10 @@ function TileMapLoader:LoadTileset(name)
 
 end
 
+function TileMapLoader:UnloadTileset()
+    self.TileMapMetadata = nil
+    self.TilesetMetadata = nil
+end
 
 
 return TileMapLoader
