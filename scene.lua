@@ -12,6 +12,8 @@ setmetatable(Scene, { __index = function(t, k)
 end })
 
 function Scene.Load(name)
+
+    print("Loading scene")
     if CurrentScene then
 
         local stats = love.graphics.getStats()

@@ -22,7 +22,7 @@ function Atlas:New(path, quadWidth, quadHeight, useBatch)
     newInstance.useBatch = useBatch
 
     newInstance.Texture = love.graphics.newImage(path)
-    newInstance.Texture:setFilter("nearest", "linear")
+    newInstance.Texture:setFilter("nearest", "nearest")
     newInstance.TextureWidth = newInstance.Texture:getWidth()
     newInstance.TextureHeight = newInstance.Texture:getHeight()
 

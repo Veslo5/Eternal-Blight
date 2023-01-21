@@ -11,8 +11,8 @@ function mainRoom.load()
     mainRoom.input:Bind("DOWN", "s", "down")
     mainRoom.input:Bind("LEFT", "a", "left")
     mainRoom.input:Bind("RIGHT", "d", "right")
-
-        
+    mainRoom.input:Bind("ZOOM", "q")
+                
     GameplayCamera = mainRoom.cameraFactory:New()
     UiCamera = mainRoom.cameraFactory:New(100, "Fill", 1366, 768)
 
@@ -40,6 +40,11 @@ function mainRoom.update(dt)
     if (mainRoom.input:IsActionDown("RIGHT")) then
         GameplayCamera.VirtualX = GameplayCamera.VirtualX + dt * 500
     end
+
+    if (mainRoom.input:IsActionDown("ZOOM")) then
+        GameplayCamera.Zoom = GameplayCamera.Zoom + dt 
+    end
+    
 end
 
 function mainRoom.draw()
