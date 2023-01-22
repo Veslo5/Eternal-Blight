@@ -20,6 +20,17 @@ function TileMapLoader:LoadTileset(name)
 
 end
 
+function TileMapLoader:GetGroupLayer(name)
+    for _, layer in ipairs(self.TileMapMetadata.layers) do
+        if (layer.type == "group") then
+            if (layer.name == name) then
+                return layer
+            end
+        end
+    end
+    return nil
+end
+
 function TileMapLoader:UnloadTileset()
     self.TileMapMetadata = nil
     self.TilesetMetadata = nil

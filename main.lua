@@ -1,5 +1,6 @@
 ---@diagnostic disable: redundant-parameter, undefined-field
 require "scene"
+require "lib.debug.log"
 require "lib.debug.tableInspect"
 
 local FIRST_SCENE = "mainRoom"
@@ -8,11 +9,11 @@ function love.load()
 
     local limits = love.graphics.getSystemLimits()
     local name, version, vendor, device = love.graphics.getRendererInfo()
-	print("")
-	print("HW Render backend: " .. name .. " " .. version)
-    print("HW GPU and GPU vendor: " .. vendor .. " " .. device)
-    print("HW Limit max texture size(px): " .. limits.texturesize)
-	print("")
+	Debug:Log("")
+	Debug:Log("HW Render backend: " .. name .. " " .. version)
+    Debug:Log("HW GPU and GPU vendor: " .. vendor .. " " .. device)
+    Debug:Log("HW Limit max texture size(px): " .. limits.texturesize)
+	Debug:Log("")
 	
 
 	Scene.Load(FIRST_SCENE)

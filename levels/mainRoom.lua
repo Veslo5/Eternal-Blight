@@ -3,20 +3,42 @@ local mainRoom = {}
 mainRoom.input = require("lib.bindMe")
 mainRoom.cameraFactory = require("lib.camera")
 mainRoom.tilemapRenderer = require("lib.tilemap.tilemapRenderer")
+mainRoom.tilemapLoader = require("lib.tilemap.tilemapLoader")
+mainRoom.worldManager = require("lib.world.worldManager")
 
 function mainRoom.load()
     mainRoom.input:Bind("EXIT", "escape")
 
-    mainRoom.input:Bind("UP", "w", "up")
-    mainRoom.input:Bind("DOWN", "s", "down")
-    mainRoom.input:Bind("LEFT", "a", "left")
-    mainRoom.input:Bind("RIGHT", "d", "right")
-    mainRoom.input:Bind("ZOOM", "q")
+    mainRoom.input:Bind("UP", "w")
+    mainRoom.input:Bind("DOWN", "s")
+    mainRoom.input:Bind("LEFT", "a")
+    mainRoom.input:Bind("RIGHT", "d")   
+    
+    mainRoom.input:Bind("MOVE_RIGHT", "right")   
+    mainRoom.input:Bind("MOVE_LEFT", "left")   
+    mainRoom.input:Bind("MOVE_UP", "up")   
+    mainRoom.input:Bind("MOVE_DOWN", "down")
+    
+    mainRoom.input:Bind("DEBUG_WALLS", ";")
                 
     GameplayCamera = mainRoom.cameraFactory:New()
-    UiCamera = mainRoom.cameraFactory:New(100, "Fill", 1366, 768)
+    UiCamera = mainRoom.cameraFactory:New(100, "Fill", 1366, 768)    
 
-    mainRoom.tilemapRenderer:LoadResources()    
+    local tilemaploader = mainRoom.tilemapLoader
+
+    tilemaploader:LoadTileset("data/test_map002.lua")
+    mainRoom.tilemapRenderer:LoadResources(tilemaploader.TilesetMetadata)
+    mainRoom.tilemapRenderer:BakeLayers(tilemaploader.TileMapMetadata)
+
+    local mapSizeX = tilemaploader.TileMapMetadata.width
+    local mapSizeY = tilemaploader.TileMapMetadata.height
+    local mapTileWidth = tilemaploader.TileMapMetadata.tilewidth
+    local mapTileHeight = tilemaploader.TileMapMetadata.tileheight
+
+    mainRoom.worldManager:SetupMapData(mapSizeX, mapSizeY, mapTileWidth, mapTileHeight)
+
+    local dataTileGroup = tilemaploader:GetGroupLayer("Data")
+    mainRoom.worldManager:SetupWalls(dataTileGroup)    
 
 end
 
@@ -41,9 +63,13 @@ function mainRoom.update(dt)
         GameplayCamera.VirtualX = GameplayCamera.VirtualX + dt * 500
     end
 
-    if (mainRoom.input:IsActionDown("ZOOM")) then
-        GameplayCamera.Zoom = GameplayCamera.Zoom + dt 
+    if (mainRoom.input:IsActionPressed("DEBUG_WALLS")) then
+        mainRoom.tilemapRenderer:ToggleLayerVisibility("Data")
     end
+
+    -- if (mainRoom.input:IsActionDown("ZOOM")) then
+    --     GameplayCamera.Zoom = GameplayCamera.Zoom + dt 
+    -- end
     
 end
 

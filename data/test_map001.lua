@@ -9,7 +9,7 @@ return {
   height = 11,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 9,
+  nextlayerid = 11,
   nextobjectid = 10,
   properties = {},
   tilesets = {
@@ -122,7 +122,7 @@ return {
           width = 11,
           height = 11,
           id = 3,
-          name = "Wall",
+          name = "Stone",
           class = "",
           visible = true,
           opacity = 1,
@@ -184,6 +184,52 @@ return {
       }
     },
     {
+      type = "group",
+      id = 10,
+      name = "Debug",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      layers = {
+        {
+          type = "tilelayer",
+          x = 0,
+          y = 0,
+          width = 11,
+          height = 11,
+          id = 9,
+          name = "Walls",
+          class = "",
+          visible = true,
+          opacity = 1,
+          offsetx = 0,
+          offsety = 0,
+          parallaxx = 1,
+          parallaxy = 1,
+          properties = {},
+          encoding = "lua",
+          data = {
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+          }
+        }
+      }
+    },
+    {
       type = "objectgroup",
       draworder = "topdown",
       id = 5,
@@ -196,64 +242,7 @@ return {
       parallaxx = 1,
       parallaxy = 1,
       properties = {},
-      objects = {
-        {
-          id = 4,
-          name = "",
-          class = "",
-          shape = "rectangle",
-          x = 0,
-          y = 352,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 52,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 5,
-          name = "",
-          class = "",
-          shape = "rectangle",
-          x = 320,
-          y = 352,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 52,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 6,
-          name = "",
-          class = "",
-          shape = "rectangle",
-          x = 320,
-          y = 32,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 52,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 7,
-          name = "",
-          class = "",
-          shape = "rectangle",
-          x = 0,
-          y = 32,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 52,
-          visible = true,
-          properties = {}
-        }
-      }
+      objects = {}
     }
   }
 }

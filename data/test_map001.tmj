@@ -93,7 +93,7 @@
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  "height":11,
                  "id":3,
-                 "name":"Wall",
+                 "name":"Stone",
                  "opacity":1,
                  "properties":[
                         {
@@ -143,65 +143,49 @@
          "y":0
         }, 
         {
+         "id":10,
+         "layers":[
+                {
+                 "data":[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
+                    2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+                    2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+                    2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+                    2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+                    2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+                    2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+                    2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+                    2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+                    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                 "height":11,
+                 "id":9,
+                 "name":"Walls",
+                 "opacity":1,
+                 "type":"tilelayer",
+                 "visible":true,
+                 "width":11,
+                 "x":0,
+                 "y":0
+                }],
+         "name":"Debug",
+         "opacity":1,
+         "type":"group",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
          "draworder":"topdown",
          "id":5,
          "name":"World",
-         "objects":[
-                {
-                 "class":"",
-                 "gid":52,
-                 "height":32,
-                 "id":4,
-                 "name":"",
-                 "rotation":0,
-                 "visible":true,
-                 "width":32,
-                 "x":0,
-                 "y":352
-                }, 
-                {
-                 "class":"",
-                 "gid":52,
-                 "height":32,
-                 "id":5,
-                 "name":"",
-                 "rotation":0,
-                 "visible":true,
-                 "width":32,
-                 "x":320,
-                 "y":352
-                }, 
-                {
-                 "class":"",
-                 "gid":52,
-                 "height":32,
-                 "id":6,
-                 "name":"",
-                 "rotation":0,
-                 "visible":true,
-                 "width":32,
-                 "x":320,
-                 "y":32
-                }, 
-                {
-                 "class":"",
-                 "gid":52,
-                 "height":32,
-                 "id":7,
-                 "name":"",
-                 "rotation":0,
-                 "visible":true,
-                 "width":32,
-                 "x":0,
-                 "y":32
-                }],
+         "objects":[],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
          "x":0,
          "y":0
         }],
- "nextlayerid":9,
+ "nextlayerid":11,
  "nextobjectid":10,
  "orientation":"orthogonal",
  "renderorder":"right-down",

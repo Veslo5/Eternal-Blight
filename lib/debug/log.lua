@@ -1,8 +1,9 @@
-local Log = {}
+Debug = {}
 
-function Log.Info(module, message, )
-    
+Debug.IsOn = true
+
+function Debug:Log(messages, ...)
+    if self.IsOn then
+        print(messages, ...)
+    end
 end
-
-
-return Log
