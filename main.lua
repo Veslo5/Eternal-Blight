@@ -7,12 +7,12 @@ local FIRST_SCENE = "mainRoom"
 
 function love.load()
 
-    local limits = love.graphics.getSystemLimits()
-    local name, version, vendor, device = love.graphics.getRendererInfo()
+	local limits = love.graphics.getSystemLimits()
+	local name, version, vendor, device = love.graphics.getRendererInfo()
 	Debug:Log("")
 	Debug:Log("HW Render backend: " .. name .. " " .. version)
-    Debug:Log("HW GPU and GPU vendor: " .. vendor .. " " .. device)
-    Debug:Log("HW Limit max texture size(px): " .. limits.texturesize)
+	Debug:Log("HW GPU and GPU vendor: " .. vendor .. " " .. device)
+	Debug:Log("HW Limit max texture size(px): " .. limits.texturesize)
 	Debug:Log("")
 	
 

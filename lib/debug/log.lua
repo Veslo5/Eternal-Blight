@@ -3,7 +3,7 @@ Debug = {}
 Debug.IsOn = true
 
 function Debug:Log(messages, ...)
-    if self.IsOn then
-        print(messages, ...)
-    end
+	if self.IsOn then
+		print(messages, ...)
+	end
 end
