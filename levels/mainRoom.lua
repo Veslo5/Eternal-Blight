@@ -26,7 +26,7 @@ function mainRoom.load()
 
 	local tilemaploader = mainRoom.tilemapLoader
 
-	tilemaploader:LoadTileset("data/test_map002.lua")
+	tilemaploader:LoadTileset("data/test_map002.lua")	
 	mainRoom.tilemapRenderer:LoadResources(tilemaploader.TilesetMetadata)
 	mainRoom.tilemapRenderer:BakeLayers(tilemaploader.TileMapMetadata)
 
@@ -35,10 +35,22 @@ function mainRoom.load()
 	local mapTileWidth = tilemaploader.TileMapMetadata.tilewidth
 	local mapTileHeight = tilemaploader.TileMapMetadata.tileheight
 
+	local currentAtlas = mainRoom.tilemapRenderer.TileSetAtlas
+
+
 	mainRoom.worldManager:SetupMapData(mapSizeX, mapSizeY, mapTileWidth, mapTileHeight)
+	local customBatch = mainRoom.tilemapRenderer:AddSpriteBatch("Testik", true, currentAtlas.Texture, currentAtlas:GetAtlasQuadCount())
+
+	
+
+
 
 	local dataTileGroup = tilemaploader:GetGroupLayer("Data")
+	
+	--TODO: Test_MAP001 does not have Data layer group
+	if(dataTileGroup ~= nil) then
 	mainRoom.worldManager:SetupWalls(dataTileGroup)    
+	end
 
 end
 
@@ -65,7 +77,7 @@ function mainRoom.update(dt)
 
 	if (mainRoom.input:IsActionPressed("DEBUG_WALLS")) then
 		mainRoom.tilemapRenderer:ToggleLayerVisibility("Data")
-	end
+	end 
 
 	-- if (mainRoom.input:IsActionDown("ZOOM")) then
 	--     GameplayCamera.Zoom = GameplayCamera.Zoom + dt 

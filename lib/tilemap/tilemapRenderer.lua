@@ -11,28 +11,26 @@ function TileMapRenderer:LoadResources(tilesetMetadata)
 	self.TileSetAtlas = self.AtlasFactory:New(tilesetMetadata.image, 32, 32, true)
 	self.TileSetAtlas:CutQuads()
 
-	-- self.TileSetAtlas:BeginBatch()
-
-	-- local layer = self.TilemapLoader.TileMapMetadata.layers[1]
-
-	-- -- aand -1 for indexes again
-	-- local layerHeight = layer.height
-	-- local width = layer.width - 1
-	-- local height = layer.height - 1
-
-	-- for column = 0, width, 1 do
-	--     for row = 0, height, 1 do
-	--         -- + 1 coz indexes
-	--         local index = ((row * layerHeight) + column) + 1
-	--         local tileNumber = layer.data[index]
-	--         self.TileSetAtlas:RedrawBatchQuads(tileNumber, column * 32, row * 32)
-
-	--     end
-	-- end
-
-	-- self.TileSetAtlas:EndBatch()
-
 end
+
+function TileMapRenderer:AddSpriteBatch (name, visible, texture, quadCount)
+	local newBatch = love.graphics.newSpriteBatch(texture, quadCount)
+	local groupLayerHolder = {name = name, visible = visible or true, spriteBatch = newBatch}
+
+	table.insert(self.SpriteBatches, groupLayerHolder)
+	
+	return groupLayerHolder
+end
+
+
+function TileMapRenderer:GetSpriteBatchTable(name)
+	for _, value in ipairs(self.SpriteBatches) do
+		if value.name == name then
+			return value
+		end
+	end
+end
+
 
 function TileMapRenderer:BakeLayers(tileMapMetadata)
 	for _, layer in ipairs(tileMapMetadata.layers) do
@@ -43,8 +41,7 @@ function TileMapRenderer:BakeLayers(tileMapMetadata)
 
 			local groupLayerHolder = { name = layer.name, visible = layer.visible }
 
-			local currentBatch = love.graphics.newSpriteBatch(self.TileSetAtlas.Texture,
-				(self.TileSetAtlas.Columns - 1) * (self.TileSetAtlas.Rows - 1))
+			local currentBatch = love.graphics.newSpriteBatch(self.TileSetAtlas.Texture, self.TileSetAtlas:GetAtlasQuadCount())
 			currentBatch:clear()
 
 			groupLayerHolder.spriteBatch = currentBatch
@@ -77,10 +74,6 @@ function TileMapRenderer:BakeLayers(tileMapMetadata)
 	end
 end
 
-function TileMapRenderer.UnloadResources()
-
-end
-
 --- Set spriteBatch layer visibility
 ---@param name string
 ---@return boolean
@@ -95,30 +88,16 @@ function TileMapRenderer:ToggleLayerVisibility(name)
 end
 
 function TileMapRenderer:Draw()
-	-- local layer = self.TilemapLoader.TileMapMetadata.layers[1]
-
-	-- -- aand -1 for indexes again
-	-- local layerHeight = layer.height
-	-- local width = layer.width - 1
-	-- local height = layer.height - 1
-
-	-- for column = 0, width, 1 do
-	--     for row = 0, height, 1 do
-	--         -- + 1 coz indexes
-	--         local index = ((row * layerHeight) + column) + 1
-
-	--         local tileNumber = layer.data[index]
-	--         self.TileSetAtlas:DrawQuad(tileNumber, column * 32, row * 32)
-	--     end
-	-- end
-	-- self.TileSetAtlas:DrawBatch(0,0)
-
 	for _, batch in ipairs(self.SpriteBatches) do
 		if batch.visible == true then
 			love.graphics.draw(batch.spriteBatch, 0, 0)
 		end
 	end
 
+
+end
+
+function TileMapRenderer.UnloadResources()
 
 end
 

@@ -32,27 +32,8 @@ function Atlas:New(path, quadWidth, quadHeight, useBatch)
 	newInstance.Columns = newInstance.TextureWidth / newInstance.QuadWidth
 	newInstance.Rows = newInstance.TextureHeight / newInstance.QuadHeight
 
-
-
-	-- if newInstance.useBatch then
-	--     newInstance.SpriteBatch = love.graphics.newSpriteBatch(newInstance.Texture, (newInstance.Columns - 1) * (newInstance.Rows - 1))
-	-- end
-
 	return newInstance
 end
-
--- function Atlas:BeginBatch()
--- assert(self.UseBatch, "Batching is not allowed for this atlas!")
---     self.SpriteBatch:clear()
--- end
-
--- function Atlas:RedrawBatchQuads(index, x, y)
---     self.SpriteBatch:add(self.Quads[index], x, y)
--- end
-
--- function Atlas:EndBatch()
---     self.SpriteBatch:flush()
--- end
 
 function Atlas:CutQuads()
 	-- -1 because lua arrays starting from 1 and we are using starting index as 0
@@ -64,23 +45,17 @@ function Atlas:CutQuads()
 
 			local quadX = y * self.QuadWidth
 			local quadY = x * self.QuadHeight
-			local quad = love.graphics.newQuad(quadX, quadY, self.QuadWidth, self.QuadHeight, self.TextureWidth,
+			local quad = love.graphics.newQuad(quadX, quadY, huaself.QuadWidth, self.QuadHeight, self.TextureWidth,
 				self.TextureHeight)
 			table.insert(self.Quads, quad)
 
 			self.QuadsCount = self.QuadsCount + 1
 		end
 	end
-
-
 end
 
--- function Atlas:DrawQuad(index, x, y)
---     love.graphics.draw(self.Texture, self.Quads[index], x, y)
--- end
-
--- function Atlas:DrawBatch(x, y)
---     love.graphics.draw(self.SpriteBatch, x, y)
--- end
+function Atlas:GetAtlasQuadCount()
+	return (self.Columns - 1) * (self.Rows - 1)
+end
 
 return Atlas

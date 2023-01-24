@@ -48,7 +48,6 @@ function WorldManager:SetupWalls(dataTiles)
 	end
 end
 
---TODO: Debug render zdí
 --- Return position of tile in world
 ---@param gridX integer
 ---@param gridY integer
