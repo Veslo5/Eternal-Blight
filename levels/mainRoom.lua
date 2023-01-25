@@ -20,7 +20,7 @@ function mainRoom.load()
 	mainRoom.input:Bind("MOVE_DOWN", "down")
 	
 	mainRoom.input:Bind("DEBUG_WALLS", ";")
-				
+	
 	GameplayCamera = mainRoom.cameraFactory:New()
 	UiCamera = mainRoom.cameraFactory:New(100, "Fill", 1366, 768)
 
@@ -92,7 +92,6 @@ function mainRoom.draw()
 		mainRoom.tilemapRenderer.DrawWorldWalls(world.GridWidth, world.GridHeight, world.TileWidth, world.TileHeight, world.GridData)
 	GameplayCamera:EndDraw()
 	
-	
 	-- UI rendering    
 	UiCamera:BeginDraw()
 		Debug:DrawStats()
@@ -102,7 +101,6 @@ end
 --#####CALLBACKS######
 function mainRoom.keypressed(key, scancode, isrepeat)
 	mainRoom.input:KeyPressed(key, scancode, isrepeat)
-
 end
 
 function mainRoom.keyreleased(key, scancode)
