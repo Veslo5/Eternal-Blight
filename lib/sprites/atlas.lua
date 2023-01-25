@@ -11,9 +11,6 @@ Atlas.QuadsCount = 0
 Atlas.Columns = 0
 Atlas.Rows = 0
 
-Atlas.UseBatch = false
-Atlas.SpriteBatch = nil
-
 function Atlas:New(path, quadWidth, quadHeight, useBatch)
 	local newInstance = {}
 	setmetatable(newInstance, self)
@@ -45,7 +42,7 @@ function Atlas:CutQuads()
 
 			local quadX = y * self.QuadWidth
 			local quadY = x * self.QuadHeight
-			local quad = love.graphics.newQuad(quadX, quadY, huaself.QuadWidth, self.QuadHeight, self.TextureWidth,
+			local quad = love.graphics.newQuad(quadX, quadY, self.QuadWidth, self.QuadHeight, self.TextureWidth,
 				self.TextureHeight)
 			table.insert(self.Quads, quad)
 
@@ -56,6 +53,11 @@ end
 
 function Atlas:GetAtlasQuadCount()
 	return (self.Columns - 1) * (self.Rows - 1)
+end
+
+function Atlas:Unload()
+	self.Quads = nil
+	self.Texture = nil	
 end
 
 return Atlas

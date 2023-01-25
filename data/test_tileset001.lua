@@ -9,7 +9,7 @@ return {
   spacing = 0,
   margin = 0,
   columns = 10,
-  image = "resources/test001.png",
+  image = "../resources/test001.png",
   imagewidth = 320,
   imageheight = 224,
   objectalignment = "unspecified",

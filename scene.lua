@@ -24,7 +24,7 @@ function Scene.Load(name)
 		Debug:Log("before canvases: " .. stats.canvases)
 		Debug:Log("before fonts: " .. stats.fonts)
 
-		Scene.unload()
+		Scene:unload()
 	end
 	local chunk = love.filesystem.load(scenesFolder .. "/" .. name .. ".lua")
 	if not chunk then error("Attempt to load scene \"" .. name .. "\", but it was not found in \"" .. scenesFolder .. "\" folder.", 2) end
@@ -42,5 +42,5 @@ function Scene.Load(name)
 	Debug:Log("after canvases: " .. stats.canvases)
 	Debug:Log("after fonts: " .. stats.fonts)
 
-	Scene.load()
+	Scene:load()
 end

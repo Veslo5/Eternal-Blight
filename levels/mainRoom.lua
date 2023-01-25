@@ -22,11 +22,11 @@ function mainRoom.load()
 	mainRoom.input:Bind("DEBUG_WALLS", ";")
 				
 	GameplayCamera = mainRoom.cameraFactory:New()
-	UiCamera = mainRoom.cameraFactory:New(100, "Fill", 1366, 768)    
+	UiCamera = mainRoom.cameraFactory:New(100, "Fill", 1366, 768)
 
 	local tilemaploader = mainRoom.tilemapLoader
 
-	tilemaploader:LoadTileset("data/test_map002.lua")	
+	tilemaploader:LoadTileset("data/test_map002.lua")
 	mainRoom.tilemapRenderer:LoadResources(tilemaploader.TilesetMetadata)
 	mainRoom.tilemapRenderer:BakeLayers(tilemaploader.TileMapMetadata)
 
@@ -39,15 +39,10 @@ function mainRoom.load()
 
 
 	mainRoom.worldManager:SetupMapData(mapSizeX, mapSizeY, mapTileWidth, mapTileHeight)
-	local customBatch = mainRoom.tilemapRenderer:AddSpriteBatch("Testik", true, currentAtlas.Texture, currentAtlas:GetAtlasQuadCount())
-
-	
-
-
+--	local customBatch = mainRoom.tilemapRenderer:AddSpriteBatch("Testik", true, currentAtlas.Texture, currentAtlas:GetAtlasQuadCount())	
 
 	local dataTileGroup = tilemaploader:GetGroupLayer("Data")
 	
-	--TODO: Test_MAP001 does not have Data layer group
 	if(dataTileGroup ~= nil) then
 	mainRoom.worldManager:SetupWalls(dataTileGroup)    
 	end
@@ -55,6 +50,7 @@ function mainRoom.load()
 end
 
 function mainRoom.update(dt)
+
 	if (mainRoom.input:IsActionPressed("EXIT")) then
 		love.event.quit()
 	end
@@ -89,17 +85,17 @@ function mainRoom.draw()
 
 	love.graphics.setBackgroundColor(0,0,0,1)
 	
-	GameplayCamera:BeginDraw()
+	local world = mainRoom.worldManager
 	-- Gameplay rendering
-	mainRoom.tilemapRenderer:Draw()
+	GameplayCamera:BeginDraw()
+		mainRoom.tilemapRenderer:Draw()
+		mainRoom.tilemapRenderer.DrawWorldWalls(world.GridWidth, world.GridHeight, world.TileWidth, world.TileHeight, world.GridData)
 	GameplayCamera:EndDraw()
-	local stats = love.graphics.getStats()
 	
-	UiCamera:BeginDraw()
+	
 	-- UI rendering    
-
-	love.graphics.print(tostring(love.timer.getFPS()), 0, 0)
-	love.graphics.print(tostring(stats.drawcalls), 0, 10)
+	UiCamera:BeginDraw()
+		Debug:DrawStats()
 	UiCamera:EndDraw()
 end
 

@@ -186,7 +186,7 @@ return {
     {
       type = "group",
       id = 10,
-      name = "Debug",
+      name = "Data",
       class = "",
       visible = true,
       opacity = 1,
