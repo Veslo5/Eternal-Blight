@@ -39,7 +39,6 @@ function WorldManager:SetupWalls(dataTiles)
 					local index = ((row * layerHeight) + column) + 1
 					local tileNumber = layerInGroup.data[index]
 					if (tileNumber ~= 0) then
-
 						self.GridData[column + 1][row + 1].Wall = true
 					end
 				end
