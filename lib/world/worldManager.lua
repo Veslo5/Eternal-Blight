@@ -8,6 +8,11 @@ WorldManager.GridHeight = 0
 WorldManager.TileWidth = 0
 WorldManager.TileHeight = 0
 
+
+function WorldManager:AddEntity(entity)	
+	table.insert(self.MapEntities, entity)	
+end
+
 function WorldManager:SetupMapData(sizeX, sizeY, tileWidth, tileheight)
 	self.GridWidth = sizeX
 	self.GridHeight = sizeY
@@ -83,5 +88,15 @@ function WorldManager:IsInGridRange(gridX, gridY)
 		return false
 	end
 end
+
+function WorldManager:Update(dt)
+	
+end
+
+function WorldManager:Draw()
+	
+end
+
+
 
 return WorldManager

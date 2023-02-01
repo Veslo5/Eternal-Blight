@@ -5,6 +5,7 @@ mainRoom.cameraFactory = require("lib.camera")
 mainRoom.tilemapRenderer = require("lib.tilemap.tilemapRenderer")
 mainRoom.tilemapLoader = require("lib.tilemap.tilemapLoader")
 mainRoom.worldManager = require("lib.world.worldManager")
+mainRoom.entityBuilder = require("lib.world.entityBuilder")
 
 function mainRoom.load()
 	mainRoom.input:Bind("EXIT", "escape")
@@ -47,6 +48,14 @@ function mainRoom.load()
 	mainRoom.worldManager:SetupWalls(dataTileGroup)    
 	end
 
+	-- sandbox test
+	local entbuilder = mainRoom.entityBuilder
+	local entity = entbuilder:NewEntity("Player")	
+	entbuilder.MakeMovable(entity)
+	entbuilder.MakeDrawable(entity)
+
+	mainRoom.worldManager:AddEntity(entity)
+
 end
 
 function mainRoom.update(dt)
@@ -75,6 +84,7 @@ function mainRoom.update(dt)
 		mainRoom.tilemapRenderer:ToggleLayerVisibility("Data")
 	end 
 
+	mainRoom.worldManager:Update()
 	-- if (mainRoom.input:IsActionDown("ZOOM")) then
 	--     GameplayCamera.Zoom = GameplayCamera.Zoom + dt 
 	-- end
@@ -90,6 +100,7 @@ function mainRoom.draw()
 	GameplayCamera:BeginDraw()
 		mainRoom.tilemapRenderer:Draw()
 		mainRoom.tilemapRenderer.DrawWorldWalls(world.GridWidth, world.GridHeight, world.TileWidth, world.TileHeight, world.GridData)
+		mainRoom.worldManager:Draw()
 	GameplayCamera:EndDraw()
 	
 	-- UI rendering    
