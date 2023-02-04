@@ -5,7 +5,6 @@ mainRoom.cameraFactory = require("lib.camera")
 mainRoom.tilemapRenderer = require("lib.tilemap.tilemapRenderer")
 mainRoom.tilemapLoader = require("lib.tilemap.tilemapLoader")
 mainRoom.worldManager = require("lib.world.worldManager")
-mainRoom.entityBuilder = require("lib.world.entityBuilder")
 
 function mainRoom.load()
 	mainRoom.input:Bind("EXIT", "escape")
@@ -27,7 +26,7 @@ function mainRoom.load()
 
 	local tilemaploader = mainRoom.tilemapLoader
 
-	tilemaploader:LoadTileset("data/test_map002.lua")
+	tilemaploader:LoadTileset("data/test_map001.lua")
 	mainRoom.tilemapRenderer:LoadResources(tilemaploader.TilesetMetadata)
 	mainRoom.tilemapRenderer:BakeLayers(tilemaploader.TileMapMetadata)
 
@@ -48,13 +47,25 @@ function mainRoom.load()
 	mainRoom.worldManager:SetupWalls(dataTileGroup)    
 	end
 
-	-- sandbox test
-	local entbuilder = mainRoom.entityBuilder
-	local entity = entbuilder:NewEntity("Player")	
-	entbuilder.MakeMovable(entity)
-	entbuilder.MakeDrawable(entity)
+-- Sandbox --------------------------------------------------
 
-	mainRoom.worldManager:AddEntity(entity)
+	local playerEntity = {
+		IGridMovable = {
+			GridX = 0,
+			GrdiY = 0
+		},
+		IDrawable = {
+			X = 0,
+			Y = 0
+		}
+	}
+
+	mainRoom.worldManager:AddEntity(playerEntity)
+	local updateSystem = Ecs.processingSystem()
+		function updateSystem:process(entity, dt)
+			
+		end
+	mainRoom.worldManager:EcsInit()
 
 end
 
@@ -84,7 +95,7 @@ function mainRoom.update(dt)
 		mainRoom.tilemapRenderer:ToggleLayerVisibility("Data")
 	end 
 
-	mainRoom.worldManager:Update()
+	mainRoom.worldManager:Update(dt)
 	-- if (mainRoom.input:IsActionDown("ZOOM")) then
 	--     GameplayCamera.Zoom = GameplayCamera.Zoom + dt 
 	-- end
@@ -99,7 +110,7 @@ function mainRoom.draw()
 	-- Gameplay rendering
 	GameplayCamera:BeginDraw()
 		mainRoom.tilemapRenderer:Draw()
-		mainRoom.tilemapRenderer.DrawWorldWalls(world.GridWidth, world.GridHeight, world.TileWidth, world.TileHeight, world.GridData)
+		mainRoom.tilemapRenderer.DrawWorldWalls(world.GridWidth, world.GridHeight, world.TileWidth, world.TileHeight, world.GridData)		
 		mainRoom.worldManager:Draw()
 	GameplayCamera:EndDraw()
 	

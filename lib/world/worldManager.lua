@@ -1,6 +1,9 @@
 local WorldManager = {}
 
-WorldManager.MapEntities = {}
+WorldManager.MapWorld = {}
+WorldManager.DrawFilter = nil
+WorldManager.UpdateFilter = nil
+
 
 WorldManager.GridData = {}
 WorldManager.GridWidth = 0
@@ -9,8 +12,13 @@ WorldManager.TileWidth = 0
 WorldManager.TileHeight = 0
 
 
+function WorldManager:EcsInit()
+	self.DrawFilter = Ecs.requireAll("IDrawable")
+	self.UpdateFilter = Ecs.rejectAll("IDrawable")
+end
+
 function WorldManager:AddEntity(entity)	
-	table.insert(self.MapEntities, entity)	
+	Ecs.add(self.MapWorld, entity)
 end
 
 function WorldManager:SetupMapData(sizeX, sizeY, tileWidth, tileheight)
@@ -90,13 +98,11 @@ function WorldManager:IsInGridRange(gridX, gridY)
 end
 
 function WorldManager:Update(dt)
-	
+	Ecs.update(self.MapWorld, dt, self.UpdateFilter)
 end
 
 function WorldManager:Draw()
-	
+	Ecs.update(self.MapWorld, love.timer.getDelta(), self.DrawFilter)
 end
-
-
 
 return WorldManager

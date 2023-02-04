@@ -1,13 +1,15 @@
-Debug = {}
+local Debug = {}
 
 Debug.IsOn = true
 
+--- Logs message
 function Debug:Log(messages, ...)
 	if self.IsOn then
 		print(messages, ...)
 	end
 end
 
+--- Draw love2D stats
 function Debug:DrawStats()
 	if self.IsOn then		
 		local stats = love.graphics.getStats()
@@ -15,3 +17,20 @@ function Debug:DrawStats()
 		love.graphics.print(tostring(stats.drawcalls), 0, 10)
 	end
 end
+
+--- Generaters string from table
+---@param o any
+function Debug.Dump(o)
+	if type(o) == 'table' then
+		local s = '{ '
+		for k, v in pairs(o) do
+			if type(k) ~= 'number' then k = '"' .. k .. '"' end
+			s = s .. '[' .. k .. '] = ' .. Debug.Dump(v) .. ','
+		end
+		return s .. '} '
+	else
+		return tostring(o)
+	end
+end
+
+return Debug

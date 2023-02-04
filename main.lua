@@ -1,11 +1,10 @@
 ---@diagnostic disable: redundant-parameter, undefined-field
 require "scene"
-require "lib.debug.log"
-require "lib.debug.tableInspect"
 
 local FIRST_SCENE = "mainRoom"
 
 function love.load()
+	require("lib.globals")
 
 	local limits = love.graphics.getSystemLimits()
 	local name, version, vendor, device = love.graphics.getRendererInfo()
