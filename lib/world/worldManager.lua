@@ -1,6 +1,6 @@
 local WorldManager = {}
 
-WorldManager.MapWorld = {}
+WorldManager.MapWorld = Ecs.world()
 WorldManager.DrawFilter = nil
 WorldManager.UpdateFilter = nil
 
@@ -19,6 +19,10 @@ end
 
 function WorldManager:AddEntity(entity)	
 	Ecs.add(self.MapWorld, entity)
+end
+
+function WorldManager:AddSystem(system)
+	Ecs.addSystem(self.MapWorld, system)
 end
 
 function WorldManager:SetupMapData(sizeX, sizeY, tileWidth, tileheight)

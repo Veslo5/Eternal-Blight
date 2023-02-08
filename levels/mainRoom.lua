@@ -50,6 +50,7 @@ function mainRoom.load()
 -- Sandbox --------------------------------------------------
 
 	local playerEntity = {
+		Name = "Test",
 		IGridMovable = {
 			GridX = 0,
 			GrdiY = 0
@@ -59,14 +60,16 @@ function mainRoom.load()
 			Y = 0
 		}
 	}
-
 	mainRoom.worldManager:AddEntity(playerEntity)
+	
 	local updateSystem = Ecs.processingSystem()
-		function updateSystem:process(entity, dt)
-			
-		end
+	updateSystem.filter = Ecs.requireAll("IGridMovable")
+	function updateSystem:process(entity, dt)
+		print("hello " .. entity.Name )
+	end
+	
+	mainRoom.worldManager:AddSystem(updateSystem)
 	mainRoom.worldManager:EcsInit()
-
 end
 
 function mainRoom.update(dt)
