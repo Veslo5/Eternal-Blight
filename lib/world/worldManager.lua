@@ -12,9 +12,11 @@ WorldManager.TileWidth = 0
 WorldManager.TileHeight = 0
 
 
+
 function WorldManager:EcsInit()
-	self.DrawFilter = Ecs.requireAll("IDrawable")
-	self.UpdateFilter = Ecs.rejectAll("IDrawable")
+	-- Here we require all DrawSystem marked systems
+	self.DrawFilter = Ecs.requireAll("DrawSystem")
+	self.UpdateFilter = Ecs.rejectAll("DrawSystem")
 end
 
 function WorldManager:AddEntity(entity)	
@@ -102,10 +104,12 @@ function WorldManager:IsInGridRange(gridX, gridY)
 end
 
 function WorldManager:Update(dt)
+	--print("Update filter")
 	Ecs.update(self.MapWorld, dt, self.UpdateFilter)
 end
 
 function WorldManager:Draw()
+	--print("Draw filter")
 	Ecs.update(self.MapWorld, love.timer.getDelta(), self.DrawFilter)
 end
 

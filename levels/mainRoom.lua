@@ -1,25 +1,24 @@
 local mainRoom = {}
 
-mainRoom.input = require("lib.bindMe")
 mainRoom.cameraFactory = require("lib.camera")
 mainRoom.tilemapRenderer = require("lib.tilemap.tilemapRenderer")
 mainRoom.tilemapLoader = require("lib.tilemap.tilemapLoader")
 mainRoom.worldManager = require("lib.world.worldManager")
 
 function mainRoom.load()
-	mainRoom.input:Bind("EXIT", "escape")
+	Input:Bind("EXIT", "escape")
 
-	mainRoom.input:Bind("UP", "w")
-	mainRoom.input:Bind("DOWN", "s")
-	mainRoom.input:Bind("LEFT", "a")
-	mainRoom.input:Bind("RIGHT", "d")   
+	Input:Bind("UP", "w")
+	Input:Bind("DOWN", "s")
+	Input:Bind("LEFT", "a")
+	Input:Bind("RIGHT", "d")   
 	
-	mainRoom.input:Bind("MOVE_RIGHT", "right")   
-	mainRoom.input:Bind("MOVE_LEFT", "left")   
-	mainRoom.input:Bind("MOVE_UP", "up")   
-	mainRoom.input:Bind("MOVE_DOWN", "down")
+	Input:Bind("MOVE_RIGHT", "right")   
+	Input:Bind("MOVE_LEFT", "left")   
+	Input:Bind("MOVE_UP", "up")   
+	Input:Bind("MOVE_DOWN", "down")
 	
-	mainRoom.input:Bind("DEBUG_WALLS", ";")
+	Input:Bind("DEBUG_WALLS", ";")
 	
 	GameplayCamera = mainRoom.cameraFactory:New()
 	UiCamera = mainRoom.cameraFactory:New(100, "Fill", 1366, 768)
@@ -48,53 +47,41 @@ function mainRoom.load()
 	end
 
 -- Sandbox --------------------------------------------------
-
-	local playerEntity = {
-		Name = "Test",
-		IGridMovable = {
-			GridX = 0,
-			GrdiY = 0
-		},
-		IDrawable = {
-			X = 0,
-			Y = 0
-		}
-	}
+	local entityBuilder = require("lib.world.entityBuilder")
+	local playerEntity = entityBuilder:New():MakeGridMovable():MakeDrawable()
 	mainRoom.worldManager:AddEntity(playerEntity)
-	
-	local updateSystem = Ecs.processingSystem()
-	updateSystem.filter = Ecs.requireAll("IGridMovable")
-	function updateSystem:process(entity, dt)
-		print("hello " .. entity.Name )
-	end
-	
-	mainRoom.worldManager:AddSystem(updateSystem)
+
+	local systemBuilder = require("lib.world.systemBuilder")
+
+	mainRoom.worldManager:AddSystem(systemBuilder.GetMoveSystem())
+	mainRoom.worldManager:AddSystem(systemBuilder.GetDrawSystem())
 	mainRoom.worldManager:EcsInit()
+
 end
 
 function mainRoom.update(dt)
 
-	if (mainRoom.input:IsActionPressed("EXIT")) then
+	if (Input:IsActionPressed("EXIT")) then
 		love.event.quit()
 	end
 
-	if (mainRoom.input:IsActionDown("UP")) then
+	if (Input:IsActionDown("UP")) then
 		 GameplayCamera.VirtualY = GameplayCamera.VirtualY - dt * 500
 	end
 
-	if (mainRoom.input:IsActionDown("DOWN")) then
+	if (Input:IsActionDown("DOWN")) then
 		GameplayCamera.VirtualY = GameplayCamera.VirtualY + dt * 500
 	end
 
-	if (mainRoom.input:IsActionDown("LEFT")) then
+	if (Input:IsActionDown("LEFT")) then
 		GameplayCamera.VirtualX = GameplayCamera.VirtualX - dt * 500
 	end
 
-	if (mainRoom.input:IsActionDown("RIGHT")) then
+	if (Input:IsActionDown("RIGHT")) then
 		GameplayCamera.VirtualX = GameplayCamera.VirtualX + dt * 500
 	end
 
-	if (mainRoom.input:IsActionPressed("DEBUG_WALLS")) then
+	if (Input:IsActionPressed("DEBUG_WALLS")) then
 		mainRoom.tilemapRenderer:ToggleLayerVisibility("Data")
 	end 
 
@@ -125,23 +112,19 @@ end
 
 --#####CALLBACKS######
 function mainRoom.keypressed(key, scancode, isrepeat)
-	mainRoom.input:KeyPressed(key, scancode, isrepeat)
+	Input:KeyPressed(key, scancode, isrepeat)
 end
 
 function mainRoom.keyreleased(key, scancode)
-	mainRoom.input:KeyRelease(key, scancode)
-
+	Input:KeyRelease(key, scancode)
 end
 
 function mainRoom.mousepressed(x, y, button, istouch, presses)
-	mainRoom.input:MousePressed(x, y, button, istouch, presses)
-
+	Input:MousePressed(x, y, button, istouch, presses)
 end
 
 function mainRoom.mousereleased(x, y, button, istouch, presses)
-	mainRoom.input:MouseReleased(x, y, button, istouch, presses)
-
-
+	Input:MouseReleased(x, y, button, istouch, presses)
 end
 
 function mainRoom.resize(width, height)
