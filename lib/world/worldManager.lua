@@ -1,8 +1,10 @@
 local WorldManager = {}
 
 WorldManager.MapWorld = Ecs.world()
-WorldManager.DrawFilter = nil
-WorldManager.UpdateFilter = nil
+
+WorldManager.DrawSystemFilter = nil
+WorldManager.UpdateSystemFilter = nil
+WorldManager.RoundSystemFilter = nil
 
 
 WorldManager.GridData = {}
@@ -11,20 +13,24 @@ WorldManager.GridHeight = 0
 WorldManager.TileWidth = 0
 WorldManager.TileHeight = 0
 
+WorldManager.CurrentRound = 0
+
 
 
 function WorldManager:EcsInit()
 	-- Here we require all DrawSystem marked systems
-	self.DrawFilter = Ecs.requireAll("DrawSystem")
-	self.UpdateFilter = Ecs.rejectAll("DrawSystem")
+	self.DrawSystemFilter = Ecs.requireAll("DrawSystem")
+	self.UpdateSystemFilter = Ecs.requireAll("UpdateSystem")
+	self.RoundSystemFilter = Ecs.requireAll("RoundSystem")
 end
 
-function WorldManager:AddEntity(entity)	
-	Ecs.add(self.MapWorld, entity)
+function WorldManager:AddEntity(entity)
+Ecs.add(self.MapWorld, entity)
 end
 
 function WorldManager:AddSystem(system)
 	Ecs.addSystem(self.MapWorld, system)
+	Debug:Log("Added system: " .. system.Name)
 end
 
 function WorldManager:SetupMapData(sizeX, sizeY, tileWidth, tileheight)
@@ -103,14 +109,20 @@ function WorldManager:IsInGridRange(gridX, gridY)
 	end
 end
 
+function WorldManager:NextRound()
+	print("Starting next round")
+	self.CurrentRound = self.CurrentRound + 1
+	Ecs.update(self.MapWorld, love.timer.getDelta(), self.RoundSystemFilter)
+end
+
 function WorldManager:Update(dt)
 	--print("Update filter")
-	Ecs.update(self.MapWorld, dt, self.UpdateFilter)
+	Ecs.update(self.MapWorld, dt, self.UpdateSystemFilter)
 end
 
 function WorldManager:Draw()
 	--print("Draw filter")
-	Ecs.update(self.MapWorld, love.timer.getDelta(), self.DrawFilter)
+	Ecs.update(self.MapWorld, love.timer.getDelta(), self.DrawSystemFilter)
 end
 
 return WorldManager

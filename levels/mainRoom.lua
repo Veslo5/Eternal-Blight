@@ -48,15 +48,20 @@ function mainRoom.load()
 
 -- Sandbox --------------------------------------------------
 	local entityBuilder = require("lib.world.entityBuilder")
-	local playerEntity = entityBuilder:New():MakeGridMovable():MakeDrawable()
+	local playerEntity = entityBuilder:New(mainRoom.worldManager, "Player")
+	playerEntity:MakeGridMovable()
+	playerEntity:MakeControllable(true, true)
+	playerEntity:MakeDrawable()
+
+	
 	mainRoom.worldManager:AddEntity(playerEntity)
 
 	local systemBuilder = require("lib.world.systemBuilder")
 
 	mainRoom.worldManager:AddSystem(systemBuilder.GetMoveSystem())
 	mainRoom.worldManager:AddSystem(systemBuilder.GetDrawSystem())
+	mainRoom.worldManager:AddSystem(systemBuilder.GetRoundSystem())
 	mainRoom.worldManager:EcsInit()
-
 end
 
 function mainRoom.update(dt)

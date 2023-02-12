@@ -1,3 +1,7 @@
+if arg[2] == "debug" then
+    require("lldebugger").start()
+end
+
 ---@diagnostic disable: redundant-parameter, undefined-field
 require "scene"
 
