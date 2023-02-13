@@ -1,6 +1,13 @@
 local Debug = {}
 
-Debug.IsOn = true
+--!DEBUG:
+Debug.IsOn = arg[2] == "debug"
+if Debug.IsOn then
+	print("Starting debug session!")
+	-- require("lldebugger").start()
+    Debug.lldebugger = require("lldebugger")
+	Debug.lldebugger.start()
+end
 
 --- Logs message
 function Debug:Log(messages, ...)

@@ -1,7 +1,3 @@
-if arg[2] == "debug" then
-    require("lldebugger").start()
-end
-
 ---@diagnostic disable: redundant-parameter, undefined-field
 require "scene"
 
@@ -60,6 +56,12 @@ function love.run()
 		if love.update then
 			love.update(dt)
 		end -- will pass 0 if love.timer is disabled
+
+		--!DEBUG pulling to catch new breakpoints
+		if Debug.IsOn then
+			Debug.lldebugger.pullBreakpoints()
+		end
+
 		Scene.update(dt)
 
 		if love.graphics and love.graphics.isActive() then
@@ -77,4 +79,14 @@ function love.run()
 			love.timer.sleep(0.001)
 		end
 	end
+end
+
+--!DEBUG
+local love_errorhandler = love.errhand
+function love.errorhandler(msg)
+    if Debug.lldebugger then
+        error(msg, 2)
+    else
+        return love_errorhandler(msg)
+    end
 end

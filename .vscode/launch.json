@@ -8,6 +8,7 @@
 			"type": "lua-local",
 			"request": "launch",
 			"name": "Debug",
+			"pullBreakpointsSupport": true,
 			"program": {
 				"command": "love"
 			},

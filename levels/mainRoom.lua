@@ -65,7 +65,6 @@ function mainRoom.load()
 end
 
 function mainRoom.update(dt)
-
 	if (Input:IsActionPressed("EXIT")) then
 		love.event.quit()
 	end
