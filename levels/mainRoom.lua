@@ -1,6 +1,7 @@
 local mainRoom = {}
 
 mainRoom.cameraFactory = require("lib.camera")
+mainRoom.UI = require("lib.ui.uiManager")
 mainRoom.tilemapRenderer = require("lib.tilemap.tilemapRenderer")
 mainRoom.tilemapLoader = require("lib.tilemap.tilemapLoader")
 mainRoom.worldManager = require("lib.world.worldManager")
@@ -22,6 +23,8 @@ function mainRoom.load()
 	
 	GameplayCamera = mainRoom.cameraFactory:New()
 	UiCamera = mainRoom.cameraFactory:New(100, "Fill", 1366, 768)
+
+	mainRoom.UI:Load()
 
 	local tilemaploader = mainRoom.tilemapLoader
 
@@ -69,6 +72,9 @@ function mainRoom.update(dt)
 		love.event.quit()
 	end
 
+	Tween.update(dt)
+	mainRoom.UI:Update(dt)
+
 	if (Input:IsActionDown("UP")) then
 		 GameplayCamera.VirtualY = GameplayCamera.VirtualY - dt * 500
 	end
@@ -111,6 +117,7 @@ function mainRoom.draw()
 	-- UI rendering    
 	UiCamera:BeginDraw()
 		Debug:DrawStats()
+		mainRoom.UI:Draw()
 	UiCamera:EndDraw()
 end
 
