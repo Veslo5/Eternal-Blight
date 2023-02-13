@@ -1,19 +1,18 @@
 local EntityBuilder = {}
 
-function EntityBuilder:New(worldManager, name)
+function EntityBuilder:New(name)
 	local newInstance = {}
 	setmetatable(newInstance, self)
 	self.__index = self
 
 	newInstance.Name = name or "NewEntity"
-	newInstance.WorldManager = worldManager
 	return newInstance
 end
 
-function EntityBuilder:MakeGridMovable()
+function EntityBuilder:MakeGridMovable(x,y)
 	self.IGridMovable = {
-		GridX = 0,
-		GridY = 0
+		GridX = x or 0,
+		GridY = y or 0
 	}
 
 	return self

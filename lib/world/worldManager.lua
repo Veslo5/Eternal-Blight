@@ -29,6 +29,7 @@ Ecs.add(self.MapWorld, entity)
 end
 
 function WorldManager:AddSystem(system)
+	system.WorldManager = self
 	Ecs.addSystem(self.MapWorld, system)
 	Debug:Log("Added system: " .. system.Name)
 end

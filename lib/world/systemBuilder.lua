@@ -8,7 +8,7 @@ function SystemBuilder.GetDrawSystem()
 
 	function system:process(entity, dt)
 		love.graphics.setColor(0,1,0,1)
-		love.graphics.rectangle("fill", entity.IDrawable.WorldX * 32, entity.IDrawable.WorldY * 32, 32, 32)
+		love.graphics.rectangle("fill", entity.IDrawable.WorldX, entity.IDrawable.WorldY, 32, 32)
 		love.graphics.setColor(1,1,1,1)
 	end
 	return system
@@ -20,28 +20,48 @@ function SystemBuilder.GetMoveSystem()
 	system.UpdateSystem = true
 	system.filter = Ecs.requireAll("IGridMovable", "IControllable")
 
+	function system:onAdd(entity)
+		if entity.IDrawable then
+			entity.IDrawable.WorldX =  entity.IGridMovable.GridX * 32
+			entity.IDrawable.WorldY =  entity.IGridMovable.GridY * 32
+		end
+	end
+
 	function system:process(entity, dt)
 		if(entity.IControllable.OnTurn == true and entity.IControllable.Possesed == true) then
+			local moved = false
 			if (Input:IsActionPressed("MOVE_RIGHT")) then
 				entity.IGridMovable.GridX = entity.IGridMovable.GridX + 1
-				entity.IControllable.OnTurn = false
-				entity.WorldManager:NextRound()
+				moved = true
 			end
 
-			-- if (Input:IsActionPressed("LEFT")) then
-			-- 	entity.IControllable.OnTurn = false
-			-- 	entity.WorldManager:NextRound()
-			-- end
+			if (Input:IsActionPressed("LEFT")) then
+				entity.IGridMovable.GridX = entity.IGridMovable.GridX - 1
+				moved = true
+			end
 
-			-- if (Input:IsActionPressed("UP")) then
-			-- 	entity.IControllable.OnTurn = false
-			-- 	entity.WorldManager:NextRound()
-			-- end
+			if (Input:IsActionPressed("UP")) then
+				entity.IGridMovable.GridY = entity.IGridMovable.GridY - 1
+				moved = true
+			end
 
-			-- if (Input:IsActionPressed("DOWN")) then
-			-- 	entity.IControllable.OnTurn = false
-			-- 	entity.WorldManager:NextRound()
-			-- end
+			if (Input:IsActionPressed("DOWN")) then
+				entity.IGridMovable.GridY = entity.IGridMovable.GridY+ 1
+				moved = true
+			end
+
+
+			if moved then
+				entity.IControllable.OnTurn = false
+				
+				if entity.IDrawable then
+					entity.IDrawable.WorldX =  entity.IGridMovable.GridX * 32
+					entity.IDrawable.WorldY =  entity.IGridMovable.GridY * 32
+				end
+
+				self.WorldManager:NextRound()
+			end
+
 		end
 	end
 

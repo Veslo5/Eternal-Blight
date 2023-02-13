@@ -48,8 +48,8 @@ function mainRoom.load()
 
 -- Sandbox --------------------------------------------------
 	local entityBuilder = require("lib.world.entityBuilder")
-	local playerEntity = entityBuilder:New(mainRoom.worldManager, "Player")
-	playerEntity:MakeGridMovable()
+	local playerEntity = entityBuilder:New("Player")
+	playerEntity:MakeGridMovable(1,1)
 	playerEntity:MakeControllable(true, true)
 	playerEntity:MakeDrawable()
 
