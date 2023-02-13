@@ -35,24 +35,25 @@ function SystemBuilder.GetMoveSystem()
 				moved = true
 			end
 
-			if (Input:IsActionPressed("LEFT")) then
+			if (Input:IsActionPressed("MOVE_LEFT")) then
 				entity.IGridMovable.GridX = entity.IGridMovable.GridX - 1
 				moved = true
 			end
 
-			if (Input:IsActionPressed("UP")) then
+			if (Input:IsActionPressed("MOVE_UP")) then
 				entity.IGridMovable.GridY = entity.IGridMovable.GridY - 1
 				moved = true
 			end
 
-			if (Input:IsActionPressed("DOWN")) then
+			if (Input:IsActionPressed("MOVE_DOWN")) then
 				entity.IGridMovable.GridY = entity.IGridMovable.GridY+ 1
 				moved = true
 			end
 
 
 			if moved then
-				entity.IControllable.OnTurn = false
+				--TODO: uncomment
+				--entity.IControllable.OnTurn = false
 				
 				if entity.IDrawable then
 					entity.IDrawable.WorldX =  entity.IGridMovable.GridX * 32
