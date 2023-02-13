@@ -18,6 +18,8 @@ function love.load()
 	Scene.Load(FIRST_SCENE)
 end
 
+local debugElapsed = 0
+
 -- ref https://love2d.org/wiki/love.run
 -- rewrote run function to handle love and scene functions in a "clean" way
 function love.run()
@@ -59,8 +61,15 @@ function love.run()
 
 		--!DEBUG pulling to catch new breakpoints
 		if Debug.IsOn then
-			Debug.lldebugger.pullBreakpoints()
+			--optimization with 1FPS pulling
+			--This should not be "that" slow ;)
+			debugElapsed =  debugElapsed + dt
+			if debugElapsed > 1 / 1 then
+				debugElapsed = 0
+				Debug.lldebugger.pullBreakpoints()
+			end
 		end
+		--!DEBUG
 
 		Scene.update(dt)
 
@@ -90,3 +99,4 @@ function love.errorhandler(msg)
         return love_errorhandler(msg)
     end
 end
+--!DEBUG

@@ -8,6 +8,7 @@ if Debug.IsOn then
     Debug.lldebugger = require("lldebugger")
 	Debug.lldebugger.start()
 end
+--!DEBUG
 
 --- Logs message
 function Debug:Log(messages, ...)
