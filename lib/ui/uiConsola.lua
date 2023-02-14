@@ -38,7 +38,7 @@ function Consola:Draw()
 	love.graphics.setColor(1, 1, 1)
 
 	for index, text in ipairs(self.Texts) do
-		local textY = self.Height - (self.TextSpacing * index)
+		local textY = self.ScreenY + self.Height - (self.TextSpacing * index)
 		love.graphics.print(text,self.ScreenX, textY)
 	end
 end
