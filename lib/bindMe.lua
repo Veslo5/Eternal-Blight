@@ -6,6 +6,8 @@ BindMe.actionHolder = {}
 BindMe.pressedKeys = {}
 BindMe.firstPressedKeys = {}
 
+BindMe.PauseInput = false
+
 --- Bind action into system
 -- @param actionName binded action name
 function BindMe:Bind(actionName, ...)
@@ -21,6 +23,10 @@ function BindMe:IsActionDown(actionName)
 	-- if (self.actionHolder == nil) then
 	--     return false
 	-- end
+
+	if self.PauseInput then
+		return false
+	end
 
 	-- looping through current pressed keys and actions
 	for actionKey, actionValue in pairs(self.actionHolder[actionName]) do
@@ -41,8 +47,11 @@ function BindMe:IsActionPressed(actionName)
 	--     return false
 	-- end
 
-	-- looping through current pressed keys and actions
+		if self.PauseInput then
+			return false
+		end
 
+	-- looping through current pressed keys and actions
 	for actionKey, actionValue in pairs(self.actionHolder[actionName]) do
 		for pressedKey, pressedKeyValue in pairs(self.firstPressedKeys) do
 			if (actionValue == pressedKey) then
@@ -62,6 +71,11 @@ end
 --- Check if action is up
 -- @param actionName name of binded action
 function BindMe:IsActionUp(actionName)
+
+	if self.PauseInput then
+		return false
+	end
+
 	if (not self:IsActionDown(actionName)) then
 		return true
 	end

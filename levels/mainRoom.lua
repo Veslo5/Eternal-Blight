@@ -139,11 +139,11 @@ function mainRoom.mousereleased(x, y, button, istouch, presses)
 end
 
 function mainRoom.resize(width, height)
-mainRoom.UI:Resize(width,height)
+	mainRoom.UI:Resize(width,height)
 end
 
 function mainRoom.textinput(text)
-	print(text)
+--	mainRoom.UI:TextInput()
 end
 
 function mainRoom.unload()
