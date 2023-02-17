@@ -1,5 +1,6 @@
 local Consola = {}
 
+Consola.ReceiveInput = false
 Consola.ScreenX = 0
 Consola.ScreenY = 0
 
@@ -8,11 +9,9 @@ Consola.Height = 0
 
 Consola.TextSpacing = 15
 
-Consola.TextboxHeight = 30
-
 Consola.Texts = {}
 
-function Consola:New(x,y,width,height)
+function Consola:New(x, y, width, height)
 	local newInstance = {}
 	setmetatable(newInstance, self)
 	self.__index = self
@@ -22,6 +21,8 @@ function Consola:New(x,y,width,height)
 	newInstance.Width = width
 	newInstance.Height = height
 
+	Observer.observe(CONST_OBSERVE_UI_DRAW, function() newInstance:Draw() end)
+
 	return newInstance
 end
 
@@ -29,20 +30,17 @@ function Consola:AddText(text)
 	table.insert(self.Texts, 1, text)
 end
 
-function Consola:Update()
-
-end
-
 function Consola:Draw()
 	--Black rectangle
-	love.graphics.setColor(0.1, 0.1, 0.1 , 0.5)
-	love.graphics.rectangle("fill", self.ScreenX, self.ScreenY, self.Width, self.Height - self.TextboxHeight - 1)
-	love.graphics.rectangle("fill", self.ScreenX, self.ScreenY + self.Height - self.TextboxHeight, self.Width, self.TextboxHeight)
+	print("CON")
+
+	love.graphics.setColor(0.1, 0.1, 0.1, 0.5)
+	love.graphics.rectangle("fill", self.ScreenX, self.ScreenY, self.Width, self.Height)
 	love.graphics.setColor(1, 1, 1)
 
 	for index, text in ipairs(self.Texts) do
 		local textY = self.ScreenY + self.Height - (self.TextSpacing * index)
-		love.graphics.print(text,self.ScreenX, textY)
+		love.graphics.print(text, self.ScreenX, textY)
 	end
 end
 

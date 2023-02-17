@@ -25,7 +25,7 @@ function WorldManager:EcsInit()
 end
 
 function WorldManager:AddEntity(entity)
-Ecs.add(self.MapWorld, entity)
+	Ecs.add(self.MapWorld, entity)
 end
 
 function WorldManager:AddSystem(system)

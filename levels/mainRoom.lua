@@ -7,19 +7,19 @@ mainRoom.tilemapLoader = require("lib.tilemap.tilemapLoader")
 mainRoom.worldManager = require("lib.world.worldManager")
 
 function mainRoom.load()
-	Input:Bind("EXIT", "escape")
+	Input:Bind("EXIT",{"escape"}, false)
 
-	Input:Bind("UP", "w")
-	Input:Bind("DOWN", "s")
-	Input:Bind("LEFT", "a")
-	Input:Bind("RIGHT", "d")   
+	Input:Bind("UP", {"w"})
+	Input:Bind("DOWN", {"s"})
+	Input:Bind("LEFT", {"a"})
+	Input:Bind("RIGHT", {"d"})   
 	
-	Input:Bind("MOVE_RIGHT", "right")   
-	Input:Bind("MOVE_LEFT", "left")   
-	Input:Bind("MOVE_UP", "up")   
-	Input:Bind("MOVE_DOWN", "down")
+	Input:Bind("MOVE_RIGHT",  {"right"})   
+	Input:Bind("MOVE_LEFT",  {"left"})   
+	Input:Bind("MOVE_UP", {"up"})   
+	Input:Bind("MOVE_DOWN",  {"down"})
 	
-	Input:Bind("DEBUG_WALLS", ";")
+	Input:Bind("DEBUG_WALLS", {";"})
 	
 	GameplayCamera = mainRoom.cameraFactory:New()
 	UiCamera = mainRoom.cameraFactory:New(100, "Fill", 1366, 768)
@@ -124,6 +124,7 @@ end
 --#####CALLBACKS######
 function mainRoom.keypressed(key, scancode, isrepeat)
 	Input:KeyPressed(key, scancode, isrepeat)
+	mainRoom.UI:KeyPressed(key)
 end
 
 function mainRoom.keyreleased(key, scancode)
@@ -143,7 +144,7 @@ function mainRoom.resize(width, height)
 end
 
 function mainRoom.textinput(text)
---	mainRoom.UI:TextInput()
+	mainRoom.UI:TextInput(text)
 end
 
 function mainRoom.unload()

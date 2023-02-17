@@ -5,26 +5,31 @@ local BindMe = {}
 BindMe.actionHolder = {}
 BindMe.pressedKeys = {}
 BindMe.firstPressedKeys = {}
+BindMe.pausableActions = {}
 
-BindMe.PauseInput = false
+BindMe.PauseInput = true
 
 --- Bind action into system
--- @param actionName binded action name
-function BindMe:Bind(actionName, ...)
-	local args = { ... }
+--- @param actionName string binded action name
+--- @param inputKeys string[] table with keyboard keys
+--- @param pausable? boolean  if action will work even input is disabled
+function BindMe:Bind(actionName, inputKeys, pausable)
+	pausable = pausable ~= false
 	if (self.actionHolder[actionName] == nil) then
-		self.actionHolder[actionName] = args
+		self.actionHolder[actionName] = inputKeys
 	end
+
+	self.pausableActions[actionName] = pausable
 end
 
 --- Check if action is down
--- @param actionName name of binded action
+--- @param actionName string #name of binded action
 function BindMe:IsActionDown(actionName)
 	-- if (self.actionHolder == nil) then
 	--     return false
 	-- end
 
-	if self.PauseInput then
+	if self.PauseInput and self.pausableActions[actionName] == true then
 		return false
 	end
 
@@ -41,15 +46,15 @@ function BindMe:IsActionDown(actionName)
 end
 
 --- Check if action was pressed once
--- @param actionName name of binded action
+--- @param actionName string #name of binded action
 function BindMe:IsActionPressed(actionName)
 	-- if (self.actionHolder == nil) then
 	--     return false
 	-- end
 
-		if self.PauseInput then
-			return false
-		end
+	if self.PauseInput and self.pausableActions[actionName] == true then
+		return false
+	end
 
 	-- looping through current pressed keys and actions
 	for actionKey, actionValue in pairs(self.actionHolder[actionName]) do
@@ -69,10 +74,9 @@ function BindMe:IsActionPressed(actionName)
 end
 
 --- Check if action is up
--- @param actionName name of binded action
+--- @param actionName string #name of binded action
 function BindMe:IsActionUp(actionName)
-
-	if self.PauseInput then
+	if self.PauseInput and self.pausableActions[actionName] == true then
 		return false
 	end
 
