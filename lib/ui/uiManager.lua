@@ -15,28 +15,27 @@ function UIManager:Load()
 
 	local consola = consolaFactory:New(0, 0, 500, 250)
 	self:Align(consola, "left", "bottom", 0, 0)
-	
+
 	consola:AddText("First one")
 	consola:AddText("Second one...................................")
 	consola:AddText("Third one")
 	consola:AddText("Fourth one")
-	
-	local consolaTextBox = textBoxFactory:New(0,0,500,30,true)
+
+	local consolaTextBox = textBoxFactory:New(0, 0, 500, 30, true)
 	self:Align(consolaTextBox, "left", "bottom")
-	
+
 	table.insert(self.ContainerHolder, consola)
 	table.insert(self.ContainerHolder, consolaTextBox)
 end
 
-
 ---@alias alignHorizontal
----| '"left"' 
----| '"center"' 
----| '"right"' 
+---| '"left"'
+---| '"center"'
+---| '"right"'
 ---@alias alignVertical
----| '"top"' 
----| '"center"' 
----| '"bottom"' 
+---| '"top"'
+---| '"center"'
+---| '"bottom"'
 
 
 --- Aligns element
@@ -67,20 +66,19 @@ end
 
 --TODO: TEXT INPUT
 function UIManager:Update(dt)
-	Observer.trigger(CONST_OBSERVE_UI_UPDATE, dt)
+	Observer:Trigger(CONST_OBSERVE_UI_UPDATE, { dt })
 end
 
 function UIManager:Draw()
-	Observer.trigger(CONST_OBSERVE_UI_DRAW)
+	Observer:Trigger(CONST_OBSERVE_UI_DRAW)
 end
 
-
 function UIManager:KeyPressed(key)
-	Observer.trigger(CONST_OBSERVE_UI_KEYPRESS,key)
+	Observer:Trigger(CONST_OBSERVE_UI_KEYPRESS, { key })
 end
 
 function UIManager:TextInput(text)
-	Observer.trigger(CONST_OBSERVE_UI_TEXTINPUT,text)
+	Observer:Trigger(CONST_OBSERVE_UI_TEXTINPUT, { text })
 end
 
 function UIManager:Resize(width, height)

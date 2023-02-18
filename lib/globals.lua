@@ -4,7 +4,7 @@ Debug = require ("lib.debug.log")
 Ecs = require("lib.world.tiny")
 Input = require("lib.bindMe")
 Tween = require("lib.flux")
-Observer = require("lib.beholder")
+Observer = require("lib.observer")
 
 CONST_OBSERVE_UI_UPDATE = "UI_UPDATE"
 CONST_OBSERVE_UI_DRAW = "UI_DRAW"
