@@ -9,12 +9,14 @@ UIManager.ContainerHolder = {}
 function UIManager:Load()
 	self.WindowWidth = love.graphics.getWidth()
 	self.WindowHeight = love.graphics.getHeight()
+	
+	love.keyboard.setKeyRepeat(true)
 
 	local consolaFactory = require("lib.ui.uiConsola")
 	local textBoxFactory = require("lib.ui.uiTextbox")
 
 	local consola = consolaFactory:New(0, 0, 500, 250)
-	self:Align(consola, "left", "bottom", 0, 0)
+	self:Align(consola, "left", "bottom", 0, -31)
 
 	consola:AddText("First one")
 	consola:AddText("Second one...................................")
@@ -80,6 +82,7 @@ end
 function UIManager:TextInput(text)
 	Observer:Trigger(CONST_OBSERVE_UI_TEXTINPUT, { text })
 end
+
 
 function UIManager:Resize(width, height)
 	self.WindowWidth = width

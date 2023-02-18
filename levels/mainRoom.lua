@@ -7,7 +7,7 @@ mainRoom.tilemapLoader = require("lib.tilemap.tilemapLoader")
 mainRoom.worldManager = require("lib.world.worldManager")
 
 function mainRoom.load()
-	Input:Bind("EXIT",{"escape"}, false)
+	Input:Bind(CONST_INPUT_EXIT,{"escape"}, false)
 
 	Input:Bind("UP", {"w"})
 	Input:Bind("DOWN", {"s"})
