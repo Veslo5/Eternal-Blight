@@ -8,6 +8,7 @@ mainRoom.worldManager = require("lib.world.worldManager")
 
 function mainRoom.load()
 	Input:Bind(CONST_INPUT_EXIT,{"escape"}, false)
+	Input:Bind("CONSOLE", {";"}, false)
 
 	Input:Bind("UP", {"w"})
 	Input:Bind("DOWN", {"s"})
@@ -19,7 +20,7 @@ function mainRoom.load()
 	Input:Bind("MOVE_UP", {"up"})   
 	Input:Bind("MOVE_DOWN",  {"down"})
 	
-	Input:Bind("DEBUG_WALLS", {";"})
+	Input:Bind("DEBUG_WALLS", {"p"})
 	
 	GameplayCamera = mainRoom.cameraFactory:New()
 	UiCamera = mainRoom.cameraFactory:New(100, "Fill", 1366, 768)
@@ -95,6 +96,12 @@ function mainRoom.update(dt)
 		mainRoom.tilemapRenderer:ToggleLayerVisibility("Data")
 	end 
 
+	if (Input:IsActionPressed("CONSOLE")) then
+	local textbox = mainRoom.UI:GetWidget(CONST_WIDGET_UI_TEXTBOX)
+	local currentFocus = textbox:GetFocus()
+	textbox:SetFocus(IIF(currentFocus == true, false, true))
+	end 
+
 	mainRoom.worldManager:Update(dt)
 	-- if (mainRoom.input:IsActionDown("ZOOM")) then
 	--     GameplayCamera.Zoom = GameplayCamera.Zoom + dt 
@@ -140,6 +147,8 @@ function mainRoom.mousereleased(x, y, button, istouch, presses)
 end
 
 function mainRoom.resize(width, height)
+	GameplayCamera:Resize(width,height)
+	UiCamera:Resize(width,height)
 	mainRoom.UI:Resize(width,height)
 end
 

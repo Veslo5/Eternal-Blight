@@ -1,7 +1,6 @@
 local Textbox        = {}
 
-Textbox.ReceiveInput = true
-Textbox.Enabled      = false
+Textbox.Focused = false
 Textbox.ScreenX      = 0
 Textbox.ScreenY      = 0
 Textbox.Width        = 0
@@ -14,16 +13,16 @@ Textbox.Defaultfont = love.graphics.getFont()
 
 Textbox.pastePressed = false
 
-function Textbox:New(x, y, width, height, enabled)
+function Textbox:New(name, x, y, width, height)
 	local newInstance = {}
 	setmetatable(newInstance, self)
 	self.__index = self
 
+	newInstance.Name = name
 	newInstance.ScreenX = x
 	newInstance.ScreenY = y
 	newInstance.Width = width
-	newInstance.Height = height
-	newInstance.Enabled = enabled ~= false
+	newInstance.Height = height	
 
 	Observer:Observe(CONST_OBSERVE_UI_DRAW, function() newInstance:Draw() end)
 	Observer:Observe(CONST_OBSERVE_UI_TEXTINPUT, function(text) newInstance:TextInput(text) end)
@@ -31,6 +30,20 @@ function Textbox:New(x, y, width, height, enabled)
 	Observer:Observe(CONST_OBSERVE_UI_UPDATE, function (dt) newInstance:Update(dt) end )
 
 	return newInstance
+end
+
+function Textbox:SetFocus(focus)
+	self.Focused = focus
+	Input.PauseInput =  focus
+	love.keyboard.setTextInput(focus)
+	love.keyboard.setKeyRepeat(focus)
+
+	self.Text = ""
+	self.CursorX = 0
+end
+
+function Textbox:GetFocus()
+	return self.Focused
 end
 
 
@@ -48,6 +61,10 @@ function Textbox:Update(dt)
 end
 
 function Textbox:KeyPress(key)
+	if self.Focused == false then
+		return
+	end
+	
 	--Removing keys
 	if key == "backspace" then
 		local byteoffset = Utf8.offset(self.Text, -1)
@@ -71,11 +88,9 @@ function Textbox:KeyPress(key)
 	end
 end
 
-function Textbox:TextInput(text)
-	if self.Enabled then
+function Textbox:TextInput(text)	
 		self.Text = self.Text .. text
-		self.CursorX = self.Defaultfont:getWidth(self.Text)
-	end
+		self.CursorX = self.Defaultfont:getWidth(self.Text)	
 end
 
 function Textbox:Draw()
@@ -85,7 +100,9 @@ function Textbox:Draw()
 	love.graphics.setColor(1, 1, 1)
 
 	--Cursor
-	love.graphics.rectangle("fill", self.ScreenX + self.CursorX, self.ScreenY + self.Height - 5, 5, 2)
+	if self.Focused then
+		love.graphics.rectangle("fill", self.ScreenX + self.CursorX, self.ScreenY + self.Height - 5, 5, 2)
+	end
 
 	--Text
 	love.graphics.print(self.Text, self.ScreenX, self.ScreenY + 10)

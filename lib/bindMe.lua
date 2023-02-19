@@ -7,7 +7,7 @@ BindMe.pressedKeys = {}
 BindMe.firstPressedKeys = {}
 BindMe.pausableActions = {}
 
-BindMe.PauseInput = true
+BindMe.PauseInput = false
 
 --- Bind action into system
 --- @param actionName string binded action name
