@@ -6,6 +6,7 @@ Input = require("lib.bindMe")
 Tween = require("lib.flux")
 Observer = require("lib.observer")
 Utf8 = require("utf8")
+Filesystem = require("lib.io.filesystem")
 
 CONST_WIDGET_UI_CONSOLA = "UI_WIDGET_CONSOLA"
 CONST_WIDGET_UI_TEXTBOX = "UI_WIDGET_TEXTBOX"

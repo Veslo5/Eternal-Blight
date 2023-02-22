@@ -66,6 +66,8 @@ function mainRoom.load()
 	mainRoom.worldManager:AddSystem(systemBuilder.GetDrawSystem())
 	mainRoom.worldManager:AddSystem(systemBuilder.GetRoundSystem())
 	mainRoom.worldManager:EcsInit()
+
+	local mob = Filesystem:LoadMob("snake")
 end
 
 function mainRoom.update(dt)
