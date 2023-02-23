@@ -1,9 +1,8 @@
 ---@diagnostic disable: redundant-parameter, undefined-field
 require "scene"
 
-local FIRST_SCENE = "mainRoom"
-
 function love.load()
+	--Loading global modules
 	require("lib.globals")
 
 	local limits = love.graphics.getSystemLimits()
@@ -15,7 +14,7 @@ function love.load()
 	Debug:Log("")
 	
 
-	Scene.Load(FIRST_SCENE)
+	Scene.Load(CONST_FIRST_SCENE)
 end
 
 local debugElapsed = 0
@@ -46,6 +45,18 @@ function love.run()
 					end
 				end
 				love.handlers[name](a, b, c, d, e, f)
+				print(name)
+				
+				if name == "mousereleased" then
+					Input:MouseReleased(a,b,c,d,e)
+				elseif name == "mousepressed" then
+					Input:MousePressed(a,b,c,d,e)
+				elseif name == "keyreleased" then
+					Input:KeyRelease(a,b)
+				elseif name == "keypressed" then
+					Input:KeyPressed(a,b,c)
+				end
+				
 				Scene[name](a, b, c, d, e, f) -- handle scene event, if any
 			end
 		end

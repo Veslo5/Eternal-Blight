@@ -1,5 +1,10 @@
 local Globals = {}
 
+local cameraFactory = require("lib.camera")
+
+MainCamera = cameraFactory:New()
+UICamera = cameraFactory:New(100, "Fill", 1366, 768)
+
 Debug = require ("lib.debug.log")
 Ecs = require("lib.world.tiny")
 Input = require("lib.bindMe")
@@ -7,6 +12,8 @@ Tween = require("lib.flux")
 Observer = require("lib.observer")
 Utf8 = require("utf8")
 Filesystem = require("lib.io.filesystem")
+
+CONST_FIRST_SCENE = "debugMenu"
 
 CONST_WIDGET_UI_CONSOLA = "UI_WIDGET_CONSOLA"
 CONST_WIDGET_UI_TEXTBOX = "UI_WIDGET_TEXTBOX"

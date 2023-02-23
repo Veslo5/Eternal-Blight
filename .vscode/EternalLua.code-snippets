@@ -24,5 +24,26 @@
 			"return ${1:Name}"
 		],
 		"description": "New lua module"
+	},
+	"scene": {
+		"scope": "lua",
+		"prefix": "scene",
+		"body":[
+			"local ${1:Name} = {}",
+			"",
+			"function ${1:Name}.load()\n\nend\n",
+			"function ${1:Name}.update(dt) \n\nend\n",
+			"function ${1:Name}.draw()\n\nend\n",
+			"function ${1:Name}.keypressed(key, scancode, isrepeat)\n\nend\n",
+			"function ${1:Name}.keyreleased(key, scancode)\n\nend\n",
+			"function ${1:Name}.mousepressed(x, y, button, istouch, presses)\n\nend\n",
+			"function ${1:Name}.mousereleased(x, y, button, istouch, presses)\n\nend\n",
+			"function ${1:Name}.resize(width, height)\n\nend\n",
+			"function ${1:Name}.textinput(text)\n\nend\n",
+			"function ${1:Name}.unload()\n\nend",
+			"",
+			"return ${1:Name}"
+		],
+		"description": "New scene"
 	}
 }

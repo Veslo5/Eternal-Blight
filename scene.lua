@@ -1,4 +1,4 @@
-local scenesFolder = "levels"
+local scenesFolder = "scenes"
 
 -- Scene is Global object
 Scene = {}
