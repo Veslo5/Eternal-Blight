@@ -32,9 +32,6 @@ function DebugMenu.resize(width, height)
 
 end
 
-function DebugMenu.textinput(text)
-
-end
 
 function DebugMenu.unload()
 

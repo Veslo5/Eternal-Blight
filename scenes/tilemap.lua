@@ -64,7 +64,7 @@ function Tilemap.load()
 	Tilemap.worldManager:EcsInit()
 
 	local mob = Filesystem:LoadMob("snake")
-	print(Debug.Dump(mob))
+	
 end
 
 function Tilemap.update(dt)
