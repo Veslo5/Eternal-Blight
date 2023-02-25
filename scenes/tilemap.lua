@@ -64,6 +64,7 @@ function Tilemap.load()
 	Tilemap.worldManager:EcsInit()
 
 	local mob = Filesystem:LoadMob("snake")
+	print(Debug.Dump(mob))
 end
 
 function Tilemap.update(dt)
@@ -71,7 +72,6 @@ function Tilemap.update(dt)
 		love.event.quit()
 	end
 
-	Tween.update(dt)
 	Tilemap.UI:Update(dt)
 
 	if (Input:IsActionDown("UP")) then

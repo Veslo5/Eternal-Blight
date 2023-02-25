@@ -11,7 +11,7 @@ function FileSystem.LoadItem(name)
 end
 
 function FileSystem:LoadMob(name)
-	local mob = self._loadTableSafe(self.Path .. self.Mob .. name .. self.Extension)
+	return self._loadTableSafe(self.Path .. self.Mob .. name .. self.Extension)
 end	
 
 

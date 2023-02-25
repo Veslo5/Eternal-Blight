@@ -45,7 +45,6 @@ function love.run()
 					end
 				end
 				love.handlers[name](a, b, c, d, e, f)
-				print(name)
 				
 				if name == "mousereleased" then
 					Input:MouseReleased(a,b,c,d,e)
@@ -82,6 +81,7 @@ function love.run()
 		end
 		--!DEBUG
 
+		Tween.update(dt)
 		Scene.update(dt)
 
 		if love.graphics and love.graphics.isActive() then

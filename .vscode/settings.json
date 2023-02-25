@@ -1,6 +1,6 @@
 //Extensions: Love2D Support, indent-rainbow, Lua(sumneko), Lua(Tencent)
 {
-    "Lua.runtime.version": "Lua 5.4",
+    "Lua.runtime.version": "LuaJIT",
     "Lua.workspace.library": [
         "${3rd}/love2d/library"
     ],
