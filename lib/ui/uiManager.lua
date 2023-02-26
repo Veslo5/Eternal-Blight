@@ -14,18 +14,29 @@ function UIManager:Load()
 	love.keyboard.setTextInput(false)
 	love.keyboard.setKeyRepeat(false)
 
-	local consola = self.consolaFactory:New(CONST_WIDGET_UI_CONSOLA,0, 0, 500, 250)
-	self:Align(consola, "left", "bottom", 0, -31)
-
-	local consolaTextBox = self.textBoxFactory:New(CONST_WIDGET_UI_TEXTBOX,0, 0, 500, 30)
-	self:Align(consolaTextBox, "left", "bottom")
-
-	self.ContainerHolder[consola.Name] = consola
-	self.ContainerHolder[consolaTextBox.Name] = consolaTextBox
 end
 
 function UIManager:GetWidget(widgetName)
 	return self.ContainerHolder[widgetName]
+end
+
+
+function UIManager:AddConsola(name)
+	local consola = self.consolaFactory:New(name ,0, 0, 500, 250)
+	self:Align(consola, "left", "bottom", 0, -31)
+
+	self.ContainerHolder[consola.Name] = consola	
+end
+
+function UIManager:AddTextBox(name)
+	local textbox = self.textBoxFactory:New(name,0, 0, 500, 30)
+	self:Align(textbox, "left", "bottom")
+
+	self.ContainerHolder[textbox.Name] = textbox
+end
+
+function UIManager:AddImage()
+	-- TODO: Add image
 end
 
 
