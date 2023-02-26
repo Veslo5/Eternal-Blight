@@ -20,7 +20,7 @@ Settings = require("lib.settings")
 
 --Global constants
 CONST_FIRST_SCENE = "splashScreen"
-CONST_SECOND_SCENE = "debugMenu"
+CONST_SECOND_SCENE = "tilemap"
 
 -- UI constants
 CONST_WIDGET_UI_CONSOLA = "UI_WIDGET_CONSOLA"

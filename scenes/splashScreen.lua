@@ -9,6 +9,7 @@ splashScreen.LoadedResources = nil
 splashScreen.Loaded = false
 
 function splashScreen.load()
+	Settings.LoadSettings()
 	Settings.LoadBindings()
 	splashScreen.Loader:NewImage("VES", "resources/logo/ves.png")
 	splashScreen.Loader:NewImage("LOVE", "resources/logo/love.png")
@@ -30,7 +31,7 @@ function splashScreen.update(dt)
 	if (not splashScreen.Loaded) then
 		return
 	end
-	
+
 	if Input:IsActionPressed(CONST_INPUT_EXIT) then
 		love.event.quit()
 	end
