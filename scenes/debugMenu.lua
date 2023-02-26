@@ -9,7 +9,7 @@ function DebugMenu.update(dt)
 end
 
 function DebugMenu.draw()
-
+love.graphics.print("DebugMenu", 0,0)
 end
 
 function DebugMenu.keypressed(key, scancode, isrepeat)

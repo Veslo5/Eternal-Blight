@@ -13,8 +13,10 @@ Input = require("lib.bindMe")
 Observer = require("lib.observer")
 Utf8 = require("utf8")
 Filesystem = require("lib.io.filesystem")
+ResourceLoader = require("lib.loader")
 
 CONST_FIRST_SCENE = "loadingScreen"
+CONST_SECOND_SCENE = "debugMenu"
 
 CONST_WIDGET_UI_CONSOLA = "UI_WIDGET_CONSOLA"
 CONST_WIDGET_UI_TEXTBOX = "UI_WIDGET_TEXTBOX"

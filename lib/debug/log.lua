@@ -4,9 +4,7 @@ Debug.Serpent = require("lib.external.serpent")
 
 --!DEBUG:
 Debug.IsOn = arg[2] == "debug"
-if Debug.IsOn then
-	print("Starting debug session!")
-	-- require("lldebugger").start()
+if Debug.IsOn then		
     Debug.lldebugger = require("lldebugger")
 	Debug.lldebugger.start()
 end
