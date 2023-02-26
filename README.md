@@ -7,6 +7,9 @@ Roguelike written in lua
 ## Libraries:
 - Animation [https://github.com/kikito/anim8]
 - Tween [https://github.com/rxi/flux]
+- Serpent [https://github.com/pkulchenko/serpent]
+- Hump.Timer [https://github.com/vrld/hump]
+- Tiny [https://github.com/bakpakin/tiny-ecs]
 
 ## Tools:
 - Visual Studio Code [https://code.visualstudio.com/]
