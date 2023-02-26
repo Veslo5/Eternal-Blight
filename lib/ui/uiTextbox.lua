@@ -10,8 +10,15 @@ Textbox.Text         = ""
 
 Textbox.CursorX      = 0
 Textbox.Defaultfont = love.graphics.getFont()
+Debug:Log("[UI] Caution love.graphics.getFont() loads one Image into GPU!")
 
 Textbox.pastePressed = false
+
+Textbox.NodeDrawID = nil
+Textbox.NodeTextInputID = nil
+Textbox.NodeKeypressID = nil
+Textbox.NodeUpdateID = nil
+
 
 function Textbox:New(name, x, y, width, height)
 	local newInstance = {}
@@ -24,10 +31,10 @@ function Textbox:New(name, x, y, width, height)
 	newInstance.Width = width
 	newInstance.Height = height	
 
-	Observer:Observe(CONST_OBSERVE_UI_DRAW, function() newInstance:Draw() end)
-	Observer:Observe(CONST_OBSERVE_UI_TEXTINPUT, function(text) newInstance:TextInput(text) end)
-	Observer:Observe(CONST_OBSERVE_UI_KEYPRESS, function(key) newInstance:KeyPress(key) end)
-	Observer:Observe(CONST_OBSERVE_UI_UPDATE, function (dt) newInstance:Update(dt) end )
+	newInstance.NodeDrawID = Observer:Observe(CONST_OBSERVE_UI_DRAW, function() newInstance:Draw() end)
+	newInstance.NodeTextInputID =  Observer:Observe(CONST_OBSERVE_UI_TEXTINPUT, function(text) newInstance:TextInput(text) end)
+	newInstance.NodeKeypressID = Observer:Observe(CONST_OBSERVE_UI_KEYPRESS, function(key) newInstance:KeyPress(key) end)
+	newInstance.NodeUpdateID = Observer:Observe(CONST_OBSERVE_UI_UPDATE, function (dt) newInstance:Update(dt) end )
 
 	return newInstance
 end
@@ -106,6 +113,15 @@ function Textbox:Draw()
 
 	--Text
 	love.graphics.print(self.Text, self.ScreenX, self.ScreenY + 10)
+end
+
+function Textbox:Unload()
+	Observer:StopObserving(CONST_OBSERVE_UI_DRAW, self.NodeDrawID)
+	Observer:StopObserving(CONST_OBSERVE_UI_TEXTINPUT, self.NodeTextInputID)
+	Observer:StopObserving(CONST_OBSERVE_UI_KEYPRESS, self.NodeKeypressID)
+	Observer:StopObserving(CONST_OBSERVE_UI_UPDATE, self.NodeUpdateID)
+	Debug:Log("[UI] Unloaded UI Textbox " .. self.Name)
+
 end
 
 return Textbox

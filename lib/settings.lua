@@ -1,7 +1,7 @@
 local Settings = {}
 
 function Settings.LoadBindings()
-	Debug:Log("Loading keybindings")
+	Debug:Log("[SETTINGS] Loading keybindings")
 
 	local keybinding = {
 		{ ActionName = "LEFT",    Keys = { "a", "left" },  Pausable = true },
@@ -34,7 +34,7 @@ function Settings.LoadBindings()
 end
 
 function Settings.LoadSettings()
-	Debug:Log("Loading settings")
+	Debug:Log("[SETTINGS] Loading settings")
 	local settings = {
 		Vsync = 0,
 		FullScreen = true,

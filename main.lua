@@ -7,9 +7,9 @@ function love.load()
 
 	local limits = love.graphics.getSystemLimits()
 	local name, version, vendor, device = love.graphics.getRendererInfo()	
-	Debug:Log("HW Render backend: " .. name .. " " .. version)
-	Debug:Log("HW GPU and GPU vendor: " .. vendor .. " " .. device)
-	Debug:Log("HW Limit max texture size(px): " .. limits.texturesize)	
+	Debug:Log("[CORE] HW Render backend: " .. name .. " " .. version)
+	Debug:Log("[CORE] HW GPU and GPU vendor: " .. vendor .. " " .. device)
+	Debug:Log("[CORE] HW Limit max texture size(px): " .. limits.texturesize)	
 	
 
 	Scene.Load(CONST_FIRST_SCENE)

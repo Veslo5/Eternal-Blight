@@ -22,8 +22,8 @@ function Tilemap.load()
 		Input:Bind("DEBUG_WALLS", {"p"})
 	
 	Tilemap.UI:Load()
-	Tilemap.UI:AddConsola(CONST_WIDGET_UI_CONSOLA)
-	Tilemap.UI:AddTextBox(CONST_WIDGET_UI_TEXTBOX)
+	Tilemap.UI:AddConsola(CONST_WIDGET_UI_CONSOLA, 0,0,500,250, "left", "bottom")
+	Tilemap.UI:AddTextBox(CONST_WIDGET_UI_TEXTBOX, 0,0,500,30, "left", "bottom")
 
 	local tilemaploader = Tilemap.tilemapLoader
 

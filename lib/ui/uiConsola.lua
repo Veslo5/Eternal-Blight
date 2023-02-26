@@ -10,6 +10,9 @@ Consola.TextSpacing = 15
 
 Consola.Texts = {}
 
+Consola.NodeDrawID = nil
+Consola.NodeAddConsoleTextID = nil
+
 function Consola:New(name, x, y, width, height)
 	local newInstance = {}
 	setmetatable(newInstance, self)
@@ -21,8 +24,8 @@ function Consola:New(name, x, y, width, height)
 	newInstance.Width = width
 	newInstance.Height = height
 
-	Observer:Observe(CONST_OBSERVE_UI_DRAW, function() newInstance:Draw() end)
-	Observer:Observe(CONST_OBSERVE_UI_ADD_CONSOLE_TEXT, function(text) newInstance:AddText(text) end)
+	newInstance.NodeDrawID = Observer:Observe(CONST_OBSERVE_UI_DRAW, function() newInstance:Draw() end)
+	newInstance.NodeAddConsoleTextID = Observer:Observe(CONST_OBSERVE_UI_ADD_CONSOLE_TEXT, function(text) newInstance:AddText(text) end)
 
 	return newInstance
 end
@@ -45,6 +48,13 @@ function Consola:Draw()
 	end
 
 	love.graphics.setScissor()
+end
+
+function Consola:Unload()
+	Observer:StopObserving(CONST_OBSERVE_UI_DRAW, self.NodeDrawID)
+	Observer:StopObserving(CONST_OBSERVE_UI_ADD_CONSOLE_TEXT, self.NodeAddConsoleTextID)
+	Debug:Log("[UI] Unloaded UI Consola " .. self.Name)
+
 end
 
 return Consola

@@ -46,7 +46,7 @@ end
 function Loader:LoadAsync(finishCallback)
 	self.FinishCallback = finishCallback or nil
 
-	Debug:Log("Starting new thread " .. self.ID)
+	Debug:Log("[LOADER] Starting new thread " .. self.ID)
 	self.Thread = love.thread.newThread(self.ThreadCode)
 	self.Thread:start(self.ThreadContainer, self.ID)
 	self.ThreadStarted = true
@@ -95,7 +95,7 @@ function Loader:Update(dt)
 		self.IsDone = true
 		self.ThreadStarted = false
 		if self.FinishCallback then self.FinishCallback(dataContainer) end
-		Debug:Log("Thread ended " .. self.ID)
+		Debug:Log("[LOADER] Thread ended " .. self.ID)
 	end
 end
 

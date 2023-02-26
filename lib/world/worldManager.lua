@@ -31,7 +31,7 @@ end
 function WorldManager:AddSystem(system)
 	system.WorldManager = self
 	Ecs.addSystem(self.MapWorld, system)
-	Debug:Log("Added system: " .. system.Name)
+	Debug:Log("[GAMEPLAY] Added system: " .. system.Name)
 end
 
 function WorldManager:SetupMapData(sizeX, sizeY, tileWidth, tileheight)
@@ -48,7 +48,7 @@ function WorldManager:SetupMapData(sizeX, sizeY, tileWidth, tileheight)
 		end
 	end
 
-	Debug:Log("Initialized map data with: " .. self.GridWidth * self.GridHeight .. " tiles")
+	Debug:Log("[GAMEPLAY] Initialized map data with: " .. self.GridWidth * self.GridHeight .. " tiles")
 end
 
 function WorldManager:SetupWalls(dataTiles)

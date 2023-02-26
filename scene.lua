@@ -16,26 +16,26 @@ function Scene.Load(name)
 	Scene.LastSceneName = name
 	local stringBuilder = {}
 
-	table.insert(stringBuilder, "\nLoading " .. Scene.LastSceneName)
+	table.insert(stringBuilder, "\n[CORE] Loading " .. Scene.LastSceneName)
 	
 	if CurrentScene then
 
 		local stats = love.graphics.getStats()				
-		table.insert(stringBuilder, "drawcalls: " .. stats.drawcalls)
-		table.insert(stringBuilder, "canvasswitches: " .. stats.canvasswitches)
-		table.insert(stringBuilder, "texturememory: " .. stats.texturememory / 1000000 .. " MB")
-		table.insert(stringBuilder, "images: " .. stats.images)
-		table.insert(stringBuilder, "canvases: " .. stats.canvases)
-		table.insert(stringBuilder, "fonts: " .. stats.fonts)
+		table.insert(stringBuilder, "[CORE] drawcalls: " .. stats.drawcalls)
+		table.insert(stringBuilder, "[CORE] canvasswitches: " .. stats.canvasswitches)
+		table.insert(stringBuilder, "[CORE] texturememory: " .. stats.texturememory / 1000000 .. " MB")
+		table.insert(stringBuilder, "[CORE] images: " .. stats.images)
+		table.insert(stringBuilder, "[CORE] canvases: " .. stats.canvases)
+		table.insert(stringBuilder, "[CORE] fonts: " .. stats.fonts)
 
 		Scene:unload()
 
 		local memorybeforeGC = collectgarbage("count")	
-		table.insert(stringBuilder, "before collection lua memory: " .. memorybeforeGC / 1000 .. " MB")
+		table.insert(stringBuilder, "[CORE] before collection lua memory: " .. memorybeforeGC / 1000 .. " MB")
 		collectgarbage("collect") -- collect all the garbage from unload
 		local memoryAfterGC = collectgarbage("count")
-		table.insert(stringBuilder, "collected lua memory: " .. (memorybeforeGC - memoryAfterGC) / 1000 .. " MB")
-		table.insert(stringBuilder, "current lua memory: " .. memoryAfterGC / 1000 .. " MB" )
+		table.insert(stringBuilder, "[CORE] collected lua memory: " .. (memorybeforeGC - memoryAfterGC) / 1000 .. " MB")
+		table.insert(stringBuilder, "[CORE] current lua memory: " .. memoryAfterGC / 1000 .. " MB" )
 
 	end
 
@@ -44,13 +44,13 @@ function Scene.Load(name)
 	CurrentScene = chunk()
 
 	local stats = love.graphics.getStats()
-	table.insert(stringBuilder, "new scene: " ..  name)
-	table.insert(stringBuilder, "drawcalls: " .. stats.drawcalls)
-	table.insert(stringBuilder, "canvasswitches: " .. stats.canvasswitches)
-	table.insert(stringBuilder, "texturememory: " .. stats.texturememory / 1000000 .. " MB")
-	table.insert(stringBuilder, "images: " .. stats.images)
-	table.insert(stringBuilder, "canvases: " .. stats.canvases)
-	table.insert(stringBuilder, "fonts: " .. stats.fonts)
+	table.insert(stringBuilder, "[CORE] new scene: " ..  name)
+	table.insert(stringBuilder, "[CORE] drawcalls: " .. stats.drawcalls)
+	table.insert(stringBuilder, "[CORE] canvasswitches: " .. stats.canvasswitches)
+	table.insert(stringBuilder, "[CORE] texturememory: " .. stats.texturememory / 1000000 .. " MB")
+	table.insert(stringBuilder, "[CORE] images: " .. stats.images)
+	table.insert(stringBuilder, "[CORE] canvases: " .. stats.canvases)
+	table.insert(stringBuilder, "[CORE] fonts: " .. stats.fonts)
 
 	Debug:Log(table.concat(stringBuilder, "\n"))
 

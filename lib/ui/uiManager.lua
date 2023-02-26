@@ -1,6 +1,7 @@
 local UIManager = {}
 UIManager.consolaFactory = require("lib.ui.uiConsola")
 UIManager.textBoxFactory = require("lib.ui.uiTextbox")
+UIManager.imageFactory = require("lib.ui.uiImage")
 
 UIManager.windowWidth = 0
 UIManager.windowHeight = 0
@@ -20,25 +21,43 @@ function UIManager:GetWidget(widgetName)
 	return self.ContainerHolder[widgetName]
 end
 
-
-function UIManager:AddConsola(name)
-	local consola = self.consolaFactory:New(name ,0, 0, 500, 250)
-	self:Align(consola, "left", "bottom", 0, -31)
+function UIManager:AddConsola(name, x, y ,width ,height, alignHorizontal, alignVertical)
+	local consola = self.consolaFactory:New(name ,x, y, width, height)
+	
+	if(alignHorizontal and alignVertical) then		
+		self:Align(consola, alignHorizontal, alignVertical, 0, -31)
+	end
 
 	self.ContainerHolder[consola.Name] = consola	
+	return consola
 end
 
-function UIManager:AddTextBox(name)
+function UIManager:AddTextBox(name, x, y, width ,height, alignHorizontal, alignVertical)
 	local textbox = self.textBoxFactory:New(name,0, 0, 500, 30)
-	self:Align(textbox, "left", "bottom")
-
+	
+	if(alignHorizontal and alignVertical) then		
+		self:Align(textbox, "left", "bottom")
+	end
+	
 	self.ContainerHolder[textbox.Name] = textbox
+
+	return textbox
+
 end
 
-function UIManager:AddImage()
-	-- TODO: Add image
-end
 
+function UIManager:AddImage(name, resource, x, y, alignHorizontal, alignVertical)
+
+	local image = self.imageFactory:New(name, x, y, resource)
+
+	if(alignHorizontal and alignVertical) then		
+		self:Align(image, alignHorizontal, alignVertical)
+	end
+
+	self.ContainerHolder[image.Name] = image
+	return image
+
+end
 
 ---@alias alignHorizontal
 ---| '"left"'
@@ -97,6 +116,14 @@ end
 function UIManager:Resize(width, height)
 	self.windowWidth = width
 	self.windowHeight = height
+end
+
+function UIManager:Unload()
+	for key, value in pairs(self.ContainerHolder) do
+		value:Unload()
+	end
+
+	self.ContainerHolder = {}
 end
 
 return UIManager
