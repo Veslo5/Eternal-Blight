@@ -1,38 +1,34 @@
 local Camera = {}
 
-Camera.X = 0
-Camera.Y = 0
-Camera.Zoom = 0
-Camera.Rotation = 0
-Camera.WindowResX = nil
-Camera.WindowResY = nil
-Camera.VirtualX = 0
-Camera.VirtualY = 0
-Camera.VirtualZoomX = 1
-Camera.VirtualZoomY = 1
-Camera.VirtualResX = 0
-Camera.VirtualResY = 0
-
-Camera.MouseWorldX = 0
-Camera.MouseWorldY = 0
-
--- Render scale in percent!
-Camera.RenderScale = 100
--- Scale or Fill
--- Scale is static and defined by renderScale
--- Fill is dynamic and creating zoom in or our by current resolution
-Camera.RenderMode = "Scale"
-
 --- Constructor
 function Camera:New(renderScale, renderMode, virtualResWidth, virtualResHeight)
 	local newInstance = {}
 	setmetatable(newInstance, self)
 	self.__index = self
 
+	-- Render scale in percent!
 	newInstance.RenderScale = renderScale or 100
+
+	-- Scale or Fill
+	-- Scale is static and defined by renderScale
+	-- Fill is dynamic and creating zoom in or our by current resolution
 	newInstance.RenderMode = renderMode or "Scale"
 	newInstance.VirtualResX = virtualResWidth or 0
 	newInstance.VirtualResY = virtualResHeight or 0
+
+	newInstance.X = 0
+	newInstance.Y = 0
+	newInstance.Zoom = 0
+	newInstance.Rotation = 0
+	newInstance.WindowResX = nil
+	newInstance.WindowResY = nil
+	newInstance.VirtualX = 0
+	newInstance.VirtualY = 0
+	newInstance.VirtualZoomX = 1
+	newInstance.VirtualZoomY = 1
+
+	newInstance.MouseWorldX = 0
+	newInstance.MouseWorldY = 0
 
 	newInstance:_calculateVirtualZoom(newInstance.RenderScaling)
 

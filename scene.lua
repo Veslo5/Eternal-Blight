@@ -21,17 +21,19 @@ function Scene.Load(name)
 	if CurrentScene then
 
 		local stats = love.graphics.getStats()				
-		table.insert(stringBuilder, "[CORE] drawcalls: " .. stats.drawcalls)
-		table.insert(stringBuilder, "[CORE] canvasswitches: " .. stats.canvasswitches)
-		table.insert(stringBuilder, "[CORE] texturememory: " .. stats.texturememory / 1000000 .. " MB")
-		table.insert(stringBuilder, "[CORE] images: " .. stats.images)
-		table.insert(stringBuilder, "[CORE] canvases: " .. stats.canvases)
-		table.insert(stringBuilder, "[CORE] fonts: " .. stats.fonts)
+		table.insert(stringBuilder, "[CORE] unloading scene drawcalls: " .. stats.drawcalls)
+		table.insert(stringBuilder, "[CORE] unloading scene canvasswitches: " .. stats.canvasswitches)
+		table.insert(stringBuilder, "[CORE] unloading scene texturememory: " .. stats.texturememory / 1000000 .. " MB")
+		table.insert(stringBuilder, "[CORE] unloading scene images: " .. stats.images)
+		table.insert(stringBuilder, "[CORE] unloading scene canvases: " .. stats.canvases)
+		table.insert(stringBuilder, "[CORE] unloading scene fonts: " .. stats.fonts)
 
-		Scene:unload()
-
+		
 		local memorybeforeGC = collectgarbage("count")	
 		table.insert(stringBuilder, "[CORE] before collection lua memory: " .. memorybeforeGC / 1000 .. " MB")
+
+		Scene:unload()		
+
 		collectgarbage("collect") -- collect all the garbage from unload
 		local memoryAfterGC = collectgarbage("count")
 		table.insert(stringBuilder, "[CORE] collected lua memory: " .. (memorybeforeGC - memoryAfterGC) / 1000 .. " MB")
@@ -44,13 +46,13 @@ function Scene.Load(name)
 	CurrentScene = chunk()
 
 	local stats = love.graphics.getStats()
-	table.insert(stringBuilder, "[CORE] new scene: " ..  name)
-	table.insert(stringBuilder, "[CORE] drawcalls: " .. stats.drawcalls)
-	table.insert(stringBuilder, "[CORE] canvasswitches: " .. stats.canvasswitches)
-	table.insert(stringBuilder, "[CORE] texturememory: " .. stats.texturememory / 1000000 .. " MB")
-	table.insert(stringBuilder, "[CORE] images: " .. stats.images)
-	table.insert(stringBuilder, "[CORE] canvases: " .. stats.canvases)
-	table.insert(stringBuilder, "[CORE] fonts: " .. stats.fonts)
+	table.insert(stringBuilder, "[CORE] new fresh scene: " ..  name)
+	table.insert(stringBuilder, "[CORE] fresh scene drawcalls: " .. stats.drawcalls)
+	table.insert(stringBuilder, "[CORE] fresh scene canvasswitches: " .. stats.canvasswitches)
+	table.insert(stringBuilder, "[CORE] fresh scene texturememory: " .. stats.texturememory / 1000000 .. " MB")
+	table.insert(stringBuilder, "[CORE] fresh scene images: " .. stats.images)
+	table.insert(stringBuilder, "[CORE] fresh scene canvases: " .. stats.canvases)
+	table.insert(stringBuilder, "[CORE] fresh scene fonts: " .. stats.fonts)
 
 	Debug:Log(table.concat(stringBuilder, "\n"))
 

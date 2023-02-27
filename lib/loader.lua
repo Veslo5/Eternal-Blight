@@ -1,15 +1,6 @@
 local Loader = {}
 
-Loader.ID = nil
 Loader.IDIndex = 0
-
-Loader.ThreadContainer = {}
-Loader.FinishCallback = nil
-
-Loader.Thread = nil
-Loader.ThreadStarted = false
-Loader.IsDone = false
-
 Loader.ThreadCode = [[
 
 require("love.image")
@@ -31,8 +22,16 @@ function Loader:New(id)
 	local newInstance = {}
 	setmetatable(newInstance, self)
 	self.__index = self
-
+	
 	newInstance.ID = id or "Loader" .. tostring(self.IDIndex + 1)
+
+	newInstance.ThreadContainer = {}		
+	newInstance.FinishCallback = nil	
+	newInstance.Thread = nil
+	newInstance.ThreadStarted = false
+	newInstance.IsDone = false
+	
+
 
 	return newInstance
 end
@@ -44,7 +43,7 @@ end
 --- Load data asynchronously
 ---@param finishCallback function Callback function after loading finishes
 function Loader:LoadAsync(finishCallback)
-	self.FinishCallback = finishCallback or nil
+	self.FinishCallback = finishCallback
 
 	Debug:Log("[LOADER] Starting new thread " .. self.ID)
 	self.Thread = love.thread.newThread(self.ThreadCode)
@@ -62,9 +61,10 @@ function Loader:LoadSync()
 				table.insert(dataContainer, { Name = resource.Name, Value = love.graphics.newImage(resource.Path) })
 			end
 		end
-	
-	--cleaning
-	self.ThreadContainer = nil
+		
+		--cleaning & finishing
+		self.IsDone = true
+
 	return dataContainer
 end
 
@@ -85,16 +85,18 @@ function Loader:Update(dt)
 		local dataContainer = {}
 		for index, resource in ipairs(loadedContainer) do
 			if resource.Type == "IMAGE" then
-				-- push rawData into GPU
+				-- push rawData into GPU				
 				table.insert(dataContainer, { Name = resource.name, Value = love.graphics.newImage(resource.RawData) })
+				resource.RawData = nil
 			end
 		end
 		
 		--cleaning & finishing
-		self.ThreadContainer = nil
 		self.IsDone = true
 		self.ThreadStarted = false
-		if self.FinishCallback then self.FinishCallback(dataContainer) end
+		if self.FinishCallback then 
+			self.FinishCallback(dataContainer) 
+		end
 		Debug:Log("[LOADER] Thread ended " .. self.ID)
 	end
 end

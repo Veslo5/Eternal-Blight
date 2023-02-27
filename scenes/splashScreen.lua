@@ -3,34 +3,41 @@ local splashScreen = {}
 splashScreen.UI = require("lib.ui.uiManager")
 
 splashScreen.currentAlpha = 1
-splashScreen.timerHandle = nil
 
-splashScreen.Loader = ResourceLoader:New()
+splashScreen.Loader = nil
 splashScreen.Loaded = false
 
 function splashScreen.load()
 	Settings.LoadSettings()
 	Settings.LoadBindings()
+	
 
+	splashScreen.Loader =  ResourceLoader:New()	
 	splashScreen.UI:Load()
 
 	splashScreen.Loader:NewImage("VES", "resources/logo/ves.png")
-	--splashScreen.Loader:NewImage("LOVE", "resources/logo/love.png")
+	splashScreen.Loader:NewImage("LOVE", "resources/logo/love.png")
 
-	splashScreen.timerHandle =  Timer.after(1, function()
+	Timer.after(1, function()
 		Tween.to(splashScreen, 0.5, { currentAlpha = 0 }):oncomplete(function()
-			Scene.Load(CONST_SECOND_SCENE)
-			end)
+			--Scene.Load("tilemap")--CONST_SECOND_SCENE)
 		end)
+	end)
 
-	splashScreen.LoadedResources = splashScreen.Loader:LoadAsync(function (data)		
-		splashScreen.UI:AddImage("VES", data[1].Value, 0,0, "center", "center")
-		--splashScreen.UI:AddImage("LOVE", data[2].Value, 0,0, "center", "center")
-		splashScreen.Loaded = true 
-	end)	
+	splashScreen.Loader:LoadAsync(function(data)
+		splashScreen.UI:AddImage("VES", data[1].Value, 0, 0, "center", "center")				
+		splashScreen.UI:AddImage("LOVE", data[2].Value, 0,0, "center", "center")
+		splashScreen.Loaded = true		
+	end)
+
+		-- local data = splashScreen.Loader:LoadSync()
+		-- splashScreen.UI:AddImage("VES", data[1].Value, 0, 0, "center", "center")				
+		-- splashScreen.UI:AddImage("LOVE", data[2].Value, 0,0, "center", "center")
+		-- splashScreen.Loaded = true				
+
 end
 
-function splashScreen.update(dt)		
+function splashScreen.update(dt)	
 	splashScreen.Loader:Update(dt)
 	if (not splashScreen.Loaded) then
 		return
@@ -38,6 +45,10 @@ function splashScreen.update(dt)
 
 	if Input:IsActionPressed(CONST_INPUT_EXIT) then
 		love.event.quit()
+	end
+
+	if Input:IsActionPressed(CONST_INPUT_CONSOLE) then
+		Scene.Load("splashScreen")
 	end
 
 	Timer.update(dt)
@@ -50,20 +61,20 @@ function splashScreen.draw()
 
 	love.graphics.setColor(1, 1, 1, splashScreen.currentAlpha)
 
-	UICamera:BeginDraw()	
-		splashScreen.UI:Draw()
+	UICamera:BeginDraw()
+	splashScreen.UI:Draw()
+	love.graphics.setColor(1,1,1,1)
+	Debug:DrawStats()
 	UICamera:EndDraw()
-
 end
 
 function splashScreen.resize(width, height)
 end
 
-function splashScreen.unload()	
+function splashScreen.unload()
 	Timer.clear()
 	splashScreen.UI:Unload()
-	splashScreen.Loader = nil
-	love.graphics.setColor(1,1,1,1)
+	love.graphics.setColor(1, 1, 1, 1)
 end
 
 return splashScreen

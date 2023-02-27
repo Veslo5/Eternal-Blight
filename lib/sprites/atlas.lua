@@ -1,16 +1,5 @@
 local Atlas = {}
 
-Atlas.Texture = nil
-Atlas.Quads = {}
-Atlas.QuadWidth = 0
-Atlas.QuadHeight = 0
-Atlas.TextureWidth = 0
-Atlas.TextureHeight = 0
-Atlas.QuadsCount = 0
-
-Atlas.Columns = 0
-Atlas.Rows = 0
-
 function Atlas:New(path, quadWidth, quadHeight, useBatch)
 	local newInstance = {}
 	setmetatable(newInstance, self)
@@ -23,11 +12,15 @@ function Atlas:New(path, quadWidth, quadHeight, useBatch)
 	newInstance.TextureWidth = newInstance.Texture:getWidth()
 	newInstance.TextureHeight = newInstance.Texture:getHeight()
 
+	newInstance.Quads = {}
+	newInstance.QuadsCount = 0
 	newInstance.QuadWidth = quadWidth
 	newInstance.QuadHeight = quadHeight
 
 	newInstance.Columns = newInstance.TextureWidth / newInstance.QuadWidth
 	newInstance.Rows = newInstance.TextureHeight / newInstance.QuadHeight
+
+
 
 	return newInstance
 end

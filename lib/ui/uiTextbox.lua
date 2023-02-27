@@ -1,25 +1,5 @@
 local Textbox        = {}
 
-Textbox.Focused = false
-Textbox.ScreenX      = 0
-Textbox.ScreenY      = 0
-Textbox.Width        = 0
-Textbox.Height       = 0
-
-Textbox.Text         = ""
-
-Textbox.CursorX      = 0
-Textbox.Defaultfont = love.graphics.getFont()
-Debug:Log("[UI] Caution love.graphics.getFont() loads one Image into GPU!")
-
-Textbox.pastePressed = false
-
-Textbox.NodeDrawID = nil
-Textbox.NodeTextInputID = nil
-Textbox.NodeKeypressID = nil
-Textbox.NodeUpdateID = nil
-
-
 function Textbox:New(name, x, y, width, height)
 	local newInstance = {}
 	setmetatable(newInstance, self)
@@ -31,10 +11,19 @@ function Textbox:New(name, x, y, width, height)
 	newInstance.Width = width
 	newInstance.Height = height	
 
-	newInstance.NodeDrawID = Observer:Observe(CONST_OBSERVE_UI_DRAW, function() newInstance:Draw() end)
-	newInstance.NodeTextInputID =  Observer:Observe(CONST_OBSERVE_UI_TEXTINPUT, function(text) newInstance:TextInput(text) end)
-	newInstance.NodeKeypressID = Observer:Observe(CONST_OBSERVE_UI_KEYPRESS, function(key) newInstance:KeyPress(key) end)
-	newInstance.NodeUpdateID = Observer:Observe(CONST_OBSERVE_UI_UPDATE, function (dt) newInstance:Update(dt) end )
+	newInstance.Focused = false
+	newInstance.Text = ""
+
+	newInstance.CursorX = 0
+	newInstance.Defaultfont = love.graphics.getFont()
+	Debug:Log("[UI] Caution love.graphics.getFont() loads one Image into GPU!")
+
+	newInstance.pastePressed = false
+
+	newInstance.NodeDrawID = Observer:Observe(CONST_OBSERVE_UI_DRAW, newInstance.Name ,function() newInstance:Draw() end)
+	newInstance.NodeTextInputID =  Observer:Observe(CONST_OBSERVE_UI_TEXTINPUT, newInstance.Name, function(text) newInstance:TextInput(text) end)
+	newInstance.NodeKeypressID = Observer:Observe(CONST_OBSERVE_UI_KEYPRESS, newInstance.Name, function(key) newInstance:KeyPress(key) end)
+	newInstance.NodeUpdateID = Observer:Observe(CONST_OBSERVE_UI_UPDATE, newInstance.Name, function (dt) newInstance:Update(dt) end )
 
 	return newInstance
 end

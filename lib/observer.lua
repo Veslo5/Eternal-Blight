@@ -6,27 +6,33 @@ Observer.EventsHolder = {}
 ---@param eventName string
 ---@param nodeId integer
 function Observer:StopObserving(eventName, nodeId)
-	table.remove(self.EventsHolder[eventName], nodeId)
+	local indexToRemove = nil
+	for index, value in ipairs(self.EventsHolder[eventName]) do
+		if value.ID == nodeId then
+			indexToRemove = index
+			break
+		end
+	end
+	
+	if(indexToRemove) then 
+	table.remove(self.EventsHolder[eventName], indexToRemove)
+	end
 end
 
 --- Start observing event
 ---@param eventName string
 ---@param callback function
----@return integer
-function Observer:Observe(eventName, callback)
-	local nodeId = 0
-
+function Observer:Observe(eventName,eventID, callback )
 	local node = {}
 	node.Callback = callback
+	node.ID = eventName .. eventID
 
 	local eventHolder = self.EventsHolder[eventName] or {}
 	table.insert(eventHolder, node)
-	nodeId = #eventHolder
 
 	self.EventsHolder[eventName] = eventHolder
 
-
-	return nodeId
+	return node.ID
 end
 
 --- Trigger event
@@ -34,7 +40,7 @@ end
 ---@param params? table
 function Observer:Trigger(eventName, params)
 	local eventHolder = self.EventsHolder[eventName]
-	
+
 	if eventHolder then
 		for index, event in ipairs(eventHolder) do
 			if params then

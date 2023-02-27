@@ -1,18 +1,5 @@
 local Consola = {}
 
-Consola.ScreenX = 0
-Consola.ScreenY = 0
-
-Consola.Width = 0
-Consola.Height = 0
-
-Consola.TextSpacing = 15
-
-Consola.Texts = {}
-
-Consola.NodeDrawID = nil
-Consola.NodeAddConsoleTextID = nil
-
 function Consola:New(name, x, y, width, height)
 	local newInstance = {}
 	setmetatable(newInstance, self)
@@ -24,8 +11,12 @@ function Consola:New(name, x, y, width, height)
 	newInstance.Width = width
 	newInstance.Height = height
 
-	newInstance.NodeDrawID = Observer:Observe(CONST_OBSERVE_UI_DRAW, function() newInstance:Draw() end)
-	newInstance.NodeAddConsoleTextID = Observer:Observe(CONST_OBSERVE_UI_ADD_CONSOLE_TEXT, function(text) newInstance:AddText(text) end)
+	newInstance.TextSpacing = 15
+
+	newInstance.Texts = {}
+
+	newInstance.NodeDrawID = Observer:Observe(CONST_OBSERVE_UI_DRAW, newInstance.Name, function() newInstance:Draw() end)
+	newInstance.NodeAddConsoleTextID = Observer:Observe(CONST_OBSERVE_UI_ADD_CONSOLE_TEXT, newInstance.Name, function(text) newInstance:AddText(text) end)
 
 	return newInstance
 end
