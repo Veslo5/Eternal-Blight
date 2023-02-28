@@ -39,8 +39,8 @@ function Settings.LoadSettings()
 		Vsync = 0,
 		FullScreen = true,
 		FullScreenType = "desktop",
-		ResolutionX = 1366,
-		ResolutionY = 768
+		ResolutionX = 0,
+		ResolutionY = 0
 	}
 
 	local fileExists = love.filesystem.getInfo("settings.lua", "file")
@@ -62,8 +62,10 @@ function Settings.LoadSettings()
 	love.window.setMode(settings.ResolutionX, settings.ResolutionY, {
 		vsync = settings.Vsync,
 		fullscreen = settings.FullScreen,
-		fullscreentype = settings.FullScreenType
+		fullscreentype = settings.FullScreenType		
 	})
+	settings.ResolutionX = love.graphics.getWidth()
+	settings.ResolutionY = love.graphics.getHeight()
 
 	UICamera:Resize(settings.ResolutionX, settings.ResolutionY)
 	MainCamera:Resize(settings.ResolutionX, settings.ResolutionY)

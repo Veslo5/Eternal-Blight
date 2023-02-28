@@ -64,19 +64,16 @@ function splashScreen.draw()
 	end
 
 	love.graphics.setColor(1, 1, 1, splashScreen.currentAlpha)
-	
-	
+		
 	UICamera:BeginDraw()
 	splashScreen.UI:Draw()
-	love.graphics.rectangle("line", 0,0, 1366, 768)
-	love.graphics.rectangle("line", 0,0, 1920, 1080)
 
 	love.graphics.setColor(1,1,1,1)	
 	UICamera:EndDraw()
 end
 
 function splashScreen.resize(width, height)
-
+	UICamera:Resize(width, height)
 end
 
 function splashScreen.unload()

@@ -19,8 +19,8 @@ function Camera:New(renderScale, renderMode, virtualResWidth, virtualResHeight)
 	newInstance.X = 0
 	newInstance.Y = 0	
 	newInstance.Rotation = 0
-	newInstance.WindowResX = nil
-	newInstance.WindowResY = nil		
+	newInstance.WindowResX = 0
+	newInstance.WindowResY = 0		
 	newInstance.ZoomX = 1
 	newInstance.ZoomY = 1
 
@@ -30,7 +30,7 @@ function Camera:New(renderScale, renderMode, virtualResWidth, virtualResHeight)
 	newInstance.MouseWorldX = 0
 	newInstance.MouseWorldY = 0
 	
-	newInstance:_calculateVirtualZoom(newInstance.RenderScaling)
+	newInstance:_calculateVirtualZoom(newInstance.WindowResX ,newInstance.WindowResY)
 
 	return newInstance
 end
@@ -104,22 +104,20 @@ function Camera:SetRenderScale(renderPercent)
 end
 
 function Camera:Resize(width, height)
-	self:_calculateVirtualZoom(self.RenderScale)	
-end
-
-function Camera:_calculateVirtualZoom(renderScale)
-	local width, height = love.graphics.getDimensions()
-
 	self.WindowResX = width
 	self.WindowResY = height
+	self:_calculateVirtualZoom()	
+end
+
+function Camera:_calculateVirtualZoom()	
 
 	if (self.RenderMode == "Scale") then
 		self.VirtualResX = (self.WindowResX / 100) * self.RenderScale
 		self.VirtualResY = (self.WindowResY / 100) * self.RenderScale
 	end
 
-	self.ZoomX = width / self.VirtualResX
-	self.ZoomY = height / self.VirtualResY
+	self.ZoomX = self.WindowResX / self.VirtualResX
+	self.ZoomY = self.WindowResY  / self.VirtualResY
 
 	self:_recalculateOrigin()
 

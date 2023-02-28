@@ -114,8 +114,8 @@ end
 
 
 function UIManager:Resize(width, height)
-	self.windowWidth = width
-	self.windowHeight = height
+	-- self.windowWidth = width
+	-- self.windowHeight = height
 end
 
 function UIManager:Unload()	

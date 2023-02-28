@@ -26,9 +26,14 @@ function Consola:AddText(text)
 end
 
 function Consola:Draw()
+	-- scissor reacting only in screen are and are not affected by camera!
+	local x,y = UICamera:WorldToScreen(self.ScreenX, self.ScreenY)
+	local w,h = UICamera:WorldToScreen(self.Width, self.Height)
+	
+	love.graphics.setScissor(x,y,w,h)
+	--love.graphics.setScissor(self.ScreenX, self.ScreenY, self.Width, self.Height)
+	
 	--Black rectangle
-	love.graphics.setScissor(self.ScreenX, self.ScreenY, self.Width, self.Height)
-
 	love.graphics.setColor(0.1, 0.1, 0.1, 0.5)
 	love.graphics.rectangle("fill", self.ScreenX, self.ScreenY, self.Width, self.Height)
 	love.graphics.setColor(1, 1, 1)
