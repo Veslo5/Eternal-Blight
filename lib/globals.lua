@@ -1,12 +1,25 @@
 local Globals = {}
 
+-- Because you cannot really read next line without headache
+-- x = funny == true and "hehe" or "nothehe"
+
+--- Ternary operator - similar to x ? a : b
+---@param boolExpression boolean
+---@param trueValue any
+---@param falseValue any
+function IIF (boolExpression, trueValue, falseValue)
+	if boolExpression then	return trueValue else return falseValue end
+end
+
+
+Debug = require ("lib.debug.log")
+
 --Global objects/modules
 local cameraFactory = require("lib.camera")
 
 MainCamera = cameraFactory:New()
 UICamera = cameraFactory:New(100, "Fill", 1366, 768)
 
-Debug = require ("lib.debug.log")
 Ecs = require("lib.external.tiny")
 Timer = require("lib.external.timer")
 Tween = require("lib.external.flux")
@@ -20,7 +33,8 @@ Settings = require("lib.settings")
 
 --Global constants
 CONST_FIRST_SCENE = "splashScreen"
-CONST_SECOND_SCENE = "tilemap"
+--CONST_SECOND_SCENE = IIF(Debug.IsOn, "debugMenu", "tilemap")
+CONST_SECOND_SCENE  = "tilemap"
 
 -- UI constants
 CONST_WIDGET_UI_CONSOLA = "UI_WIDGET_CONSOLA"
@@ -41,16 +55,5 @@ CONST_INPUT_LEFT = "LEFT"
 CONST_INPUT_RIGHT = "RIGHT"
 CONST_INPUT_UP = "UP"
 CONST_INPUT_DOWN = "DOWN"
-
--- Because you cannot really read next line without headache
--- x = funny == true and "hehe" or "nothehe"
-
---- Ternary operator - similar to x ? a : b
----@param boolExpression boolean
----@param trueValue boolean
----@param falseValue boolean
-function IIF (boolExpression, trueValue, falseValue)
-	if boolExpression then	return trueValue else return falseValue end
-end
 
 return Globals

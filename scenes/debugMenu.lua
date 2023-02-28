@@ -5,7 +5,9 @@ function DebugMenu.load()
 end
 
 function DebugMenu.update(dt) 
-
+	if Input:IsActionPressed(CONST_INPUT_EXIT) then
+		love.event.quit()
+	end
 end
 
 function DebugMenu.draw()

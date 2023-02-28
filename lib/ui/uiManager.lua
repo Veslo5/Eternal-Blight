@@ -8,9 +8,9 @@ UIManager.windowHeight = 0
 
 UIManager.ContainerHolder = {}
 
-function UIManager:Load()
-	self.windowWidth = love.graphics.getWidth()
-	self.windowHeight = love.graphics.getHeight()
+function UIManager:Load(resolutionX, resolutionY)
+	self.windowWidth = resolutionX
+	self.windowHeight = resolutionY
 	
 	love.keyboard.setTextInput(false)
 	love.keyboard.setKeyRepeat(false)

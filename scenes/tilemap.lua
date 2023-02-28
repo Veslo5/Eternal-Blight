@@ -21,7 +21,7 @@ function Tilemap.load()
 		
 		Input:Bind("DEBUG_WALLS", {"p"})
 	
-	Tilemap.UI:Load()
+	Tilemap.UI:Load(UICamera.VirtualResX, UICamera.VirtualResY)
 	Tilemap.UI:AddConsola(CONST_WIDGET_UI_CONSOLA, 0,0,500,250, "left", "bottom")
 	Tilemap.UI:AddTextBox(CONST_WIDGET_UI_TEXTBOX, 0,0,500,30, "left", "bottom")
 
@@ -77,19 +77,19 @@ function Tilemap.update(dt)
 	Tilemap.UI:Update(dt)
 
 	if (Input:IsActionDown("UP")) then
-		 MainCamera.VirtualY = MainCamera.VirtualY - dt * 500
+		MainCamera:SetPosition(0, dt * -500)		 
 	end
 
 	if (Input:IsActionDown("DOWN")) then
-		MainCamera.VirtualY = MainCamera.VirtualY + dt * 500
+		MainCamera:SetPosition(0, dt * 500)		
 	end
 
 	if (Input:IsActionDown("LEFT")) then
-		MainCamera.VirtualX = MainCamera.VirtualX - dt * 500
+		MainCamera:SetPosition(dt * -500, 0)		
 	end
 
 	if (Input:IsActionDown("RIGHT")) then
-		MainCamera.VirtualX = MainCamera.VirtualX + dt * 500
+		MainCamera:SetPosition(dt * 500, 0) 		
 	end
 
 	if (Input:IsActionPressed("DEBUG_WALLS")) then

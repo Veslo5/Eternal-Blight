@@ -17,19 +17,19 @@ function Camera:New(renderScale, renderMode, virtualResWidth, virtualResHeight)
 	newInstance.VirtualResY = virtualResHeight or 0
 
 	newInstance.X = 0
-	newInstance.Y = 0
-	newInstance.Zoom = 0
+	newInstance.Y = 0	
 	newInstance.Rotation = 0
 	newInstance.WindowResX = nil
-	newInstance.WindowResY = nil
-	newInstance.VirtualX = 0
-	newInstance.VirtualY = 0
-	newInstance.VirtualZoomX = 1
-	newInstance.VirtualZoomY = 1
+	newInstance.WindowResY = nil		
+	newInstance.ZoomX = 1
+	newInstance.ZoomY = 1
 
+	newInstance.OriginX = 0
+	newInstance.OriginY = 0
+	
 	newInstance.MouseWorldX = 0
 	newInstance.MouseWorldY = 0
-
+	
 	newInstance:_calculateVirtualZoom(newInstance.RenderScaling)
 
 	return newInstance
@@ -38,17 +38,16 @@ end
 --- Reset the camera into defaults
 function Camera:Reset()
 	self.X = 0
-	self.Y = 0
-	self.Zoom = 0
+	self.Y = 0	
 	self.Rotation = 0
 	self.WindowResX = nil
-	self.WindowResY = nil
-	self.VirtualX = 0
-	self.VirtualY = 0
-	self.VirtualZoomX = 1
-	self.VirtualZoomY = 1
+	self.WindowResY = nil		
+	self.ZoomX = 1
+	self.ZoomY = 1
 	self.VirtualResX = 0
 	self.VirtualResY = 0
+	self.OriginX = 0
+	self.OriginY = 0
 
 	-- Render scale in percent!
 	self.RenderScale = 100
@@ -57,9 +56,10 @@ end
 --- BEGIN DRAWIN OF CAMERA
 function Camera:BeginDraw()
 	love.graphics.push()
-	love.graphics.rotate(-self.Rotation)
-	love.graphics.scale(self.VirtualZoomX + self.Zoom, self.VirtualZoomY + self.Zoom)
-	love.graphics.translate(-self.VirtualX, -self.VirtualY)
+	--love.graphics.rotate(-self.Rotation)	
+	love.graphics.scale(self.ZoomX, self.ZoomY)	
+	love.graphics.translate(-self.OriginX, -self.OriginY)
+	love.graphics.translate(-self.X, -self.Y)
 
 	local mx, my = love.mouse.getPosition()
 	self.MouseWorldX, self.MouseWorldY = self:ScreenToWorld(mx, my)
@@ -77,31 +77,17 @@ function Camera:Rotate(dr)
 end
 
 --- Zooms the camera
-function Camera:SetZoom(size, center)
-	self.Zoom = size or self.Zoom
+function Camera:SetZoom(size)
+	self.ZoomX = self.ZoomX + size
+	self.ZoomY = self.ZoomY + size
 
-	if (center or false) then
-		local virtualZoomX, virtualZoomY = self:_getVirtualZoom()
-		self.VirtualX = self.X - (self.WindowResX / 2) / virtualZoomX
-		self.VirtualY = self.Y - (self.WindowResY / 2) / virtualZoomY
-	end
-
+	self:_recalculateOrigin()
 end
 
 --- Set position of camera
-function Camera:SetPosition(x, y, center)
-	self.X = x or self.X
-	self.Y = y or self.Y
-
-	if (center or false) then
-		local virtualZoomX, virtualZoomY = self:_getVirtualZoom()
-		self.VirtualX = self.X - (self.WindowResX / 2) / virtualZoomX
-		self.VirtualY = self.Y - (self.WindowResY / 2) / virtualZoomY
-	else
-		self.VirtualX = self.X
-		self.VirtualY = self.Y
-	end
-
+function Camera:SetPosition(x, y)
+	self.X = self.X + x
+	self.Y = self.Y + y
 end
 
 function Camera:ScreenToWorld(mouseX, mouseY)
@@ -118,9 +104,7 @@ function Camera:SetRenderScale(renderPercent)
 end
 
 function Camera:Resize(width, height)
-	self:_calculateVirtualZoom(self.RenderScale)
-
-	--TODO: vyřešit align kamery po resizu. S tím se pravděpodobně sveze i origin kamery (potom zanikne parametr center z funkcí)
+	self:_calculateVirtualZoom(self.RenderScale)	
 end
 
 function Camera:_calculateVirtualZoom(renderScale)
@@ -134,13 +118,17 @@ function Camera:_calculateVirtualZoom(renderScale)
 		self.VirtualResY = (self.WindowResY / 100) * self.RenderScale
 	end
 
-	self.VirtualZoomX = width / self.VirtualResX
-	self.VirtualZoomY = height / self.VirtualResY
+	self.ZoomX = width / self.VirtualResX
+	self.ZoomY = height / self.VirtualResY
+
+	self:_recalculateOrigin()
 
 end
 
-function Camera:_getVirtualZoom()
-	return self.VirtualZoomX + self.Zoom, self.VirtualZoomY + self.Zoom
+function Camera:_recalculateOrigin()	
+	self.OriginX = self.VirtualResX / 2  - (self.WindowResX / 2) /  self.ZoomX
+	self.OriginY = self.VirtualResY / 2  - (self.WindowResY / 2) /  self.ZoomY
 end
+
 
 return Camera
