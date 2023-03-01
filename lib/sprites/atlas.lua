@@ -1,13 +1,13 @@
 local Atlas = {}
 
-function Atlas:New(path, quadWidth, quadHeight, useBatch)
+function Atlas:New(resource, quadWidth, quadHeight, useBatch)
 	local newInstance = {}
 	setmetatable(newInstance, self)
 	self.__index = self
 
 	newInstance.useBatch = useBatch
 
-	newInstance.Texture = love.graphics.newImage(path)
+	newInstance.Texture = resource
 	newInstance.Texture:setFilter("nearest", "nearest")
 	newInstance.TextureWidth = newInstance.Texture:getWidth()
 	newInstance.TextureHeight = newInstance.Texture:getHeight()

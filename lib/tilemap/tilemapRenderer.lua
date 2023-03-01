@@ -2,15 +2,15 @@ local TileMapRenderer = {}
 
 TileMapRenderer.AtlasFactory = require("lib.sprites.atlas")
 
-TileMapRenderer.TileSetAtlas = nil
+TileMapRenderer.TileSetAtlas = {}
 TileMapRenderer.SpriteBatches = {}
 
 
 
-function TileMapRenderer:LoadResources(tilesetMetadata)
-	self.TileSetAtlas = self.AtlasFactory:New(tilesetMetadata.image:sub(4), 32, 32, true)
-	self.TileSetAtlas:CutQuads()
-
+function TileMapRenderer:AddTilesetAtlas(name, resource)
+	local atlas =  self.AtlasFactory:New(resource, 32, 32, true)
+	atlas:CutQuads()
+	self.TileSetAtlas[name] = atlas
 end
 
 ---Manually add spritebatch to rendering
@@ -54,6 +54,7 @@ function TileMapRenderer:RebakeMetaLayer(spriteBatch, layerInGroup, tileWidth, t
 
 			-- 0 is empty tile in Tiled lua export
 			if (tileNumber ~= 0) then				
+				--TODO TilesetAtlas choose right one
 				spriteBatch:add(self.TileSetAtlas.Quads[tileNumber], column * tileWidth, row * tileHeight)
 			end
 		end

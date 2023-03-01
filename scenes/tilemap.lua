@@ -2,32 +2,26 @@ local Tilemap = {}
 
 Tilemap.UI = require("lib.ui.uiManager")
 Tilemap.tilemapRenderer = require("lib.tilemap.tilemapRenderer")
-Tilemap.tilemapLoader = require("lib.tilemap.tilemapLoader")
+Tilemap.tilemapLoader = require("lib.tilemap.tilemapLoader"):New()
 Tilemap.worldManager = require("lib.world.worldManager")
 
 function Tilemap.load()
-		Input:Bind(CONST_INPUT_EXIT,{"escape"}, false)
-		Input:Bind("CONSOLE", {";"}, false)
-
-		Input:Bind("UP", {"w"})
-		Input:Bind("DOWN", {"s"})
-		Input:Bind("LEFT", {"a"})
-		Input:Bind("RIGHT", {"d"})   
-		
-		Input:Bind("MOVE_RIGHT",  {"right"})   
-		Input:Bind("MOVE_LEFT",  {"left"})   
-		Input:Bind("MOVE_UP", {"up"})   
-		Input:Bind("MOVE_DOWN",  {"down"})
-		
-		Input:Bind("DEBUG_WALLS", {"p"})
+	Input:Bind("DEBUG_WALLS", {"p"})
 	
+	Tilemap.Loader =  ResourceLoader:New()
+
 	Tilemap.UI:Load(UICamera.VirtualResX, UICamera.VirtualResY)
-	Tilemap.UI:AddConsola(CONST_WIDGET_UI_CONSOLA, 0,0,500,250, "left", "bottom")
-	Tilemap.UI:AddTextBox(CONST_WIDGET_UI_TEXTBOX, 0,0,500,30, "left", "bottom")
+	-- Tilemap.UI:AddConsola(CONST_WIDGET_UI_CONSOLA, 0,0,500,250, "left", "bottom")
+	-- Tilemap.UI:AddTextBox(CONST_WIDGET_UI_TEXTBOX, 0,0,500,30, "left", "bottom")
 
 	local tilemaploader = Tilemap.tilemapLoader
 
-	tilemaploader:LoadTileset("data/test_map001.lua")
+	tilemaploader:LoadMetadata(CONST_INIT_MAP)
+	for _, tilemapImage in ipairs(tilemaploader:GetResources()) do
+		-- adds resources to loading queue
+		Tilemap.Loader:NewImage(tilemapImage.name, tilemapImage.image)
+	end
+
 	Tilemap.tilemapRenderer:LoadResources(tilemaploader.TilesetMetadata)
 	Tilemap.tilemapRenderer:BakeLayers(tilemaploader.TileMapMetadata)
 

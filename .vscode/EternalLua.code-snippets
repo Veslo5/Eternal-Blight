@@ -45,5 +45,18 @@
 			"return ${1:Name}"
 		],
 		"description": "New scene"
+	},
+	"new" : {
+		"scope": "lua",
+		"prefix": "new",
+		"body": [
+			"function ${1:Name}:New()",
+			"\tlocal newInstance = {}",
+			"\tsetmetatable(newInstance, self)",
+			"\tself.__index = self \n",
+			"\treturn ${1:Name}",
+			"end"
+		],
+		"description": "New instance"
 	}
 }

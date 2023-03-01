@@ -1,23 +1,42 @@
 local TileMapLoader = {}
 
-TileMapLoader.TileMapMetadata = nil
-TileMapLoader.TilesetMetadata = nil
+function TileMapLoader:New()
+	local newInstance = {}
+	setmetatable(newInstance, self)
+	self.__index = self 
 
+	-- table
+	newInstance.TileMapMetadata = nil
+	-- array
+	newInstance.TilesetMetadata = {}
 
-function TileMapLoader:LoadTileset(name)
-	-- TODO: Check for errors with Pcall
-	local chunk = love.filesystem.load(name)    
+	return TileMapLoader
+end
+
+--- Loads all tilemaps/tilesets metadata 
+---@param name string tilemap name
+function TileMapLoader:LoadMetadata(name)	
+	local chunk, error = love.filesystem.load(name)    
 	local tileMapMetadata = chunk()
 
-	local tilesetFileName = tileMapMetadata.tilesets[1].exportfilename
-
-	chunk = love.filesystem.load("data/" .. tilesetFileName)
-	local tilesetMetadata = chunk()
-
+	-- loading all tilesets
+	for _, tileset in ipairs(tileMapMetadata.tilesets) do
+		local tilesetChunk = love.filesystem.load("data/" .. tileset.exportfilename)
+		table.insert(self.TilesetMetadata, chunk())			
+	end
+	
 	self.TileMapMetadata = tileMapMetadata
-	self.TilesetMetadata = tilesetMetadata
+end
 
+--- Return images paths in all tilesets
+function TileMapLoader:GetResources()
+	local resourcesTable = {}
 
+	for _, tileset in ipairs(self.TilesetMetadata) do
+		table.insert(resourcesTable, {name = tileset.name, tileset.image:sub(4)})
+	end
+	
+	return resourcesTable
 end
 
 function TileMapLoader:GetGroupLayer(name)

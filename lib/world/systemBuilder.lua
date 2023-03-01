@@ -30,22 +30,22 @@ function SystemBuilder.GetMoveSystem()
 	function system:process(entity, dt)
 		if(entity.IControllable.OnTurn == true and entity.IControllable.Possesed == true) then
 			local moved = false
-			if (Input:IsActionPressed("MOVE_RIGHT")) then
+			if (Input:IsActionPressed("RIGHT")) then
 				entity.IGridMovable.GridX = entity.IGridMovable.GridX + 1
 				moved = true
 			end
 
-			if (Input:IsActionPressed("MOVE_LEFT")) then
+			if (Input:IsActionPressed("LEFT")) then
 				entity.IGridMovable.GridX = entity.IGridMovable.GridX - 1
 				moved = true
 			end
 
-			if (Input:IsActionPressed("MOVE_UP")) then
+			if (Input:IsActionPressed("UP")) then
 				entity.IGridMovable.GridY = entity.IGridMovable.GridY - 1
 				moved = true
 			end
 
-			if (Input:IsActionPressed("MOVE_DOWN")) then
+			if (Input:IsActionPressed("DOWN")) then
 				entity.IGridMovable.GridY = entity.IGridMovable.GridY+ 1
 				moved = true
 			end
