@@ -1,19 +1,19 @@
 --- A dead simple input handling module by Vessyk
 -- @module BindMe
-local BindMe = {}
+local bindMe = {}
 
-BindMe.actionHolder = {}
-BindMe.pressedKeys = {}
-BindMe.firstPressedKeys = {}
-BindMe.pausableActions = {}
+bindMe.actionHolder = {}
+bindMe.pressedKeys = {}
+bindMe.firstPressedKeys = {}
+bindMe.pausableActions = {}
 
-BindMe.PauseInput = false
+bindMe.pauseInput = false
 
 --- Bind action into system
 --- @param actionName string binded action name
 --- @param inputKeys string[] table with keyboard keys
 --- @param pausable? boolean  if action will work even input is disabled
-function BindMe:Bind(actionName, inputKeys, pausable)
+function bindMe:bind(actionName, inputKeys, pausable)
 	pausable = pausable ~= false
 	if (self.actionHolder[actionName] == nil) then
 		self.actionHolder[actionName] = inputKeys
@@ -24,12 +24,12 @@ end
 
 --- Check if action is down
 --- @param actionName string #name of binded action
-function BindMe:IsActionDown(actionName)
+function bindMe:isActionDown(actionName)
 	-- if (self.actionHolder == nil) then
 	--     return false
 	-- end
 
-	if self.PauseInput and self.pausableActions[actionName] == true then
+	if self.pauseInput and self.pausableActions[actionName] == true then
 		return false
 	end
 
@@ -47,12 +47,12 @@ end
 
 --- Check if action was pressed once
 --- @param actionName string #name of binded action
-function BindMe:IsActionPressed(actionName)
+function bindMe:isActionPressed(actionName)
 	-- if (self.actionHolder == nil) then
 	--     return false
 	-- end
 
-	if self.PauseInput and self.pausableActions[actionName] == true then
+	if self.pauseInput and self.pausableActions[actionName] == true then
 		return false
 	end
 
@@ -75,12 +75,12 @@ end
 
 --- Check if action is up
 --- @param actionName string #name of binded action
-function BindMe:IsActionUp(actionName)
+function bindMe:isActionUp(actionName)
 	if self.PauseInput and self.pausableActions[actionName] == true then
 		return false
 	end
 
-	if (not self:IsActionDown(actionName)) then
+	if (not self:isActionDown(actionName)) then
 		return true
 	end
 	return false
@@ -90,7 +90,7 @@ end
 -- @param key
 -- @param scancode
 -- @param isrepeat
-function BindMe:KeyPressed(key, scancode, isrepeat)
+function bindMe:keyPressed(key, scancode, isrepeat)
 	self.pressedKeys[key] = key
 	self.firstPressedKeys[key] = true
 end
@@ -98,7 +98,7 @@ end
 --- KeyRelease callback from LOVE
 -- @param key
 -- @param scancode
-function BindMe:KeyRelease(key, scancode)
+function bindMe:keyRelease(key, scancode)
 	self.pressedKeys[key] = nil
 	self.firstPressedKeys[key] = nil
 end
@@ -109,7 +109,7 @@ end
 -- @param button which button pressed
 -- @param istouch
 -- @param presses
-function BindMe:MousePressed(x, y, button, istouch, presses)
+function bindMe:mousePressed(x, y, button, istouch, presses)
 	local mouseButton = "mouse" .. button
 	self.pressedKeys[mouseButton] = mouseButton
 	self.firstPressedKeys[mouseButton] = true
@@ -121,10 +121,10 @@ end
 -- @param button which button pressed
 -- @param istouch
 -- @param presses
-function BindMe:MouseReleased(x, y, button, istouch, presses)
+function bindMe:mouseReleased(x, y, button, istouch, presses)
 	local mouseButton = "mouse" .. button
 	self.pressedKeys[mouseButton] = nil
 	self.firstPressedKeys[mouseButton] = nil;
 end
 
-return BindMe
+return bindMe

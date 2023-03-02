@@ -1,13 +1,13 @@
-local Observer = {}
+local observer = {}
 
-Observer.EventsHolder = {}
+observer.eventsHolder = {}
 
 --- Removes observing
 ---@param eventName string
 ---@param nodeId integer
-function Observer:StopObserving(eventName, nodeId)
+function observer:stopObserving(eventName, nodeId)
 	local indexToRemove = nil
-	for index, value in ipairs(self.EventsHolder[eventName]) do
+	for index, value in ipairs(self.eventsHolder[eventName]) do
 		if value.ID == nodeId then
 			indexToRemove = index
 			break
@@ -15,22 +15,22 @@ function Observer:StopObserving(eventName, nodeId)
 	end
 	
 	if(indexToRemove) then 
-	table.remove(self.EventsHolder[eventName], indexToRemove)
+	table.remove(self.eventsHolder[eventName], indexToRemove)
 	end
 end
 
 --- Start observing event
 ---@param eventName string
 ---@param callback function
-function Observer:Observe(eventName,eventID, callback )
+function observer:observe(eventName,eventID, callback )
 	local node = {}
-	node.Callback = callback
+	node.callback = callback
 	node.ID = eventName .. eventID
 
-	local eventHolder = self.EventsHolder[eventName] or {}
+	local eventHolder = self.eventsHolder[eventName] or {}
 	table.insert(eventHolder, node)
 
-	self.EventsHolder[eventName] = eventHolder
+	self.eventsHolder[eventName] = eventHolder
 
 	return node.ID
 end
@@ -38,25 +38,24 @@ end
 --- Trigger event
 ---@param eventName string
 ---@param params? table
-function Observer:Trigger(eventName, params)
-	local eventHolder = self.EventsHolder[eventName]
+function observer:trigger(eventName, params)
+	local eventHolder = self.eventsHolder[eventName]
 
 	if eventHolder then
 		for index, event in ipairs(eventHolder) do
 			if params then
-				event.Callback(unpack(params))
+				event.callback(unpack(params))
 			else
-				event.Callback()
+				event.callback()
 			end
 		end
 	end
 end
 
---TODO: DO Unload!
-function Observer:Unload()
-	for _, event in pairs(self.EventsHolder) do
+function observer:unload()
+	for _, event in pairs(self.eventsHolder) do
 		event = nil
 	end
 end
 
-return Observer
+return observer

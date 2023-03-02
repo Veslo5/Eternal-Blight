@@ -1,56 +1,56 @@
-local Atlas = {}
+local atlas = {}
 
-function Atlas:New(resource, quadWidth, quadHeight, useBatch)
+function atlas:new(resource, quadWidth, quadHeight, useBatch)
 	local newInstance = {}
 	setmetatable(newInstance, self)
 	self.__index = self
 
 	newInstance.useBatch = useBatch
 
-	newInstance.Texture = resource
-	newInstance.Texture:setFilter("nearest", "nearest")
-	newInstance.TextureWidth = newInstance.Texture:getWidth()
-	newInstance.TextureHeight = newInstance.Texture:getHeight()
+	newInstance.texture = resource
+	newInstance.texture:setFilter("nearest", "nearest")
+	newInstance.textureWidth = newInstance.texture:getWidth()
+	newInstance.textureHeight = newInstance.texture:getHeight()
 
-	newInstance.Quads = {}
-	newInstance.QuadsCount = 0
-	newInstance.QuadWidth = quadWidth
-	newInstance.QuadHeight = quadHeight
+	newInstance.quads = {}
+	newInstance.quadsCount = 0
+	newInstance.quadWidth = quadWidth
+	newInstance.quadHeight = quadHeight
 
-	newInstance.Columns = newInstance.TextureWidth / newInstance.QuadWidth
-	newInstance.Rows = newInstance.TextureHeight / newInstance.QuadHeight
+	newInstance.columns = newInstance.textureWidth / newInstance.quadWidth
+	newInstance.rows = newInstance.textureHeight / newInstance.quadHeight
 
 
 
 	return newInstance
 end
 
-function Atlas:CutQuads()
+function atlas:cutQuads()
 	-- -1 because lua arrays starting from 1 and we are using starting index as 0
-	local columns = self.Columns - 1
-	local rows = self.Rows - 1
+	local columns = self.columns - 1
+	local rows = self.rows - 1
 
 	for x = 0, rows, 1 do
 		for y = 0, columns, 1 do
 
-			local quadX = y * self.QuadWidth
-			local quadY = x * self.QuadHeight
-			local quad = love.graphics.newQuad(quadX, quadY, self.QuadWidth, self.QuadHeight, self.TextureWidth,
-				self.TextureHeight)
-			table.insert(self.Quads, quad)
+			local quadX = y * self.quadWidth
+			local quadY = x * self.quadHeight
+			local quad = love.graphics.newQuad(quadX, quadY, self.quadWidth, self.quadHeight, self.textureWidth,
+				self.textureHeight)
+			table.insert(self.quads, quad)
 
-			self.QuadsCount = self.QuadsCount + 1
+			self.quadsCount = self.quadsCount + 1
 		end
 	end
 end
 
-function Atlas:GetAtlasQuadCount()
-	return (self.Columns - 1) * (self.Rows - 1)
+function atlas:getAtlasQuadCount()
+	return (self.columns - 1) * (self.rows - 1)
 end
 
-function Atlas:Unload()
-	self.Quads = nil
-	self.Texture = nil	
+function atlas:unload()
+	self.quads = nil
+	self.texture = nil	
 end
 
-return Atlas
+return atlas

@@ -50,11 +50,11 @@
 		"scope": "lua",
 		"prefix": "new",
 		"body": [
-			"function ${1:Name}:New()",
+			"function ${1:Name}:new()",
 			"\tlocal newInstance = {}",
 			"\tsetmetatable(newInstance, self)",
 			"\tself.__index = self \n",
-			"\treturn ${1:Name}",
+			"\treturn newInstance",
 			"end"
 		],
 		"description": "New instance"

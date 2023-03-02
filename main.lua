@@ -7,9 +7,9 @@ function love.load()
 
 	local limits = love.graphics.getSystemLimits()
 	local name, version, vendor, device = love.graphics.getRendererInfo()	
-	Debug:Log("[CORE] HW Render backend: " .. name .. " " .. version)
-	Debug:Log("[CORE] HW GPU and GPU vendor: " .. vendor .. " " .. device)
-	Debug:Log("[CORE] HW Limit max texture size(px): " .. limits.texturesize)	
+	Debug:log("[CORE] HW Render backend: " .. name .. " " .. version)
+	Debug:log("[CORE] HW GPU and GPU vendor: " .. vendor .. " " .. device)
+	Debug:log("[CORE] HW Limit max texture size(px): " .. limits.texturesize)	
 	
 
 	Scene.Load(CONST_FIRST_SCENE)
@@ -45,13 +45,13 @@ function love.run()
 				love.handlers[name](a, b, c, d, e, f)
 				
 				if name == "mousereleased" then
-					Input:MouseReleased(a,b,c,d,e)
+					Input:mouseReleased(a,b,c,d,e)
 				elseif name == "mousepressed" then
-					Input:MousePressed(a,b,c,d,e)
+					Input:mousePressed(a,b,c,d,e)
 				elseif name == "keyreleased" then
-					Input:KeyRelease(a,b)
+					Input:keyRelease(a,b)
 				elseif name == "keypressed" then
-					Input:KeyPressed(a,b,c)
+					Input:keyPressed(a,b,c)
 				end
 				
 				Scene[name](a, b, c, d, e, f) -- handle scene event, if any
@@ -68,7 +68,7 @@ function love.run()
 		end -- will pass 0 if love.timer is disabled
 
 		--!DEBUG pulling to catch new breakpoints
-		if Debug.IsOn then
+		if Debug.isOn then
 			--optimization with 1FPS pulling
 			--This should not be "that" slow ;)
 			debugElapsed =  debugElapsed + dt

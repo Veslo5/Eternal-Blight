@@ -1,21 +1,21 @@
 local splashScreen = {}
 
 function splashScreen.load()
-	Settings.LoadSettings()
-	Settings.LoadBindings()
+	Settings.loadSettings()
+	Settings.loadBindings()
 	
 	splashScreen.UI = require("lib.ui.uiManager")
 
 	splashScreen.currentAlpha = 1
 
-	splashScreen.Loader = nil
-	splashScreen.Loaded = false
+	splashScreen.loader = nil
+	splashScreen.loaded = false
 
 
-	splashScreen.Loader =  ResourceLoader:New()	
-	splashScreen.UI:Load(UICamera.VirtualResX, UICamera.VirtualResY)
+	splashScreen.loader =  ResourceLoader:new()	
+	splashScreen.UI:load(UICamera.virtualResX, UICamera.virtualResY)
 
-	splashScreen.Loader:NewImage("VES", "resources/logo/ves.png")
+	splashScreen.loader:newImage("VES", "resources/logo/ves.png")
 	--splashScreen.Loader:NewImage("LOVE", "resources/logo/love.png")
 
 	Timer.after(1, function()
@@ -24,17 +24,17 @@ function splashScreen.load()
 		end)
 	end)
 
-	splashScreen.Loader:LoadAsync(function(data)
-		local image = splashScreen.UI:AddImage("VES", data[1].Value, 0, 0, "center", "center")				
+	splashScreen.loader:loadAsync(function(data)
+		local image = splashScreen.UI:addImage("VES", data[1].value, 0, 0, "center", "center")				
 		--splashScreen.UI:AddImage("LOVE", data[2].Value, 0,0, "center", "center")
-		splashScreen.Loaded = true		
+		splashScreen.loaded = true		
 	end)
 
 end
 
 function splashScreen.update(dt)	
-	splashScreen.Loader:Update(dt)
-	if (not splashScreen.Loaded) then
+	splashScreen.loader:update(dt)
+	if (not splashScreen.loaded) then
 		return
 	end
 
@@ -47,11 +47,11 @@ function splashScreen.update(dt)
 	-- 	UICamera:SetZoom(-dt)	
 	-- end
 
-	if Input:IsActionPressed(CONST_INPUT_EXIT) then
+	if Input:isActionPressed(CONST_INPUT_EXIT) then
 		love.event.quit()
 	end
 
-	if Input:IsActionPressed(CONST_INPUT_CONSOLE) then
+	if Input:isActionPressed(CONST_INPUT_CONSOLE) then
 		Scene.Load("splashScreen")
 	end
 
@@ -59,26 +59,26 @@ function splashScreen.update(dt)
 end
 
 function splashScreen.draw()
-	if (not splashScreen.Loaded) then
+	if (not splashScreen.loaded) then
 		return
 	end
 
 	love.graphics.setColor(1, 1, 1, splashScreen.currentAlpha)
 		
-	UICamera:BeginDraw()
-	splashScreen.UI:Draw()
+	UICamera:beginDraw()
+	splashScreen.UI:draw()
 
 	love.graphics.setColor(1,1,1,1)	
-	UICamera:EndDraw()
+	UICamera:endDraw()
 end
 
 function splashScreen.resize(width, height)
-	UICamera:Resize(width, height)
+	UICamera:resize(width, height)
 end
 
 function splashScreen.unload()
 	Timer.clear()
-	splashScreen.UI:Unload()
+	splashScreen.UI:unload()
 	love.graphics.setColor(1, 1, 1, 1)
 end
 

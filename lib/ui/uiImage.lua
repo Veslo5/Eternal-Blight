@@ -1,36 +1,36 @@
-local UIImage = {}
+local uIImage = {}
 
 
 
-function UIImage:New(name, x, y, resource)
+function uIImage:new(name, x, y, resource)
 	local newInstance = {}
 	setmetatable(newInstance, self)
 	self.__index = self
 
-	newInstance.Name = name
-	newInstance.ScreenX = x
-	newInstance.ScreenY = y
-	newInstance.Width = resource:getWidth()
-	newInstance.Height = resource:getHeight()
-	newInstance.Resource = resource
+	newInstance.name = name
+	newInstance.screenX = x
+	newInstance.screenY = y
+	newInstance.width = resource:getWidth()
+	newInstance.height = resource:getHeight()
+	newInstance.resource = resource
 
-	newInstance.Visible = true
-	newInstance.NodeID = Observer:Observe(CONST_OBSERVE_UI_DRAW, newInstance.Name, function() newInstance:Draw() end)	
+	newInstance.visible = true
+	newInstance.nodeID = Observer:observe(CONST_OBSERVE_UI_DRAW, newInstance.name, function() newInstance:draw() end)	
 
 	return newInstance
 end
 
-function UIImage:Draw()
-	if self.Visible == true then
-		love.graphics.draw(self.Resource, self.ScreenX, self.ScreenY)		
+function uIImage:draw()
+	if self.visible == true then
+		love.graphics.draw(self.resource, self.screenX, self.screenY)		
 	end
 end
 
 
-function UIImage:Unload()	
-	Observer:StopObserving(CONST_OBSERVE_UI_DRAW, self.NodeID)
-	self.Resource = nil	
-	Debug:Log("[UI] Unloaded UI Image " .. self.Name)
+function uIImage:unload()	
+	Observer:stopObserving(CONST_OBSERVE_UI_DRAW, self.nodeID)
+	self.resource = nil	
+	Debug:log("[UI] Unloaded UI Image " .. self.name)
 end
 
-return UIImage
+return uIImage

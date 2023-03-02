@@ -15,6 +15,7 @@ end
 ---@param table table table where find
 ---@param property any which property find
 ---@param value any what value to find
+---@return any
 function table.find(table, property, value)
 	for _, object in ipairs(table) do
 		if object[property] == value then
@@ -31,8 +32,8 @@ Debug = require ("lib.debug.log")
 --Global objects/modules
 local cameraFactory = require("lib.camera")
 
-MainCamera = cameraFactory:New()
-UICamera = cameraFactory:New(100, "Fill", 1366, 768)
+MainCamera = cameraFactory:new()
+UICamera = cameraFactory:new(100, "fill", 1366, 768)
 
 Ecs = require("lib.external.tiny")
 Timer = require("lib.external.timer")
@@ -48,7 +49,7 @@ Settings = require("lib.settings")
 --Global constants
 CONST_FIRST_SCENE = "splashScreen"
 --CONST_SECOND_SCENE = IIF(Debug.IsOn, "debugMenu", "tilemap")
-CONST_SECOND_SCENE  = "tilemap"
+CONST_SECOND_SCENE  = "mapScene"
 CONST_INIT_MAP = "data/test_map001.lua"
 
 -- UI constants

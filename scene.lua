@@ -13,10 +13,10 @@ end })
 
 function Scene.Load(name)
 
-	Scene.LastSceneName = name
+	Scene.lastSceneName = name
 	local stringBuilder = {}
 
-	table.insert(stringBuilder, "\n[CORE] Loading " .. Scene.LastSceneName)
+	table.insert(stringBuilder, "\n[CORE] Loading " .. Scene.lastSceneName)
 	
 	if CurrentScene then
 
@@ -54,7 +54,7 @@ function Scene.Load(name)
 	table.insert(stringBuilder, "[CORE] fresh scene canvases: " .. stats.canvases)
 	table.insert(stringBuilder, "[CORE] fresh scene fonts: " .. stats.fonts)
 
-	Debug:Log(table.concat(stringBuilder, "\n"))
+	Debug:log(table.concat(stringBuilder, "\n"))
 
 	Scene:load()
 end

@@ -1,42 +1,42 @@
-local DebugMenu = {}
+local debugMenu = {}
 
-function DebugMenu.load()
+function debugMenu.load()
 
 end
 
-function DebugMenu.update(dt) 
-	if Input:IsActionPressed(CONST_INPUT_EXIT) then
+function debugMenu.update(dt) 
+	if Input:isActionPressed(CONST_INPUT_EXIT) then
 		love.event.quit()
 	end
 end
 
-function DebugMenu.draw()
+function debugMenu.draw()
 love.graphics.print("DebugMenu", 0,0)
 end
 
-function DebugMenu.keypressed(key, scancode, isrepeat)
+function debugMenu.keypressed(key, scancode, isrepeat)
 
 end
 
-function DebugMenu.keyreleased(key, scancode)
+function debugMenu.keyreleased(key, scancode)
 
 end
 
-function DebugMenu.mousepressed(x, y, button, istouch, presses)
+function debugMenu.mousepressed(x, y, button, istouch, presses)
 
 end
 
-function DebugMenu.mousereleased(x, y, button, istouch, presses)
+function debugMenu.mousereleased(x, y, button, istouch, presses)
 
 end
 
-function DebugMenu.resize(width, height)
+function debugMenu.resize(width, height)
 
 end
 
 
-function DebugMenu.unload()
+function debugMenu.unload()
 
 end
 
-return DebugMenu
+return debugMenu

@@ -1,22 +1,22 @@
-local Settings = {}
+local settings = {}
 
-function Settings.LoadBindings()
-	Debug:Log("[SETTINGS] Loading keybindings")
+function settings.loadBindings()
+	Debug:log("[SETTINGS] Loading keybindings")
 
 	local keybinding = {
-		{ ActionName = "LEFT",    Keys = { "a", "left" },  Pausable = true },
-		{ ActionName = "RIGHT",   Keys = { "d", "right" }, Pausable = true },
-		{ ActionName = "UP",      Keys = { "w", "up" },    Pausable = true },
-		{ ActionName = "DOWN",    Keys = { "s", "down" },  Pausable = true },
-		{ ActionName = "EXIT",    Keys = { "escape" },     Pausable = false },
-		{ ActionName = "CONSOLE", Keys = { ";" },          Pausable = false }
+		{ actionName = "LEFT",    keys = { "a", "left" },  pausable = true },
+		{ actionName = "RIGHT",   keys = { "d", "right" }, pausable = true },
+		{ actionName = "UP",      keys = { "w", "up" },    pausable = true },
+		{ actionName = "DOWN",    keys = { "s", "down" },  pausable = true },
+		{ actionName = "EXIT",    keys = { "escape" },     pausable = false },
+		{ actionName = "CONSOLE", keys = { ";" },          pausable = false }
 	}
 
 	local fileExists = love.filesystem.getInfo("bindings.lua", "file")
 	if not fileExists then
 		local file = love.filesystem.newFile("bindings.lua")
 		if file:open("w") then
-			file:write("return " .. Debug.Dump(keybinding))
+			file:write("return " .. Debug.dump(keybinding))
 		end
 		file:close()
 	else
@@ -29,25 +29,25 @@ function Settings.LoadBindings()
 	end
 
 	for index, value in ipairs(keybinding) do
-		Input:Bind(value.ActionName, value.Keys, value.Pausable)
+		Input:bind(value.actionName, value.keys, value.pausable)
 	end
 end
 
-function Settings.LoadSettings()
-	Debug:Log("[SETTINGS] Loading settings")
+function settings.loadSettings()
+	Debug:log("[SETTINGS] Loading settings")
 	local settings = {
-		Vsync = 0,
-		FullScreen = true,
-		FullScreenType = "desktop",
-		ResolutionX = 0,
-		ResolutionY = 0
+		vsync = 0,
+		fullScreen = true,
+		fullScreenType = "desktop",
+		resolutionX = 0,
+		resolutionY = 0
 	}
 
 	local fileExists = love.filesystem.getInfo("settings.lua", "file")
 	if not fileExists then
 		local file = love.filesystem.newFile("settings.lua")
 		if file:open("w") then
-			file:write("return " .. Debug.Dump(settings))
+			file:write("return " .. Debug.dump(settings))
 		end
 		file:close()
 	else
@@ -59,16 +59,16 @@ function Settings.LoadSettings()
 		settings = chunk()
 	end
 
-	love.window.setMode(settings.ResolutionX, settings.ResolutionY, {
-		vsync = settings.Vsync,
-		fullscreen = settings.FullScreen,
-		fullscreentype = settings.FullScreenType		
+	love.window.setMode(settings.resolutionX, settings.resolutionY, {
+		vsync = settings.vsync,
+		fullscreen = settings.fullScreen,
+		fullscreentype = settings.fullScreenType		
 	})
-	settings.ResolutionX = love.graphics.getWidth()
-	settings.ResolutionY = love.graphics.getHeight()
+	settings.resolutionX = love.graphics.getWidth()
+	settings.resolutionY = love.graphics.getHeight()
 
-	UICamera:Resize(settings.ResolutionX, settings.ResolutionY)
-	MainCamera:Resize(settings.ResolutionX, settings.ResolutionY)
+	UICamera:resize(settings.resolutionX, settings.resolutionY)
+	MainCamera:resize(settings.resolutionX, settings.resolutionY)
 end
 
-return Settings
+return settings

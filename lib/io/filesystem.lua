@@ -1,21 +1,21 @@
-local FileSystem = {}
+local fileSystem = {}
 
-FileSystem.Path = "data/"
-FileSystem.Mob = "mobs/"
-FileSystem.Items = "items/"
+fileSystem.path = "data/"
+fileSystem.mob = "mobs/"
+fileSystem.items = "items/"
 
-FileSystem.Extension = ".lua"
+fileSystem.extension = ".lua"
 
-function FileSystem.LoadItem(name)
+function fileSystem.loadItem(name)
 	
 end
 
-function FileSystem:LoadMob(name)
-	return self._loadTableSafe(self.Path .. self.Mob .. name .. self.Extension)
+function fileSystem:loadMob(name)
+	return self._loadTableSafe(self.path .. self.mob .. name .. self.extension)
 end	
 
 
-function FileSystem._loadTableSafe(path)
+function fileSystem._loadTableSafe(path)
 	local chunk, err = love.filesystem.load(path)
 	
 	if err then
@@ -37,4 +37,4 @@ function FileSystem._loadTableSafe(path)
 
 end
 
-return FileSystem
+return fileSystem

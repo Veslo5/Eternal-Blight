@@ -1,35 +1,35 @@
-local Debug = {}
+local debug = {}
 
-Debug.Serpent = require("lib.external.serpent")
+debug.serpent = require("lib.external.serpent")
 
 --!DEBUG:
-Debug.IsOn = arg[2] == "debug"
-if Debug.IsOn then		
-    Debug.lldebugger = require("lldebugger")
-	Debug.lldebugger.start()
+debug.isOn = arg[2] == "debug"
+if debug.isOn then		
+    debug.lldebugger = require("lldebugger")
+	debug.lldebugger.start()
 end
 --!DEBUG
 
 --- Logs message
-function Debug:Log(messages, ...)
-	if self.IsOn then
+function debug:log(messages, ...)
+	if self.isOn then
 		print(messages, ...)
 	end
 end
 
 --- Draw love2D stats
-function Debug:DrawStats()
-	if self.IsOn then		
+function debug:drawStats()
+	--if self.IsOn then		
 		local stats = love.graphics.getStats()
 		love.graphics.print(tostring(love.timer.getFPS()), 0, 0)
 		love.graphics.print(tostring(stats.drawcalls), 0, 10)
-	end
+	--end
 end
 
 --- Generaters string from table
 ---@param o any
-function Debug.Dump(o)
-	return Debug.Serpent.block(o, {comment = false})
+function debug.dump(o)
+	return debug.serpent.block(o, {comment = false})
 	-- if type(o) == 'table' then
 	-- 	local s = '{ '
 	-- 	for k, v in pairs(o) do
@@ -42,4 +42,4 @@ function Debug.Dump(o)
 	-- end
 end
 
-return Debug
+return debug

@@ -1,15 +1,15 @@
-local Loader = {}
+local loader = {}
 
-Loader.IDIndex = 0
-Loader.ThreadCode = [[
+loader.iDIndex = 0
+loader.threadCode = [[
 
 require("love.image")
 
 local container, channelName = ...
 
 for i, resource in ipairs(container) do
-	if resource.Type == "IMAGE" then
-		resource.RawData = love.image.newImageData(resource.Path)
+	if resource.type == "IMAGE" then
+		resource.rawData = love.image.newImageData(resource.path)
 	end
 end
 
@@ -18,87 +18,87 @@ love.thread.getChannel(channelName):push(container)
 
 --- New instance
 ---@param id? string optional custom ID of thread channel
-function Loader:New(id)
+function loader:new(id)
 	local newInstance = {}
 	setmetatable(newInstance, self)
 	self.__index = self
 	
-	newInstance.ID = id or "Loader" .. tostring(self.IDIndex + 1)
+	newInstance.ID = id or "Loader" .. tostring(self.iDIndex + 1)
 
-	newInstance.ThreadContainer = {}		
-	newInstance.FinishCallback = nil	
-	newInstance.Thread = nil
-	newInstance.ThreadStarted = false
-	newInstance.IsDone = false
+	newInstance.threadContainer = {}		
+	newInstance.finishCallback = nil	
+	newInstance.thread = nil
+	newInstance.threadStarted = false
+	newInstance.isDone = false
 	
 
 
 	return newInstance
 end
 
-function Loader:NewImage(name, resourcePath)
-	table.insert(self.ThreadContainer, { Name = name, Path = resourcePath, RawData = nil, Type = "IMAGE" })
+function loader:newImage(name, resourcePath)
+	table.insert(self.threadContainer, { name = name, path = resourcePath, rawData = nil, type = "IMAGE" })
 end
 
 --- Load data asynchronously
 ---@param finishCallback function Callback function after loading finishes
-function Loader:LoadAsync(finishCallback)
-	self.FinishCallback = finishCallback
+function loader:loadAsync(finishCallback)
+	self.finishCallback = finishCallback
 
-	Debug:Log("[LOADER] Starting new thread " .. self.ID)
-	self.Thread = love.thread.newThread(self.ThreadCode)
-	self.Thread:start(self.ThreadContainer, self.ID)
-	self.ThreadStarted = true
+	Debug:log("[LOADER] Starting new thread " .. self.ID)
+	self.thread = love.thread.newThread(self.threadCode)
+	self.thread:start(self.threadContainer, self.ID)
+	self.threadStarted = true
 end
 
 --- Load data synchronously
-function Loader:LoadSync()
+function loader:loadSync()
 
 	local dataContainer = {}
-		for index, resource in ipairs(self.ThreadContainer) do
-			if resource.Type == "IMAGE" then
+		for index, resource in ipairs(self.threadContainer) do
+			if resource.type == "IMAGE" then
 				-- load rawdata and push them into GPU
-				table.insert(dataContainer, { Name = resource.Name, Value = love.graphics.newImage(resource.Path) })
+				table.insert(dataContainer, { name = resource.name, value = love.graphics.newImage(resource.path) })
 			end
 		end
 		
 		--cleaning & finishing
-		self.IsDone = true
+		self.isDone = true
 
 	return dataContainer
 end
 
 --- Check if thread is ended
-function Loader:Update(dt)
-	if self.Thread and self.ThreadStarted == true then
-		if self.Thread:isRunning() == true then
+function loader:update(dt)
+	if self.thread and self.threadStarted == true then
+		if self.thread:isRunning() == true then
 			return
 		end
 
-		local threadErr = self.Thread:getError()
+		local threadErr = self.thread:getError()
 		if threadErr then
-			error("Thread error" .. self.ththreadErr)
+			error("Thread error" .. self.threadErr)
 		end
 
 		local loadedContainer = love.thread.getChannel(self.ID):pop()
 
 		local dataContainer = {}
 		for index, resource in ipairs(loadedContainer) do
-			if resource.Type == "IMAGE" then
+			if resource.type == "IMAGE" then
 				-- push rawData into GPU				
-				table.insert(dataContainer, { Name = resource.name, Value = love.graphics.newImage(resource.RawData) })
-				resource.RawData = nil
+				table.insert(dataContainer, { name = resource.name, value = love.graphics.newImage(resource.rawData) })
+				resource.rawData = nil
 			end
 		end
 		
 		--cleaning & finishing
-		self.IsDone = true
-		self.ThreadStarted = false
-		if self.FinishCallback then 
-			self.FinishCallback(dataContainer) 
+		self.isDone = true
+		self.threadStarted = false
+		if self.finishCallback then 
+			self.finishCallback(dataContainer) 
 		end
-		Debug:Log("[LOADER] Thread ended " .. self.ID)
+		Debug:log("[LOADER] Thread ended " .. self.ID)
 	end
 end
 
-return Loader
+return loader

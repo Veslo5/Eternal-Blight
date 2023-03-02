@@ -1,59 +1,59 @@
-local EntityBuilder = {}
+local entityBuilder = {}
 
-function EntityBuilder:New(name)
+function entityBuilder:new(name)
 	local newInstance = {}
 	setmetatable(newInstance, self)
 	self.__index = self
 
-	newInstance.Name = name or "NewEntity"
+	newInstance.name = name or "NewEntity"
 	return newInstance
 end
 
-function EntityBuilder:MakeGridMovable(x,y)
+function entityBuilder:makeGridMovable(x,y)
 	self.IGridMovable = {
-		GridX = x or 0,
-		GridY = y or 0
+		gridX = x or 0,
+		gridY = y or 0
 	}
 
 	return self
 end
 
-function EntityBuilder:MakeDrawable()
+function entityBuilder:makeDrawable()
 	self.IDrawable = {
-		WorldX = 0,
-		WorldY = 0,
-		Image = nil
+		worldX = 0,
+		worldY = 0,
+		image = nil
 	}
 
 	return self
 end
 
-function EntityBuilder:AddStats(ap, hp, mp)
+function entityBuilder:addStats(ap, hp, mp)
 	self.Stats = {
-		DefaultActionPoints = ap,
-		CurrentActionPoints = ap,
-		DefaultHealthPoints = hp,
-		CurrentHealthPoints = hp,
-		DefaultManaPoints = mp,
-		CurrentManaPoints = mp
+		defaultActionPoints = ap,
+		currentActionPoints = ap,
+		defaultHealthPoints = hp,
+		currentHealthPoints = hp,
+		defaultManaPoints = mp,
+		currentManaPoints = mp
 	}
 
 	return self
 end
 
-function EntityBuilder:MakeControllable(possesed, onTurn)
+function entityBuilder:makeControllable(possesed, onTurn)
 	self.IControllable = {
-		Possesed = possesed or false,
-		OnTurn = onTurn or false
+		possesed = possesed or false,
+		onTurn = onTurn or false
 	}
 
 	return self
 end
 
-function EntityBuilder:MakeSimulated()
+function entityBuilder:makeSimulated()
 	self.ISimulated = true
 
 	return self
 end
 
-return EntityBuilder	
+return entityBuilder	

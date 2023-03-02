@@ -1,52 +1,52 @@
-local SystemBuilder = {}
+local systemBuilder = {}
 
-function SystemBuilder.GetDrawSystem()
+function systemBuilder.getDrawSystem()
 	local system = Ecs.processingSystem()
-	system.Name = "Draw"
-	system.DrawSystem = true
+	system.name = "Draw"
+	system.drawSystem = true
 	system.filter = Ecs.requireAll("IDrawable")
 
 	function system:process(entity, dt)
 		love.graphics.setColor(0,1,0,1)
-		love.graphics.rectangle("fill", entity.IDrawable.WorldX, entity.IDrawable.WorldY, 32, 32)
+		love.graphics.rectangle("fill", entity.IDrawable.worldX, entity.IDrawable.worldY, 32, 32)
 		love.graphics.setColor(1,1,1,1)
 	end
 	return system
 end
 
-function SystemBuilder.GetMoveSystem()
+function systemBuilder.getMoveSystem()
 	local system = Ecs.processingSystem()
-	system.Name = "Move"
-	system.UpdateSystem = true
+	system.name = "Move"
+	system.updateSystem = true
 	system.filter = Ecs.requireAll("IGridMovable", "IControllable")
 
 	function system:onAdd(entity)
 		if entity.IDrawable then
-			entity.IDrawable.WorldX =  entity.IGridMovable.GridX * 32
-			entity.IDrawable.WorldY =  entity.IGridMovable.GridY * 32
+			entity.IDrawable.worldX =  entity.IGridMovable.gridX * 32
+			entity.IDrawable.worldY =  entity.IGridMovable.gridY * 32
 		end
 	end
 
 	function system:process(entity, dt)
-		if(entity.IControllable.OnTurn == true and entity.IControllable.Possesed == true) then
+		if(entity.IControllable.onTurn == true and entity.IControllable.possesed == true) then
 			local moved = false
-			if (Input:IsActionPressed("RIGHT")) then
-				entity.IGridMovable.GridX = entity.IGridMovable.GridX + 1
+			if (Input:isActionPressed("RIGHT")) then
+				entity.IGridMovable.gridX = entity.IGridMovable.gridX + 1
 				moved = true
 			end
 
-			if (Input:IsActionPressed("LEFT")) then
-				entity.IGridMovable.GridX = entity.IGridMovable.GridX - 1
+			if (Input:isActionPressed("LEFT")) then
+				entity.IGridMovable.gridX = entity.IGridMovable.gridX - 1
 				moved = true
 			end
 
-			if (Input:IsActionPressed("UP")) then
-				entity.IGridMovable.GridY = entity.IGridMovable.GridY - 1
+			if (Input:isActionPressed("UP")) then
+				entity.IGridMovable.gridY = entity.IGridMovable.gridY - 1
 				moved = true
 			end
 
-			if (Input:IsActionPressed("DOWN")) then
-				entity.IGridMovable.GridY = entity.IGridMovable.GridY+ 1
+			if (Input:isActionPressed("DOWN")) then
+				entity.IGridMovable.gridY = entity.IGridMovable.gridY+ 1
 				moved = true
 			end
 
@@ -56,11 +56,11 @@ function SystemBuilder.GetMoveSystem()
 				--entity.IControllable.OnTurn = false
 				
 				if entity.IDrawable then
-					entity.IDrawable.WorldX =  entity.IGridMovable.GridX * 32
-					entity.IDrawable.WorldY =  entity.IGridMovable.GridY * 32
+					entity.IDrawable.worldX =  entity.IGridMovable.gridX * 32
+					entity.IDrawable.worldY =  entity.IGridMovable.gridY * 32
 				end
 
-				self.WorldManager:NextRound()
+				self.WorldManager:nextRound()
 			end
 
 		end
@@ -70,10 +70,10 @@ function SystemBuilder.GetMoveSystem()
 end
 
 
-function SystemBuilder.GetRoundSystem()
+function systemBuilder.getRoundSystem()
 	local system = Ecs.processingSystem()
-	system.Name = "Round"
-	system.RoundSystem = true
+	system.name = "Round"
+	system.roundSystem = true
 	system.filter = Ecs.requireAll("ISimulated")
 
 	function system:process(entity, dt)
@@ -82,4 +82,4 @@ function SystemBuilder.GetRoundSystem()
 	return system
 end
 
-return SystemBuilder
+return systemBuilder

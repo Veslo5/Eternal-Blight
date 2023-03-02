@@ -1,11 +1,14 @@
-local TileMapRenderer = {}
+local tileMapRenderer = {}
 
-TileMapRenderer.AtlasFactory = require("lib.sprites.atlas")
+tileMapRenderer.atlasFactory = require("lib.sprites.atlas")
 
-TileMapRenderer.TileSetAtlases = {}
-TileMapRenderer.GroupRenderers = {}
+tileMapRenderer.tileSetAtlases = {}
+tileMapRenderer.groupRenderers = {}
 
-function TileMapRenderer:GetAtlasForTileIndex(index, tilemapTilesets)
+--- Get tileset name and index convert from GID to local data index
+---@param index integer
+---@param tilemapTilesets table
+function tileMapRenderer:getAtlasForTileIndex(index, tilemapTilesets)
 	local tilemapTilesetsCount = #tilemapTilesets
 	local currentTileset = tilemapTilesets[tilemapTilesetsCount]
 	
@@ -20,6 +23,7 @@ function TileMapRenderer:GetAtlasForTileIndex(index, tilemapTilesets)
 	for i = 1, tilemapTilesetsCount, 1 do 
 		currentTileset = tilemapTilesets[i]
 		if i + 1 <= tilemapTilesetsCount then
+			-- check if index is between two max gids
 			if currentTileset.firstgid <= index and tilemapTilesets[i+1].firstgid > index then
 				local indexFromAtlas = index - IIF(currentTileset.firstgid == 1, 0, currentTileset.firstgid - 1)
 				indexFromAtlas = IIF(indexFromAtlas == 0, 1, indexFromAtlas)
@@ -29,7 +33,10 @@ function TileMapRenderer:GetAtlasForTileIndex(index, tilemapTilesets)
 	end	
 end
 
-function TileMapRenderer:GetTilesetsNamesAndgidByIndex(tilesData, tilemapTilesets)
+--- Get tileset names from gid data array
+---@param tilesData table
+---@param tilemapTilesets table
+function tileMapRenderer:getTilesetsNamesAndgidByIndex(tilesData, tilemapTilesets)
 	local tilesetNames = {}
 
 	for _, index in ipairs(tilesData) do
@@ -59,7 +66,16 @@ function TileMapRenderer:GetTilesetsNamesAndgidByIndex(tilesData, tilemapTileset
 	return tilesetNames
 end
 
-function TileMapRenderer:Bake(spriteBatchData, tilesets, data, layerWidth, layerHeight, tileWidth, tileHeight)
+
+--- Bakes quads into spritebatches 
+---@param spriteBatchData table
+---@param tilesets table
+---@param data table
+---@param layerWidth integer
+---@param layerHeight integer
+---@param tileWidth integer
+---@param tileHeight integer
+function tileMapRenderer:bake(spriteBatchData, tilesets, data, layerWidth, layerHeight, tileWidth, tileHeight)
 	local layerHeight = layerHeight
 	local width = layerWidth - 1
 	local height = layerHeight - 1
@@ -74,29 +90,34 @@ function TileMapRenderer:Bake(spriteBatchData, tilesets, data, layerWidth, layer
 			if (globaltileNumber ~= 0) then				
 				--TODO TilesetAtlas choose right one
 				
-				local tilesetName, tileIndex = self:GetAtlasForTileIndex(globaltileNumber, tilesets)
+				local tilesetName, tileIndex = self:getAtlasForTileIndex(globaltileNumber, tilesets)
 				local batchData = table.find(spriteBatchData, "batchTilesetName", tilesetName)
-				batchData.spritebatch:add(batchData.atlas.Quads[tileIndex], column * tileWidth, row * tileHeight)
+
+				batchData.spritebatch:add(batchData.atlas.quads[tileIndex], column * tileWidth, row * tileHeight)
 			end
 		end
 	end
 end
 
-function TileMapRenderer:CreateRenderers(tileMapMetadata, resources)
+--- Initialize renderers
+---@param tileMapMetadata table metada of tilemap
+---@param resources table talbe with resources 
+function tileMapRenderer:createRenderers(tileMapMetadata, resources)
 
 	-- creating atlas for every tileset
 	for _, tileset in ipairs(tileMapMetadata.tilesets) do	
-		local resource = table.find(resources, "Name", tileset.name)	
-		local atlas = self.AtlasFactory:New(resource.Value, 32, 32, true) 
-		atlas:CutQuads()
-		self.TileSetAtlases[tileset.name] = atlas
+		local resource = table.find(resources, "name", tileset.name)	
+		local atlas = self.atlasFactory:new(resource.value, 32, 32, true) 
+		atlas:cutQuads()
+		self.tileSetAtlases[tileset.name] = atlas
 	end
 
 	for _, layer in ipairs(tileMapMetadata.layers) do
+		-- check if its folder 
 		if (layer.type == "group") then
 
 			-- only goto I will EVER use :P! (working as continue statement)
-			if (layer.name == "Data" and Debug.IsOn == false) then goto continue end
+			if (layer.name == "Data" and Debug.isOn == false) then goto continue end
 
 			local renderer = {
 				name = layer.name,
@@ -104,23 +125,25 @@ function TileMapRenderer:CreateRenderers(tileMapMetadata, resources)
 			}
 			
 			for __, layerInGroup in ipairs(layer.layers) do
-				for ___, tilesetName in pairs(self:GetTilesetsNamesAndgidByIndex(layerInGroup.data, tileMapMetadata.tilesets)) do
+				for ___, tilesetName in pairs(self:getTilesetsNamesAndgidByIndex(layerInGroup.data, tileMapMetadata.tilesets)) do
 
-					table.insert(renderer.spriteBatchesData, {
+					-- add spritebatchdata
+					table.insert(renderer.spriteBatchesData, 
+					{
 						visible = layerInGroup.visible, 
 						firstgid = tilesetName.firstgid,
 						batchTilesetName = tilesetName.name,
-						atlas = self.TileSetAtlases[tilesetName.name],
+						atlas = self.tileSetAtlases[tilesetName.name],
 						layerInGroupName = layerInGroup.name,
-						spritebatch = love.graphics.newSpriteBatch(self.TileSetAtlases[tilesetName.name].Texture, self.TileSetAtlases[tilesetName.name]:GetAtlasQuadCount())
+						spritebatch = love.graphics.newSpriteBatch(self.tileSetAtlases[tilesetName.name].texture, self.tileSetAtlases[tilesetName.name]:getAtlasQuadCount())
 					})
 				end
 
-					self:Bake(renderer.spriteBatchesData, tileMapMetadata.tilesets, layerInGroup.data, layerInGroup.width, layerInGroup.height, tileMapMetadata.tilewidth, tileMapMetadata.tileheight)
+					self:bake(renderer.spriteBatchesData, tileMapMetadata.tilesets, layerInGroup.data, layerInGroup.width, layerInGroup.height, tileMapMetadata.tilewidth, tileMapMetadata.tileheight)
 
 				end
 			
-			table.insert(self.GroupRenderers, renderer)
+			table.insert(self.groupRenderers, renderer)
 
 			::continue::
 		end
@@ -130,8 +153,8 @@ end
 --- Set spriteBatch layer visibility
 ---@param name string
 ---@return boolean
-function TileMapRenderer:ToggleLayerVisibility(name)
-	for _, groupRenderer in ipairs(self.GroupRenderers) do
+function tileMapRenderer:toggleLayerVisibility(name)
+	for _, groupRenderer in ipairs(self.groupRenderers) do
 		for __, spritebatchdata in ipairs(groupRenderer.spriteBatchesData) do
 			if groupRenderer.name == name then
 				spritebatchdata.visible = IIF(spritebatchdata.visible, false, true)
@@ -143,8 +166,8 @@ function TileMapRenderer:ToggleLayerVisibility(name)
 	return false
 end
 
-function TileMapRenderer:Draw()
-	for _, layerRenderer in ipairs(self.GroupRenderers) do
+function tileMapRenderer:draw()
+	for _, layerRenderer in ipairs(self.groupRenderers) do
 		for __, spritebatchdata in ipairs(layerRenderer.spriteBatchesData) do
 			if spritebatchdata.visible then
 			love.graphics.draw(spritebatchdata.spritebatch,0,0)
@@ -153,7 +176,7 @@ function TileMapRenderer:Draw()
 	end
 end
 
-function TileMapRenderer.DrawWorldWalls(gridWidth, gridHeight, tileWidth, tileHeight, gridData)	
+function tileMapRenderer.drawWorldWalls(gridWidth, gridHeight, tileWidth, tileHeight, gridData)	
 	love.graphics.setColor(1,0,0,0.2)
 	for x = 1, gridWidth, 1 do		
 		for y = 1, gridHeight, 1 do
@@ -166,14 +189,14 @@ function TileMapRenderer.DrawWorldWalls(gridWidth, gridHeight, tileWidth, tileHe
 	love.graphics.setColor(1,1,1,1)
 end
 
-function TileMapRenderer:Unload()
+function tileMapRenderer:unload()
 
-	for _, atlas in ipairs(self.TileSetAtlases) do
-		atlas:Unload()
+	for _, atlas in ipairs(self.tileSetAtlases) do
+		atlas:unload()
 	end
-	self.TileSetAtlases = {}
+	self.tileSetAtlases = {}
 
-	for _, layerRenderer in ipairs(self.GroupRenderers) do
+	for _, layerRenderer in ipairs(self.groupRenderers) do
 		for __, spritebatchdata in ipairs(layerRenderer.spriteBatchesData) do
 			spritebatchdata.spritebatch = nil
 			spritebatchdata = nil
@@ -181,8 +204,8 @@ function TileMapRenderer:Unload()
 		layerRenderer = nil
 	end
 	
-	self.GroupRenderers = {}
+	self.groupRenderers = {}
 
 end
 
-return TileMapRenderer
+return tileMapRenderer

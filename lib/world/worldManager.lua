@@ -1,57 +1,57 @@
-local WorldManager = {}
+local worldManager = {}
 
-WorldManager.MapWorld = Ecs.world()
+worldManager.mapWorld = Ecs.world()
 
-WorldManager.DrawSystemFilter = nil
-WorldManager.UpdateSystemFilter = nil
-WorldManager.RoundSystemFilter = nil
-
-
-WorldManager.GridData = {}
-WorldManager.GridWidth = 0
-WorldManager.GridHeight = 0
-WorldManager.TileWidth = 0
-WorldManager.TileHeight = 0
-
-WorldManager.CurrentRound = 0
+worldManager.drawSystemFilter = nil
+worldManager.updateSystemFilter = nil
+worldManager.roundSystemFilter = nil
 
 
+worldManager.gridData = {}
+worldManager.gridWidth = 0
+worldManager.gridHeight = 0
+worldManager.tileWidth = 0
+worldManager.tileHeight = 0
 
-function WorldManager:EcsInit()
+worldManager.currentRound = 0
+
+
+
+function worldManager:ecsInit()
 	-- Here we require all DrawSystem marked systems
-	self.DrawSystemFilter = Ecs.requireAll("DrawSystem")
-	self.UpdateSystemFilter = Ecs.requireAll("UpdateSystem")
-	self.RoundSystemFilter = Ecs.requireAll("RoundSystem")
+	self.drawSystemFilter = Ecs.requireAll("DrawSystem")
+	self.updateSystemFilter = Ecs.requireAll("UpdateSystem")
+	self.roundSystemFilter = Ecs.requireAll("RoundSystem")
 end
 
-function WorldManager:AddEntity(entity)
-	Ecs.add(self.MapWorld, entity)
+function worldManager:addEntity(entity)
+	Ecs.add(self.mapWorld, entity)
 end
 
-function WorldManager:AddSystem(system)
-	system.WorldManager = self
-	Ecs.addSystem(self.MapWorld, system)
-	Debug:Log("[GAMEPLAY] Added system: " .. system.Name)
+function worldManager:addSystem(system)
+	system.worldManager = self
+	Ecs.addSystem(self.mapWorld, system)
+	Debug:log("[GAMEPLAY] Added system: " .. system.name)
 end
 
-function WorldManager:SetupMapData(sizeX, sizeY, tileWidth, tileheight)
-	self.GridWidth = sizeX
-	self.GridHeight = sizeY
+function worldManager:setupMapData(sizeX, sizeY, tileWidth, tileheight)
+	self.gridWidth = sizeX
+	self.gridHeight = sizeY
 
-	self.TileWidth = tileWidth
-	self.TileHeight = tileheight
+	self.tileWidth = tileWidth
+	self.tileHeight = tileheight
 
 	for x = 1, sizeX, 1 do
-		self.GridData[x] = {}
+		self.gridData[x] = {}
 		for y = 1, sizeY, 1 do
-			self.GridData[x][y] = { Wall = false }
+			self.gridData[x][y] = { wall = false }
 		end
 	end
 
-	Debug:Log("[GAMEPLAY] Initialized map data with: " .. self.GridWidth * self.GridHeight .. " tiles")
+	Debug:log("[GAMEPLAY] Initialized map data with: " .. self.gridWidth * self.gridHeight .. " tiles")
 end
 
-function WorldManager:SetupWalls(dataTiles)
+function worldManager:setupWalls(dataTiles)
 	for _, layerInGroup in ipairs(dataTiles.layers) do
 		if layerInGroup.name == "Walls" then
 			local layerHeight = layerInGroup.height
@@ -65,7 +65,7 @@ function WorldManager:SetupWalls(dataTiles)
 					local index = ((row * layerHeight) + column) + 1
 					local tileNumber = layerInGroup.data[index]
 					if (tileNumber ~= 0) then
-						self.GridData[column + 1][row + 1].Wall = true
+						self.gridData[column + 1][row + 1].Wall = true
 					end
 				end
 			end
@@ -76,33 +76,33 @@ end
 --- Return position of tile in world
 ---@param gridX integer
 ---@param gridY integer
-function WorldManager:GetTileWorldPosition(gridX, gridY)
-	return gridX * self.GridWidth, gridY * self.GridHeight
+function worldManager:getTileWorldPosition(gridX, gridY)
+	return gridX * self.gridWidth, gridY * self.gridHeight
 end
 
 --- Set wall at grid position
 ---@param onOff boolean
 ---@param gridX integer
 ---@param gridY integer
-function WorldManager:SetWall(onOff, gridX, gridY)
-	self.GridData[gridX][gridY].Wall = onOff
+function worldManager:setWall(onOff, gridX, gridY)
+	self.gridData[gridX][gridY].wall = onOff
 end
 
 --- Returns tile table
 ---@param gridX integer
 ---@param gridY integer
 ---@return table
-function WorldManager:GetTile(gridX, gridY)
-	return self.GridData[gridX][gridY]
+function worldManager:getTile(gridX, gridY)
+	return self.gridData[gridX][gridY]
 end
 
 --- Checks if parameters are valid values in grid
 ---@param gridX integer
 ---@param gridY integer
 ---@return boolean
-function WorldManager:IsInGridRange(gridX, gridY)
-	if gridX <= self.GridWidth and gridX > 0 and
-		gridY <= self.GridHeight and gridY > 0
+function worldManager:isInGridRange(gridX, gridY)
+	if gridX <= self.gridWidth and gridX > 0 and
+		gridY <= self.gridHeight and gridY > 0
 	then
 		return true
 	else
@@ -110,20 +110,20 @@ function WorldManager:IsInGridRange(gridX, gridY)
 	end
 end
 
-function WorldManager:NextRound()
+function worldManager:nextRound()
 	print("Starting next round")
-	self.CurrentRound = self.CurrentRound + 1
-	Ecs.update(self.MapWorld, love.timer.getDelta(), self.RoundSystemFilter)
+	self.currentRound = self.currentRound + 1
+	Ecs.update(self.mapWorld, love.timer.getDelta(), self.roundSystemFilter)
 end
 
-function WorldManager:Update(dt)
+function worldManager:update(dt)
 	--print("Update filter")
-	Ecs.update(self.MapWorld, dt, self.UpdateSystemFilter)
+	Ecs.update(self.mapWorld, dt, self.updateSystemFilter)
 end
 
-function WorldManager:Draw()
+function worldManager:draw()
 	--print("Draw filter")
-	Ecs.update(self.MapWorld, love.timer.getDelta(), self.DrawSystemFilter)
+	Ecs.update(self.mapWorld, love.timer.getDelta(), self.drawSystemFilter)
 end
 
-return WorldManager
+return worldManager

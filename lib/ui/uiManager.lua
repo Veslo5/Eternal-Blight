@@ -1,14 +1,14 @@
-local UIManager = {}
-UIManager.consolaFactory = require("lib.ui.uiConsola")
-UIManager.textBoxFactory = require("lib.ui.uiTextbox")
-UIManager.imageFactory = require("lib.ui.uiImage")
+local uIManager = {}
+uIManager.consolaFactory = require("lib.ui.uiConsola")
+uIManager.textBoxFactory = require("lib.ui.uiTextbox")
+uIManager.imageFactory = require("lib.ui.uiImage")
 
-UIManager.windowWidth = 0
-UIManager.windowHeight = 0
+uIManager.windowWidth = 0
+uIManager.windowHeight = 0
 
-UIManager.ContainerHolder = {}
+uIManager.containerHolder = {}
 
-function UIManager:Load(resolutionX, resolutionY)
+function uIManager:load(resolutionX, resolutionY)
 	self.windowWidth = resolutionX
 	self.windowHeight = resolutionY
 	
@@ -17,44 +17,43 @@ function UIManager:Load(resolutionX, resolutionY)
 
 end
 
-function UIManager:GetWidget(widgetName)
-	return self.ContainerHolder[widgetName]
+function uIManager:getWidget(widgetName)
+	return self.containerHolder[widgetName]
 end
 
-function UIManager:AddConsola(name, x, y ,width ,height, alignHorizontal, alignVertical)
-	local consola = self.consolaFactory:New(name ,x, y, width, height)
+function uIManager:addConsola(name, x, y ,width ,height, alignHorizontal, alignVertical)
+	local consola = self.consolaFactory:new(name ,x, y, width, height)
 	
 	if(alignHorizontal and alignVertical) then		
-		self:Align(consola, alignHorizontal, alignVertical, 0, -31)
+		self:align(consola, alignHorizontal, alignVertical, 0, -31)
 	end
 
-	self.ContainerHolder[consola.Name] = consola	
+	self.containerHolder[consola.name] = consola	
 	return consola
 end
 
-function UIManager:AddTextBox(name, x, y, width ,height, alignHorizontal, alignVertical)
-	local textbox = self.textBoxFactory:New(name,0, 0, 500, 30)
+function uIManager:addTextBox(name, x, y, width ,height, alignHorizontal, alignVertical)
+	local textbox = self.textBoxFactory:new(name,0, 0, 500, 30)
 	
 	if(alignHorizontal and alignVertical) then		
-		self:Align(textbox, "left", "bottom")
+		self:align(textbox, "left", "bottom")
 	end
 	
-	self.ContainerHolder[textbox.Name] = textbox
+	self.containerHolder[textbox.name] = textbox
 
 	return textbox
 
 end
 
+function uIManager:addImage(name, resource, x, y, alignHorizontal, alignVertical)
 
-function UIManager:AddImage(name, resource, x, y, alignHorizontal, alignVertical)
-
-	local image = self.imageFactory:New(name, x, y, resource)
+	local image = self.imageFactory:new(name, x, y, resource)
 
 	if(alignHorizontal and alignVertical) then		
-		self:Align(image, alignHorizontal, alignVertical)
+		self:align(image, alignHorizontal, alignVertical)
 	end
 
-	self.ContainerHolder[image.Name] = image
+	self.containerHolder[image.name] = image
 	return image
 
 end
@@ -75,55 +74,55 @@ end
 ---@param alignVertical alignVertical
 ---@param marginX? integer
 ---@param marginY? integer
-function UIManager:Align(uiElement, alignHorizontal, alignVertical, marginX, marginY)
+function uIManager:align(uiElement, alignHorizontal, alignVertical, marginX, marginY)
 	marginX = marginX or 0
 	marginY = marginY or 0
 	if alignHorizontal == "left" then
-		uiElement.ScreenX = 0 + marginX
+		uiElement.screenX = 0 + marginX
 	elseif alignHorizontal == "center" then
-		uiElement.ScreenX = ((self.windowWidth / 2) - (uiElement.Width / 2)) + marginX
+		uiElement.screenX = ((self.windowWidth / 2) - (uiElement.width / 2)) + marginX
 	elseif alignHorizontal == "right" then
-		uiElement.ScreenX = (self.windowWidth - uiElement.Width) + marginX
+		uiElement.screenX = (self.windowWidth - uiElement.width) + marginX
 	end
 
 	if alignVertical == "top" then
-		uiElement.ScreenY = 0 + marginY
+		uiElement.screenY = 0 + marginY
 	elseif alignVertical == "center" then
-		uiElement.ScreenY = ((self.windowHeight / 2) - (uiElement.Height / 2)) + marginY
+		uiElement.screenY = ((self.windowHeight / 2) - (uiElement.height / 2)) + marginY
 	elseif alignVertical == "bottom" then
-		uiElement.ScreenY = (self.windowHeight - uiElement.Height) + marginY
+		uiElement.screenY = (self.windowHeight - uiElement.height) + marginY
 	end
 end
 
 --TODO: TEXT INPUT
-function UIManager:Update(dt)
-	Observer:Trigger(CONST_OBSERVE_UI_UPDATE, { dt })
+function uIManager:update(dt)
+	Observer:trigger(CONST_OBSERVE_UI_UPDATE, { dt })
 end
 
-function UIManager:Draw()
-	Observer:Trigger(CONST_OBSERVE_UI_DRAW)
+function uIManager:draw()
+	Observer:trigger(CONST_OBSERVE_UI_DRAW)
 end
 
-function UIManager:KeyPressed(key)
-	Observer:Trigger(CONST_OBSERVE_UI_KEYPRESS, { key })
+function uIManager:keyPressed(key)
+	Observer:trigger(CONST_OBSERVE_UI_KEYPRESS, { key })
 end
 
-function UIManager:TextInput(text)
-	Observer:Trigger(CONST_OBSERVE_UI_TEXTINPUT, { text })
+function uIManager:textInput(text)
+	Observer:trigger(CONST_OBSERVE_UI_TEXTINPUT, { text })
 end
 
 
-function UIManager:Resize(width, height)
+function uIManager:resize(width, height)
 	-- self.windowWidth = width
 	-- self.windowHeight = height
 end
 
-function UIManager:Unload()	
-	for key, value in pairs(self.ContainerHolder) do
-		value:Unload()
+function uIManager:unload()	
+	for key, value in pairs(self.containerHolder) do
+		value:unload()
 	end
 
-	self.ContainerHolder = {}
+	self.containerHolder = {}
 end
 
-return UIManager
+return uIManager
