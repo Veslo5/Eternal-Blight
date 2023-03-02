@@ -17,30 +17,38 @@ function Tilemap.load()
 	local tilemaploader = Tilemap.tilemapLoader
 
 	tilemaploader:LoadMetadata(CONST_INIT_MAP)
-	for _, tilemapImage in ipairs(tilemaploader:GetResources()) do
+
+
+	for _, tilemapImage in ipairs(tilemaploader:GetResourcesFromTilesets()) do
 		-- adds resources to loading queue
 		Tilemap.Loader:NewImage(tilemapImage.name, tilemapImage.image)
 	end
 
-	Tilemap.tilemapRenderer:LoadResources(tilemaploader.TilesetMetadata)
-	Tilemap.tilemapRenderer:BakeLayers(tilemaploader.TileMapMetadata)
+	local data = Tilemap.Loader:LoadSync()
+
+	Tilemap.tilemapRenderer:CreateRenderers(tilemaploader.TileMapMetadata, data)
+
+	-- Tilemap.tilemapRenderer:AddTilesetAtlas()	
+
+
+	-- Tilemap.tilemapRenderer:BakeLayers(tilemaploader.TileMapMetadata)
 
 	local mapSizeX = tilemaploader.TileMapMetadata.width
 	local mapSizeY = tilemaploader.TileMapMetadata.height
 	local mapTileWidth = tilemaploader.TileMapMetadata.tilewidth
 	local mapTileHeight = tilemaploader.TileMapMetadata.tileheight
 
-	local currentAtlas = Tilemap.tilemapRenderer.TileSetAtlas
+	local currentAtlas = Tilemap.tilemapRenderer.TileSetAtlases
 
 
 	Tilemap.worldManager:SetupMapData(mapSizeX, mapSizeY, mapTileWidth, mapTileHeight)
 --	local customBatch = mainRoom.tilemapRenderer:AddSpriteBatch("Testik", true, currentAtlas.Texture, currentAtlas:GetAtlasQuadCount())	
 
-	local dataTileGroup = tilemaploader:GetGroupLayer("Data")
+	-- local dataTileGroup = tilemaploader:GetGroupLayer("Data")
 	
-	if(dataTileGroup ~= nil) then
-	Tilemap.worldManager:SetupWalls(dataTileGroup)    
-	end
+	-- if(dataTileGroup ~= nil) then
+	-- Tilemap.worldManager:SetupWalls(dataTileGroup)    
+	-- end
 
 -- Sandbox --------------------------------------------------
 	local entityBuilder = require("lib.world.entityBuilder")

@@ -10,7 +10,7 @@ function TileMapLoader:New()
 	-- array
 	newInstance.TilesetMetadata = {}
 
-	return TileMapLoader
+	return newInstance
 end
 
 --- Loads all tilemaps/tilesets metadata 
@@ -22,21 +22,25 @@ function TileMapLoader:LoadMetadata(name)
 	-- loading all tilesets
 	for _, tileset in ipairs(tileMapMetadata.tilesets) do
 		local tilesetChunk = love.filesystem.load("data/" .. tileset.exportfilename)
-		table.insert(self.TilesetMetadata, chunk())			
+		table.insert(self.TilesetMetadata, tilesetChunk())			
 	end
 	
 	self.TileMapMetadata = tileMapMetadata
 end
 
 --- Return images paths in all tilesets
-function TileMapLoader:GetResources()
+function TileMapLoader:GetResourcesFromTilesets()
 	local resourcesTable = {}
 
 	for _, tileset in ipairs(self.TilesetMetadata) do
-		table.insert(resourcesTable, {name = tileset.name, tileset.image:sub(4)})
+		table.insert(resourcesTable, {name = tileset.name, image = tileset.image:sub(4)})
 	end
 	
 	return resourcesTable
+end
+
+function TileMapLoader:GetTilemapTilesets()
+	return self.TileMapMetadata.tilesets
 end
 
 function TileMapLoader:GetGroupLayer(name)

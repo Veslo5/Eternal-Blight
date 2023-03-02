@@ -9,7 +9,7 @@ return {
   height = 11,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 11,
+  nextlayerid = 12,
   nextobjectid = 10,
   properties = {},
   tilesets = {
@@ -18,6 +18,12 @@ return {
       firstgid = 1,
       filename = "test_tileset001.tsj",
       exportfilename = "test_tileset001.lua"
+    },
+    {
+      name = "test_tileset002",
+      firstgid = 71,
+      filename = "test_tileset002.tsj",
+      exportfilename = "test_tileset002.lua"
     }
   },
   layers = {
@@ -178,6 +184,37 @@ return {
             51, 0, 0, 0, 0, 0, 0, 0, 0, 53, 0,
             51, 0, 0, 0, 0, 0, 0, 0, 0, 53, 0,
             61, 62, 62, 62, 62, 62, 62, 62, 62, 63, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+          }
+        },
+        {
+          type = "tilelayer",
+          x = 0,
+          y = 0,
+          width = 11,
+          height = 11,
+          id = 11,
+          name = "Rocks2",
+          class = "",
+          visible = true,
+          opacity = 1,
+          offsetx = 0,
+          offsety = 0,
+          parallaxx = 1,
+          parallaxy = 1,
+          properties = {},
+          encoding = "lua",
+          data = {
+            71, 1, 1, 1, 1, 1, 1, 1, 1, 71, 0,
+            71, 0, 0, 0, 0, 0, 0, 0, 0, 71, 0,
+            71, 0, 0, 0, 0, 0, 0, 0, 0, 71, 0,
+            1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+            1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+            71, 97, 27, 0, 0, 0, 0, 27, 97, 71, 0,
+            71, 97, 27, 0, 0, 0, 0, 27, 97, 71, 0,
+            71, 97, 27, 0, 0, 0, 0, 27, 97, 71, 0,
+            71, 97, 27, 0, 0, 0, 0, 27, 97, 71, 0,
+            71, 97, 27, 1, 1, 1, 1, 27, 97, 71, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
           }
         }

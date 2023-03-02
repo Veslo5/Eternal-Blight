@@ -11,6 +11,20 @@ function IIF (boolExpression, trueValue, falseValue)
 	if boolExpression then	return trueValue else return falseValue end
 end
 
+--- simple first or default implementation
+---@param table table table where find
+---@param property any which property find
+---@param value any what value to find
+function table.find(table, property, value)
+	for _, object in ipairs(table) do
+		if object[property] == value then
+			return object
+		end
+	end
+
+	return nil
+end
+
 
 Debug = require ("lib.debug.log")
 
@@ -35,7 +49,7 @@ Settings = require("lib.settings")
 CONST_FIRST_SCENE = "splashScreen"
 --CONST_SECOND_SCENE = IIF(Debug.IsOn, "debugMenu", "tilemap")
 CONST_SECOND_SCENE  = "tilemap"
-CONST_INIT_MAP = "data/test_map001"
+CONST_INIT_MAP = "data/test_map001.lua"
 
 -- UI constants
 CONST_WIDGET_UI_CONSOLA = "UI_WIDGET_CONSOLA"

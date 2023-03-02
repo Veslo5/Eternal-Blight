@@ -134,6 +134,28 @@
                  "width":11,
                  "x":0,
                  "y":0
+                }, 
+                {
+                 "data":[71, 1, 1, 1, 1, 1, 1, 1, 1, 71, 0,
+                    71, 0, 0, 0, 0, 0, 0, 0, 0, 71, 0,
+                    71, 0, 0, 0, 0, 0, 0, 0, 0, 71, 0,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+                    71, 97, 27, 0, 0, 0, 0, 27, 97, 71, 0,
+                    71, 97, 27, 0, 0, 0, 0, 27, 97, 71, 0,
+                    71, 97, 27, 0, 0, 0, 0, 27, 97, 71, 0,
+                    71, 97, 27, 0, 0, 0, 0, 27, 97, 71, 0,
+                    71, 97, 27, 1, 1, 1, 1, 27, 97, 71, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                 "height":11,
+                 "id":11,
+                 "name":"Rocks2",
+                 "opacity":1,
+                 "type":"tilelayer",
+                 "visible":true,
+                 "width":11,
+                 "x":0,
+                 "y":0
                 }],
          "name":"BakeOne",
          "opacity":1,
@@ -185,7 +207,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":11,
+ "nextlayerid":12,
  "nextobjectid":10,
  "orientation":"orthogonal",
  "renderorder":"right-down",
@@ -195,6 +217,10 @@
         {
          "firstgid":1,
          "source":"test_tileset001.tsj"
+        }, 
+        {
+         "firstgid":71,
+         "source":"test_tileset002.tsj"
         }],
  "tilewidth":32,
  "type":"map",
