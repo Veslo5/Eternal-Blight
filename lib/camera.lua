@@ -20,7 +20,9 @@ function camera:new(renderScale, renderMode, virtualResWidth, virtualResHeight)
 	newInstance.y = 0	
 	newInstance.rotation = 0
 	newInstance.windowResX = 0
-	newInstance.windowResY = 0		
+	newInstance.windowResY = 0	
+	newInstance.halfVirtualResX = 0
+	newInstance.halfVirtualResY = 0	
 	newInstance.zoomX = 1
 	newInstance.zoomY = 1
 
@@ -45,6 +47,8 @@ function camera:reset()
 	self.zoomX = 1
 	self.zoomY = 1
 	self.virtualResX = 0
+	self.halfVirtualResX = 0
+	self.halfVirtualResY = 0
 	self.virtualResY = 0
 	self.originX = 0
 	self.originY = 0
@@ -56,10 +60,18 @@ end
 --- BEGIN DRAWIN OF CAMERA
 function camera:beginDraw()
 	love.graphics.push()
-	--love.graphics.rotate(-self.Rotation)	
+	love.graphics.rotate(-self.rotation)	
 	love.graphics.scale(self.zoomX, self.zoomY)	
 	love.graphics.translate(-self.originX, -self.originY)
-	love.graphics.translate(-self.x, -self.y)
+	
+	if self.following then
+		love.graphics.translate(-(self.x + self.followingEntity[self.followingEntityNameX] - self.halfVirtualResX),
+								-(self.y +  self.followingEntity[self.followingEntityNameY]  - self.halfVirtualResY))
+	else
+		love.graphics.translate(-self.x, -self.y)
+	end
+
+
 
 	local mx, my = love.mouse.getPosition()
 	self.mouseWorldX, self.mouseWorldY = self:screenToWorld(mx, my)
@@ -69,6 +81,13 @@ end
 --- END DRAWING OF CAMERA
 function camera:endDraw()
 	love.graphics.pop()
+end
+
+function camera:follow(entity, nameX, nameY)
+	self.following = true
+	self.followingEntity = entity 
+	self.followingEntityNameX = nameX
+	self.followingEntityNameY = nameY	
 end
 
 --- Rotate the camera
@@ -115,17 +134,23 @@ function camera:_calculateVirtualZoom()
 		self.virtualResX = (self.windowResX / 100) * self.renderScale
 		self.virtualResY = (self.windowResY / 100) * self.renderScale
 	end
-
+	
 	self.zoomX = self.windowResX / self.virtualResX
 	self.zoomY = self.windowResY  / self.virtualResY
-
+	
+	self:_recalculateHalfVirtualRes()
 	self:_recalculateOrigin()
 
 end
 
 function camera:_recalculateOrigin()	
-	self.originX = self.virtualResX / 2  - (self.windowResX / 2) /  self.zoomX
-	self.originY = self.virtualResY / 2  - (self.windowResY / 2) /  self.zoomY
+	self.originX = self.halfVirtualResX  - (self.windowResX / 2) /  self.zoomX
+	self.originY = self.halfVirtualResY  - (self.windowResY / 2) /  self.zoomY
+end
+
+function camera:_recalculateHalfVirtualRes()
+	self.halfVirtualResX = self.virtualResX / 2
+	self.halfVirtualResY = self.virtualResY / 2
 end
 
 

@@ -19,9 +19,9 @@ worldManager.currentRound = 0
 
 function worldManager:ecsInit()
 	-- Here we require all DrawSystem marked systems
-	self.drawSystemFilter = Ecs.requireAll("DrawSystem")
-	self.updateSystemFilter = Ecs.requireAll("UpdateSystem")
-	self.roundSystemFilter = Ecs.requireAll("RoundSystem")
+	self.drawSystemFilter = Ecs.requireAll("drawSystem")
+	self.updateSystemFilter = Ecs.requireAll("updateSystem")
+	self.roundSystemFilter = Ecs.requireAll("roundSystem")
 end
 
 function worldManager:addEntity(entity)

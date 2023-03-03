@@ -60,7 +60,7 @@ function systemBuilder.getMoveSystem()
 					entity.IDrawable.worldY =  entity.IGridMovable.gridY * 32
 				end
 
-				self.WorldManager:nextRound()
+				self.worldManager:nextRound()
 			end
 
 		end

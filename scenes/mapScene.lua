@@ -7,12 +7,12 @@ mapScene.worldManager = require("lib.world.worldManager")
 
 function mapScene:_loadWorldManager(tiled)
 	
-	local mapSizeX = tiled.tilemapLoader.tileMapMetadata.width
-	local mapSizeY = tiled.tilemapLoader.tileMapMetadata.height
-	local mapTileWidth = tiled.tilemapLoader.tileMapMetadata.tilewidth
-	local mapTileHeight = tiled.tilemapLoader.tileMapMetadata.tileheight	
+	mapScene.worldManager:setupMapData(
+		tiled.tilemapLoader.tileMapMetadata.width,
+		tiled.tilemapLoader.tileMapMetadata.height,
+		tiled.tilemapLoader.tileMapMetadata.tilewidth,
+		tiled.tilemapLoader.tileMapMetadata.tileheight)
 
-	mapScene.worldManager:setupMapData(mapSizeX, mapSizeY, mapTileWidth, mapTileHeight)
 	local dataTileGroup = tiled.tilemapLoader:getGroupLayer("Data")
 
 	if(dataTileGroup ~= nil) then
@@ -26,7 +26,8 @@ function mapScene:_loadWorldManager(tiled)
 	playerEntity:makeControllable(true, true)
 	playerEntity:makeDrawable()
 
-	
+	MainCamera:follow(playerEntity.IDrawable, "worldX", "worldY")
+
 	mapScene.worldManager:addEntity(playerEntity)
 
 	local systemBuilder = require("lib.world.systemBuilder")
@@ -63,26 +64,25 @@ function mapScene.update(dt)
 
 	mapScene.tiled:update(dt)
 	mapScene.UI:update(dt)
-
+	mapScene.worldManager:update(dt)
+	
 	if (Input:isActionPressed("CONSOLE")) then
 	local textbox = mapScene.UI:getWidget(CONST_WIDGET_UI_TEXTBOX)
 	local currentFocus = textbox:getFocus()
 	textbox:setFocus(IIF(currentFocus == true, false, true))
 	end 
 
-	mapScene.worldManager:update(dt)
 	
 end
 
 function mapScene.draw()
 
 	love.graphics.setBackgroundColor(0,0,0,1)
-	
-	local world = mapScene.worldManager
+		
 	-- Gameplay rendering
 	MainCamera:beginDraw()
-		mapScene.tiled:draw()
-		mapScene.worldManager:draw()
+	mapScene.tiled:draw()
+	mapScene.worldManager:draw()
 	MainCamera:endDraw()
 	
 	-- UI rendering    
