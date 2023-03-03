@@ -5,18 +5,24 @@ tileMapRenderer.atlasFactory = require("lib.sprites.atlas")
 tileMapRenderer.tileSetAtlases = {}
 tileMapRenderer.groupRenderers = {}
 
+
+
+function tileMapRenderer:_convertGIDToLocalIndex(gidIndex, tilesetMetadata)
+	local localIndex = gidIndex - IIF(tilesetMetadata.firstgid == 1, 0, tilesetMetadata.firstgid - 1)
+	localIndex = IIF(localIndex == 0, 1, localIndex)
+	return localIndex
+end
+
 --- Get tileset name and index convert from GID to local data index
 ---@param index integer
 ---@param tilemapTilesets table
-function tileMapRenderer:getAtlasForTileIndex(index, tilemapTilesets)
+function tileMapRenderer:_getAtlasForTileIndex(index, tilemapTilesets)
 	local tilemapTilesetsCount = #tilemapTilesets
 	local currentTileset = tilemapTilesets[tilemapTilesetsCount]
 	
 	-- first we check if index is from last tilesetAtlas
-	if currentTileset.firstgid <= index then
-		local indexFromAtlas = index - IIF(currentTileset.firstgid == 1, 0, currentTileset.firstgid - 1)
-		indexFromAtlas = IIF(indexFromAtlas == 0, 1, indexFromAtlas)
-		return currentTileset.name, indexFromAtlas	
+	if currentTileset.firstgid <= index then		
+		return currentTileset.name, self:_convertGIDToLocalIndex(index, currentTileset)	
 	end
 
 	-- then we check all except last
@@ -25,9 +31,7 @@ function tileMapRenderer:getAtlasForTileIndex(index, tilemapTilesets)
 		if i + 1 <= tilemapTilesetsCount then
 			-- check if index is between two max gids
 			if currentTileset.firstgid <= index and tilemapTilesets[i+1].firstgid > index then
-				local indexFromAtlas = index - IIF(currentTileset.firstgid == 1, 0, currentTileset.firstgid - 1)
-				indexFromAtlas = IIF(indexFromAtlas == 0, 1, indexFromAtlas)
-				return currentTileset.name, indexFromAtlas
+				return currentTileset.name, self:_convertGIDToLocalIndex(index, currentTileset)	
 			end
 		end
 	end	
@@ -36,7 +40,7 @@ end
 --- Get tileset names from gid data array
 ---@param tilesData table
 ---@param tilemapTilesets table
-function tileMapRenderer:getTilesetsNamesAndgidByIndex(tilesData, tilemapTilesets)
+function tileMapRenderer:_getTilesetsNamesAndgidByIndex(tilesData, tilemapTilesets)
 	local tilesetNames = {}
 
 	for _, index in ipairs(tilesData) do
@@ -75,7 +79,7 @@ end
 ---@param layerHeight integer
 ---@param tileWidth integer
 ---@param tileHeight integer
-function tileMapRenderer:bake(spriteBatchData, tilesets, data, layerWidth, layerHeight, tileWidth, tileHeight)
+function tileMapRenderer:_bake(spriteBatchData, tilesets, data, layerWidth, layerHeight, tileWidth, tileHeight)
 	local layerHeight = layerHeight
 	local width = layerWidth - 1
 	local height = layerHeight - 1
@@ -90,7 +94,7 @@ function tileMapRenderer:bake(spriteBatchData, tilesets, data, layerWidth, layer
 			if (globaltileNumber ~= 0) then				
 				--TODO TilesetAtlas choose right one
 				
-				local tilesetName, tileIndex = self:getAtlasForTileIndex(globaltileNumber, tilesets)
+				local tilesetName, tileIndex = self:_getAtlasForTileIndex(globaltileNumber, tilesets)
 				local batchData = table.find(spriteBatchData, "batchTilesetName", tilesetName)
 
 				batchData.spritebatch:add(batchData.atlas.quads[tileIndex], column * tileWidth, row * tileHeight)
@@ -125,7 +129,7 @@ function tileMapRenderer:createRenderers(tileMapMetadata, resources)
 			}
 			
 			for __, layerInGroup in ipairs(layer.layers) do
-				for ___, tilesetName in pairs(self:getTilesetsNamesAndgidByIndex(layerInGroup.data, tileMapMetadata.tilesets)) do
+				for ___, tilesetName in pairs(self:_getTilesetsNamesAndgidByIndex(layerInGroup.data, tileMapMetadata.tilesets)) do
 
 					-- add spritebatchdata
 					table.insert(renderer.spriteBatchesData, 
@@ -139,7 +143,7 @@ function tileMapRenderer:createRenderers(tileMapMetadata, resources)
 					})
 				end
 
-					self:bake(renderer.spriteBatchesData, tileMapMetadata.tilesets, layerInGroup.data, layerInGroup.width, layerInGroup.height, tileMapMetadata.tilewidth, tileMapMetadata.tileheight)
+					self:_bake(renderer.spriteBatchesData, tileMapMetadata.tilesets, layerInGroup.data, layerInGroup.width, layerInGroup.height, tileMapMetadata.tilewidth, tileMapMetadata.tileheight)
 
 				end
 			
