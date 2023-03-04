@@ -5,6 +5,7 @@ Roguelike written in lua
 - Love2D [https://love2d.org/]
 
 ## Libraries:
+- Pathfinding [https://github.com/wesleywerner/lua-star]
 - Animation [https://github.com/kikito/anim8]
 - Tween [https://github.com/rxi/flux]
 - Serpent [https://github.com/pkulchenko/serpent]
