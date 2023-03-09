@@ -1,0 +1,22 @@
+{ "columns":10,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"lua",
+         "target":"custom_map001.lua"
+        }
+    },
+ "image":"..\/resources\/eternal_blight.png",
+ "imageheight":320,
+ "imagewidth":320,
+ "margin":0,
+ "name":"custom_map001",
+ "spacing":0,
+ "tilecount":100,
+ "tiledversion":"1.9.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.9"
+}
