@@ -1,5 +1,5 @@
 # Eternal-Blight
-Roguelike written in lua
+Roguelike written in lua with custom tilesets
 
 ## Dependencies:
 - Love2D [https://love2d.org/]
