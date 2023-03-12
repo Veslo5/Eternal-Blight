@@ -36,7 +36,8 @@ function tiled:draw()
 end
 
 function tiled:unload()
-	
+	self.tilemapRenderer:unload()
+	self.tilemapLoader:unload()
 end
 
 return tiled

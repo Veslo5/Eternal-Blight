@@ -15,8 +15,6 @@ worldManager.tileHeight = 0
 
 worldManager.currentRound = 0
 
-
-
 function worldManager:ecsInit()
 	-- Here we require all DrawSystem marked systems
 	self.drawSystemFilter = Ecs.requireAll("drawSystem")
@@ -124,6 +122,15 @@ end
 function worldManager:draw()
 	--print("Draw filter")
 	Ecs.update(self.mapWorld, love.timer.getDelta(), self.drawSystemFilter)
+end
+
+function worldManager:unload()
+	Ecs.clearEntities(self.mapWorld)
+	Ecs.clearSystems(self.mapWorld)	
+	Debug:log("[GAMEMPLAY] Unloaded ecs entities and systems")
+	self.gridData = {}
+	Debug:log("[GAMEMPLAY] Unloaded map grid data")
+
 end
 
 return worldManager

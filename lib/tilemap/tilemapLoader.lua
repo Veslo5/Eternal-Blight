@@ -54,9 +54,9 @@ function tileMapLoader:getGroupLayer(name)
 	return nil
 end
 
-function tileMapLoader:unloadTileset()
+function tileMapLoader:unload()
 	self.tileMapMetadata = nil
-	self.tilesetMetadata = nil
+	self.tilesetMetadata = {}
 end
 
 
