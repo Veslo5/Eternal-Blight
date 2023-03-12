@@ -1,11 +1,13 @@
 local entityBuilder = {}
 
-function entityBuilder:new(name)
+function entityBuilder:new(name, worldManager, scene)
 	local newInstance = {}
 	setmetatable(newInstance, self)
 	self.__index = self
 
 	newInstance.name = name or "NewEntity"
+	newInstance.worldManager = worldManager
+	newInstance.scene = scene
 	return newInstance
 end
 

@@ -53,6 +53,7 @@ function mapScene:_loadUI()
 	self.UI:addTextBox(CONST_WIDGET_UI_TEXTBOX, 0,0,500,30, "left", "bottom")
 end
 
+--TODO refactoring needed here!
 function mapScene:_changeMap(mapName)
 	self.loading = true
 
