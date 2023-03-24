@@ -32,7 +32,7 @@ function mapScene:_loadWorldManager(tiled)
 	playerEntity:makeControllable(true, true)
 	playerEntity:makeDrawable()
 
-	MainCamera:follow(playerEntity.IDrawable, "worldX", "worldY")
+	--MainCamera:follow(playerEntity.IDrawable, "worldX", "worldY")
 
 	mapScene.worldManager:addEntity(playerEntity)
 
@@ -56,17 +56,14 @@ end
 --TODO refactoring needed here!
 function mapScene:_changeMap(mapName)
 	self.loading = true
-
 	
 	if self.currentMap ==  nil then
 		self.tiled:load(CONST_INIT_MAP, self.loader)	
 		mapName = CONST_INIT_MAP
 	else
 		Debug:log("[CORE] Changing map to " .. mapName)
-
 		self.worldManager:unload()
 		self.tiled:unload()
-
 		self.tiled:load(mapName, self.loader)	
 	end
 

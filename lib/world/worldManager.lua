@@ -63,7 +63,7 @@ function worldManager:setupWalls(dataTiles)
 					local index = ((row * layerHeight) + column) + 1
 					local tileNumber = layerInGroup.data[index]
 					if (tileNumber ~= 0) then
-						self.gridData[column + 1][row + 1].Wall = true
+						self.gridData[column + 1][row + 1].wall = true
 					end
 				end
 			end
@@ -89,9 +89,15 @@ end
 --- Returns tile table
 ---@param gridX integer
 ---@param gridY integer
----@return table
+---@return table?
 function worldManager:getTile(gridX, gridY)
-	return self.gridData[gridX][gridY]
+	-- + 1 because lua indexing starts from 1 and we are using 0 as start in grid
+	local tileX = self.gridData[gridX + 1]
+	if  tileX then
+		return tileX[gridY + 1]
+	else
+		return nil
+	end
 end
 
 --- Checks if parameters are valid values in grid

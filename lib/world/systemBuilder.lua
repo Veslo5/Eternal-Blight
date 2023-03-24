@@ -7,10 +7,11 @@ function systemBuilder.getDrawSystem()
 	system.filter = Ecs.requireAll("IDrawable")
 
 	function system:process(entity, dt)
-		love.graphics.setColor(0,1,0,1)
+		love.graphics.setColor(0, 1, 0, 1)
 		love.graphics.rectangle("fill", entity.IDrawable.worldX, entity.IDrawable.worldY, 32, 32)
-		love.graphics.setColor(1,1,1,1)
+		love.graphics.setColor(1, 1, 1, 1)
 	end
+
 	return system
 end
 
@@ -22,53 +23,75 @@ function systemBuilder.getMoveSystem()
 
 	function system:onAdd(entity)
 		if entity.IDrawable then
-			entity.IDrawable.worldX =  entity.IGridMovable.gridX * 32
-			entity.IDrawable.worldY =  entity.IGridMovable.gridY * 32
+			entity.IDrawable.worldX = entity.IGridMovable.gridX * self.worldManager.tileWidth
+			entity.IDrawable.worldY = entity.IGridMovable.gridY * self.worldManager.tileHeight
 		end
 	end
 
 	function system:process(entity, dt)
-		if(entity.IControllable.onTurn == true and entity.IControllable.possesed == true) then
+		if (entity.IControllable.onTurn == true and entity.IControllable.possesed == true) then
 			local moved = false
+
 			if (Input:isActionPressed("RIGHT")) then
-				entity.IGridMovable.gridX = entity.IGridMovable.gridX + 1
-				moved = true
+				local newGridX = entity.IGridMovable.gridX + 1
+				local tile = self.worldManager:getTile(newGridX, entity.IGridMovable.gridY)
+				if tile then
+					if tile.wall == false then
+						entity.IGridMovable.gridX = newGridX
+						moved = true
+					end
+				end
 			end
 
 			if (Input:isActionPressed("LEFT")) then
-				entity.IGridMovable.gridX = entity.IGridMovable.gridX - 1
-				moved = true
+				local newGridX = entity.IGridMovable.gridX - 1
+				local tile = self.worldManager:getTile(newGridX, entity.IGridMovable.gridY)
+				if tile then
+					if tile.wall == false then
+						entity.IGridMovable.gridX = newGridX
+						moved = true
+					end
+				end
 			end
 
 			if (Input:isActionPressed("UP")) then
-				entity.IGridMovable.gridY = entity.IGridMovable.gridY - 1
-				moved = true
+				local newGridY = entity.IGridMovable.gridY - 1
+				local tile = self.worldManager:getTile(entity.IGridMovable.gridX, newGridY)
+				if tile then
+					if tile.wall == false then
+						entity.IGridMovable.gridY = newGridY
+						moved = true
+					end
+				end
 			end
 
 			if (Input:isActionPressed("DOWN")) then
-				entity.IGridMovable.gridY = entity.IGridMovable.gridY+ 1
-				moved = true
+				local newGridY = entity.IGridMovable.gridY + 1
+				local tile = self.worldManager:getTile(entity.IGridMovable.gridX, newGridY) 
+				if tile then
+					if tile.wall == false then
+						entity.IGridMovable.gridY = newGridY
+						moved = true
+					end
+				end
 			end
-
 
 			if moved then
 				--TODO: uncomment
-				--entity.IControllable.OnTurn = false
-				
+				entity.IControllable.OnTurn = false
+
 				if entity.IDrawable then
-					entity.IDrawable.worldX =  entity.IGridMovable.gridX * 32
-					entity.IDrawable.worldY =  entity.IGridMovable.gridY * 32
+					entity.IDrawable.worldX = entity.IGridMovable.gridX * self.worldManager.tileWidth
+					entity.IDrawable.worldY = entity.IGridMovable.gridY * self.worldManager.tileHeight
 				end
 
 				self.worldManager:nextRound()
 			end
-
 		end
 	end
 
 	return system
 end
-
 
 function systemBuilder.getRoundSystem()
 	local system = Ecs.processingSystem()
