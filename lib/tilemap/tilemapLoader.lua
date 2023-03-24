@@ -57,6 +57,7 @@ end
 function tileMapLoader:unload()
 	self.tileMapMetadata = nil
 	self.tilesetMetadata = {}
+	Debug:log("[CORE] Unloaded tiled tilemap metadata and tileset metadata")
 end
 
 

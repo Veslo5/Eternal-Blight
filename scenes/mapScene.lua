@@ -57,20 +57,28 @@ end
 function mapScene:_changeMap(mapName)
 	self.loading = true
 
+	
 	if self.currentMap ==  nil then
 		self.tiled:load(CONST_INIT_MAP, self.loader)	
 		mapName = CONST_INIT_MAP
 	else
+		Debug:log("[CORE] Changing map to " .. mapName)
 
 		self.worldManager:unload()
 		self.tiled:unload()
 
 		self.tiled:load(mapName, self.loader)	
 	end
+
+	collectgarbage("collect")
 	
 	self:_loadWorldManager(self.tiled)	
 	self.currentMap = mapName
 	self.loading = false
+
+	print("[CORE] Map changed: current mapScene textures " .. love.graphics.getStats().images)
+
+
 end
 
 function mapScene.load()

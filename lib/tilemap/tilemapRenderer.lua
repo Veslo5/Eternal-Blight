@@ -199,6 +199,7 @@ function tileMapRenderer:unload()
 		atlas:unload()
 	end
 	self.tileSetAtlases = {}
+	Debug:log("[CORE] Unloaded tileset atlases")
 
 	for _, layerRenderer in ipairs(self.groupRenderers) do
 		for __, spritebatchdata in ipairs(layerRenderer.spriteBatchesData) do
@@ -209,6 +210,8 @@ function tileMapRenderer:unload()
 	end
 	
 	self.groupRenderers = {}
+
+	Debug:log("[CORE] Unloaded groupRenderes and spritebatches")
 
 end
 

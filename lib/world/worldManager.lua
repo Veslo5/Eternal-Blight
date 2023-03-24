@@ -127,9 +127,9 @@ end
 function worldManager:unload()
 	Ecs.clearEntities(self.mapWorld)
 	Ecs.clearSystems(self.mapWorld)	
-	Debug:log("[GAMEMPLAY] Unloaded ecs entities and systems")
+	Debug:log("[CORE] Unloaded ecs entities and systems")
 	self.gridData = {}
-	Debug:log("[GAMEMPLAY] Unloaded map grid data")
+	Debug:log("[CORE] Unloaded map grid data")
 
 end
 
