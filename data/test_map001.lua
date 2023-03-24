@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 12,
-  nextobjectid = 10,
+  nextobjectid = 12,
   properties = {},
   tilesets = {
     {
@@ -279,7 +279,41 @@ return {
       parallaxx = 1,
       parallaxy = 1,
       properties = {},
-      objects = {}
+      objects = {
+        {
+          id = 10,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 32,
+          y = 64,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 4,
+          visible = true,
+          properties = {
+            ["Type"] = "SPAWN"
+          }
+        },
+        {
+          id = 11,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 256,
+          y = 64,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 3,
+          visible = true,
+          properties = {
+            ["Map"] = "test_map002",
+            ["Type"] = "PORT"
+          }
+        }
+      }
     }
   }
 }

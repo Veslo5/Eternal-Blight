@@ -185,7 +185,7 @@ function tileMapRenderer.drawWorldWalls(gridWidth, gridHeight, tileWidth, tileHe
 	for x = 1, gridWidth, 1 do		
 		for y = 1, gridHeight, 1 do
 			local data = gridData[x][y]
-			if data.wall == true then
+			if data.type == "wall" then
 				love.graphics.rectangle("fill", (x - 1)* tileWidth, (y - 1) * tileHeight, tileWidth, tileHeight)
 			end
 		end

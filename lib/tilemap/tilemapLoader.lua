@@ -54,6 +54,17 @@ function tileMapLoader:getGroupLayer(name)
 	return nil
 end
 
+function tileMapLoader:getObjectLayer(name)
+	for _, layer in ipairs(self.tileMapMetadata.layers) do
+		if (layer.type == "objectgroup") then
+			if (layer.name == name) then
+				return layer
+			end
+		end
+	end
+	return nil
+end
+
 function tileMapLoader:unload()
 	self.tileMapMetadata = nil
 	self.tilesetMetadata = {}

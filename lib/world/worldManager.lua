@@ -42,7 +42,7 @@ function worldManager:setupMapData(sizeX, sizeY, tileWidth, tileheight)
 	for x = 1, sizeX, 1 do
 		self.gridData[x] = {}
 		for y = 1, sizeY, 1 do
-			self.gridData[x][y] = { wall = false }
+			self.gridData[x][y] = {	type = "wall"}
 		end
 	end
 
@@ -63,12 +63,40 @@ function worldManager:setupWalls(dataTiles)
 					local index = ((row * layerHeight) + column) + 1
 					local tileNumber = layerInGroup.data[index]
 					if (tileNumber ~= 0) then
-						self.gridData[column + 1][row + 1].wall = true
+						self.gridData[column + 1][row + 1].type = "wall"
 					end
 				end
 			end
 		end
 	end
+end
+
+function worldManager:setupObjects(worldObjects)
+	for _, object in ipairs(worldObjects.objects) do
+		
+		local tileX, tileY = self:getTileGridPosition(object.x, object.y)
+		local tile = self:getTile(tileX, tileY)
+
+		if object.properties["Type"] == "PORT" then
+			if tile ~= nil then
+				tile.type = "port"
+				tile.portalMap = object.properties["Map"]
+			end
+		elseif object.properties["Type"] == "SPAWN" then
+			if tile ~= nil then
+				tile.type = "spawn"
+			end
+		end
+
+
+	end
+end
+
+--- Return position of tile in grid
+---@param worldX integer
+---@param worldY integer
+function worldManager:getTileGridPosition(worldX,worldY)
+	return  worldX / self.tileWidth,  worldY /  self.tileHeight
 end
 
 --- Return position of tile in world

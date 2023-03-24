@@ -20,17 +20,24 @@ function mapScene:_loadWorldManager(tiled)
 		tiled.tilemapLoader.tileMapMetadata.tileheight)
 
 	local dataTileGroup = tiled.tilemapLoader:getGroupLayer("Data")
+	local worldObjectGroup = tiled.tilemapLoader:getObjectLayer("World")
 
 	if(dataTileGroup ~= nil) then
 		mapScene.worldManager:setupWalls(dataTileGroup)    
+	end
+
+	if worldObjectGroup ~= nil then
+		mapScene.worldManager:setupObjects(worldObjectGroup)
 	end
 
 	-- Sandbox -------------------------------------------------- TESTING
 	local entityBuilder = require("lib.world.entityBuilder")
 	local playerEntity = entityBuilder:new("Player")
 	playerEntity:makeGridMovable(1,1)
-	playerEntity:makeControllable(true, true)
+	playerEntity:makeControllable(true)
 	playerEntity:makeDrawable()
+	playerEntity:makeSimulated(true)
+	playerEntity:addStats(1,10,10)
 
 	--MainCamera:follow(playerEntity.IDrawable, "worldX", "worldY")
 

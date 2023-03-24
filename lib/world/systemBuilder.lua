@@ -19,7 +19,7 @@ function systemBuilder.getMoveSystem()
 	local system = Ecs.processingSystem()
 	system.name = "Move"
 	system.updateSystem = true
-	system.filter = Ecs.requireAll("IGridMovable", "IControllable")
+	system.filter = Ecs.requireAll("IGridMovable", "IControllable", "ISimulated")
 
 	function system:onAdd(entity)
 		if entity.IDrawable then
@@ -28,57 +28,46 @@ function systemBuilder.getMoveSystem()
 		end
 	end
 
+
+	function system:_moveEntity(entity, gridX, gridY)
+		local tile = self.worldManager:getTile(gridX,gridY)
+				if tile then
+					if tile.type ~= "wall" then
+						entity.IGridMovable.gridX = gridX
+						entity.IGridMovable.gridY = gridY
+						return true
+					end
+				end
+		return false
+	end
+
 	function system:process(entity, dt)
-		if (entity.IControllable.onTurn == true and entity.IControllable.possesed == true) then
+		if (entity.ISimulated.onTurn == true and entity.IControllable.possesed == true) then
 			local moved = false
 
 			if (Input:isActionPressed("RIGHT")) then
 				local newGridX = entity.IGridMovable.gridX + 1
-				local tile = self.worldManager:getTile(newGridX, entity.IGridMovable.gridY)
-				if tile then
-					if tile.wall == false then
-						entity.IGridMovable.gridX = newGridX
-						moved = true
-					end
-				end
+				moved = self:_moveEntity(entity, newGridX, entity.IGridMovable.gridY)
 			end
 
 			if (Input:isActionPressed("LEFT")) then
 				local newGridX = entity.IGridMovable.gridX - 1
-				local tile = self.worldManager:getTile(newGridX, entity.IGridMovable.gridY)
-				if tile then
-					if tile.wall == false then
-						entity.IGridMovable.gridX = newGridX
-						moved = true
-					end
-				end
+				moved = self:_moveEntity(entity, newGridX, entity.IGridMovable.gridY)
 			end
 
 			if (Input:isActionPressed("UP")) then
 				local newGridY = entity.IGridMovable.gridY - 1
-				local tile = self.worldManager:getTile(entity.IGridMovable.gridX, newGridY)
-				if tile then
-					if tile.wall == false then
-						entity.IGridMovable.gridY = newGridY
-						moved = true
-					end
-				end
+				moved = self:_moveEntity(entity, entity.IGridMovable.gridX, newGridY)
 			end
 
 			if (Input:isActionPressed("DOWN")) then
 				local newGridY = entity.IGridMovable.gridY + 1
-				local tile = self.worldManager:getTile(entity.IGridMovable.gridX, newGridY) 
-				if tile then
-					if tile.wall == false then
-						entity.IGridMovable.gridY = newGridY
-						moved = true
-					end
-				end
+				moved = self:_moveEntity(entity, entity.IGridMovable.gridX, newGridY)
 			end
 
 			if moved then
 				--TODO: uncomment
-				entity.IControllable.OnTurn = false
+				entity.ISimulated.onTurn = false
 
 				if entity.IDrawable then
 					entity.IDrawable.worldX = entity.IGridMovable.gridX * self.worldManager.tileWidth
@@ -94,12 +83,24 @@ function systemBuilder.getMoveSystem()
 end
 
 function systemBuilder.getRoundSystem()
-	local system = Ecs.processingSystem()
+	local system = Ecs.sortedProcessingSystem()
 	system.name = "Round"
 	system.roundSystem = true
-	system.filter = Ecs.requireAll("ISimulated")
+	system.filter = Ecs.requireAll("ISimulated", "Stats")
+
+	function system:compare(entity1, entity2)
+		return entity1.Stats.defaultActionPoints > entity2.Stats.defaultActionPoints 
+	end
 
 	function system:process(entity, dt)
+		if entity.ISimulated.onTurn ==  false then
+			entity.ISimulated.onTurn = true
+		end
+
+		Debug:log("Simulating" .. entity.name)
+		-- TODO: Simulate AI?
+
+
 	end
 
 	return system

@@ -42,17 +42,18 @@ function entityBuilder:addStats(ap, hp, mp)
 	return self
 end
 
-function entityBuilder:makeControllable(possesed, onTurn)
+function entityBuilder:makeControllable(possesed)
 	self.IControllable = {
 		possesed = possesed or false,
-		onTurn = onTurn or false
 	}
 
 	return self
 end
 
-function entityBuilder:makeSimulated()
-	self.ISimulated = true
+function entityBuilder:makeSimulated(onTurn)
+self.ISimulated = {
+	onTurn = onTurn or false
+}
 
 	return self
 end
