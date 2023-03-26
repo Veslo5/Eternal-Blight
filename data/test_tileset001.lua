@@ -12,7 +12,7 @@ return {
   image = "../resources/test001.png",
   imagewidth = 320,
   imageheight = 224,
-  objectalignment = "unspecified",
+  objectalignment = "topleft",
   tilerendersize = "tile",
   fillmode = "stretch",
   tileoffset = {

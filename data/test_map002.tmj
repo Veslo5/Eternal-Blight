@@ -641,6 +641,47 @@
                  "width":32,
                  "x":32,
                  "y":3168
+                }, 
+                {
+                 "class":"",
+                 "gid":4,
+                 "height":32,
+                 "id":11,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"spawn"
+                        }],
+                 "rotation":0,
+                 "visible":true,
+                 "width":32,
+                 "x":2528,
+                 "y":2848
+                }, 
+                {
+                 "class":"",
+                 "gid":3,
+                 "height":32,
+                 "id":12,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"map",
+                         "type":"string",
+                         "value":"data\/test_map001.lua"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"port"
+                        }],
+                 "rotation":0,
+                 "visible":true,
+                 "width":32,
+                 "x":2528,
+                 "y":2560
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -649,7 +690,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":11,
+ "nextobjectid":13,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.2",

@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 11,
-  nextobjectid = 11,
+  nextobjectid = 13,
   properties = {},
   tilesets = {
     {
@@ -702,6 +702,39 @@ return {
           visible = true,
           properties = {
             ["Player"] = true
+          }
+        },
+        {
+          id = 11,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 2528,
+          y = 2848,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 4,
+          visible = true,
+          properties = {
+            ["type"] = "spawn"
+          }
+        },
+        {
+          id = 12,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 2528,
+          y = 2560,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 3,
+          visible = true,
+          properties = {
+            ["map"] = "data/test_map001.lua",
+            ["type"] = "port"
           }
         }
       }

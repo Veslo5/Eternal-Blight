@@ -209,15 +209,15 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"Type",
+                         "name":"type",
                          "type":"string",
-                         "value":"SPAWN"
+                         "value":"spawn"
                         }],
                  "rotation":0,
                  "visible":true,
                  "width":32,
                  "x":32,
-                 "y":64
+                 "y":32
                 }, 
                 {
                  "class":"",
@@ -227,20 +227,20 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"Map",
+                         "name":"map",
                          "type":"string",
-                         "value":"test_map002"
+                         "value":"data\/test_map002.lua"
                         }, 
                         {
-                         "name":"Type",
+                         "name":"type",
                          "type":"string",
-                         "value":"PORT"
+                         "value":"port"
                         }],
                  "rotation":0,
                  "visible":true,
                  "width":32,
                  "x":256,
-                 "y":64
+                 "y":256
                 }],
          "opacity":1,
          "type":"objectgroup",

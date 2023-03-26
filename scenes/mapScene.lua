@@ -30,16 +30,25 @@ function mapScene:_loadWorldManager(tiled)
 		mapScene.worldManager:setupObjects(worldObjectGroup)
 	end
 
+	
 	-- Sandbox -------------------------------------------------- TESTING
 	local entityBuilder = require("lib.world.entityBuilder")
 	local playerEntity = entityBuilder:new("Player")
-	playerEntity:makeGridMovable(1,1)
+	
+	local spawnTile = mapScene.worldManager:getObjectOfType("spawn")
+	if spawnTile then
+		playerEntity:makeGridMovable(spawnTile.tile.x - 1,spawnTile.tile.y - 1 )		
+	else
+		--TODO: not like this. Every map should have spawn
+		playerEntity:makeGridMovable(1,1)
+	end
+
 	playerEntity:makeControllable(true)
 	playerEntity:makeDrawable()
 	playerEntity:makeSimulated(true)
 	playerEntity:addStats(1,10,10)
 
-	--MainCamera:follow(playerEntity.IDrawable, "worldX", "worldY")
+	MainCamera:follow(playerEntity.IDrawable, "worldX", "worldY")
 
 	mapScene.worldManager:addEntity(playerEntity)
 

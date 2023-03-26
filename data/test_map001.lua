@@ -286,14 +286,14 @@ return {
           class = "",
           shape = "rectangle",
           x = 32,
-          y = 64,
+          y = 32,
           width = 32,
           height = 32,
           rotation = 0,
           gid = 4,
           visible = true,
           properties = {
-            ["Type"] = "SPAWN"
+            ["type"] = "spawn"
           }
         },
         {
@@ -302,15 +302,15 @@ return {
           class = "",
           shape = "rectangle",
           x = 256,
-          y = 64,
+          y = 256,
           width = 32,
           height = 32,
           rotation = 0,
           gid = 3,
           visible = true,
           properties = {
-            ["Map"] = "test_map002",
-            ["Type"] = "PORT"
+            ["map"] = "data/test_map002.lua",
+            ["type"] = "port"
           }
         }
       }

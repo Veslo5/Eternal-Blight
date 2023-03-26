@@ -9,6 +9,7 @@ worldManager.roundSystemFilter = nil
 worldManager.currentSelectedTile = nil
 worldManager.lastSelectedTile = nil
 
+worldManager.gridObjects = {}
 
 worldManager.gridData = {}
 worldManager.gridWidth = 0
@@ -77,23 +78,29 @@ end
 function worldManager:setupObjects(worldObjects)
 	for _, object in ipairs(worldObjects.objects) do
 		
+		-- tileset object alignment must be set to top left!
 		local tileX, tileY = self:getTileGridPosition(object.x, object.y)
-		local tile = self:getTile(tileX, tileY)
+		local tile = self:getTile(tileX , tileY)
 
-		if object.properties["Type"] == "PORT" then
+		if object.properties["type"] == "port" then
 			if tile ~= nil then
-				tile.objects = {}
-				table.insert(tile.objects, {
+				local dataObject = 	 {
 					type = "portal",
-					map = object.properties["Map"]
-				})				
+					map = object.properties["map"],
+					tile = tile
+				}
+				tile.type = "portal"
+				tile.map = object.properties["map"]
+				table.insert(self.gridObjects, dataObject)
 			end
-		elseif object.properties["Type"] == "SPAWN" then
-			if tile ~= nil then
-				tile.objects = {}
-				table.insert(tile.objects, {
-					type = "spawn"
-				})				
+		elseif object.properties["type"] == "spawn" then
+			if tile ~= nil then	
+				local dataObject = 	{
+					type = "spawn",
+					tile = tile
+				}
+				tile.type = "spawn"
+				table.insert(self.gridObjects, dataObject)
 			end
 		end
 	end
@@ -133,6 +140,25 @@ function worldManager:getTile(gridX, gridY)
 	else
 		return nil
 	end
+end
+
+function worldManager:getObjectOfType(type)
+	for _, object in pairs(self.gridObjects) do
+		if object.type == type then
+			return object
+		end
+	end
+	return nil
+end
+
+function worldManager:getObjectsOfType(type)
+	local objects = {}
+	for _, object in pairs(self.gridObjects) do
+		if object.type == type then
+			table.insert(objects, object)
+		end
+	end
+	return objects	
 end
 
 --- Checks if parameters are valid values in grid
@@ -184,6 +210,8 @@ function worldManager:unload()
 	Debug:log("[CORE] Unloaded ecs entities and systems")
 	self.gridData = {}
 	Debug:log("[CORE] Unloaded map grid data")
+	self.gridObjects = {}
+	Debug:log("[CORE] Unloaded grid objects")
 
 end
 

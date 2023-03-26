@@ -121,7 +121,7 @@ function tileMapRenderer:createRenderers(tileMapMetadata, resources)
 		if (layer.type == "group") then
 
 			-- only goto I will EVER use :P! (working as continue statement)
-			if (layer.name == "Data" and Debug.isOn == false) then goto continue end
+			-- if (layer.name == "Data" and Debug.isOn == false) then goto continue end
 
 			local renderer = {
 				name = layer.name,
@@ -180,18 +180,18 @@ function tileMapRenderer:draw()
 	end
 end
 
-function tileMapRenderer.drawWorldWalls(gridWidth, gridHeight, tileWidth, tileHeight, gridData)	
-	love.graphics.setColor(1,0,0,0.2)
-	for x = 1, gridWidth, 1 do		
-		for y = 1, gridHeight, 1 do
-			local data = gridData[x][y]
-			if data.type == "wall" then
-				love.graphics.rectangle("fill", (x - 1)* tileWidth, (y - 1) * tileHeight, tileWidth, tileHeight)
-			end
-		end
-	end
-	love.graphics.setColor(1,1,1,1)
-end
+-- function tileMapRenderer.drawWorldWalls(gridWidth, gridHeight, tileWidth, tileHeight, gridData)	
+-- 	love.graphics.setColor(1,0,0,0.2)
+-- 	for x = 1, gridWidth, 1 do		
+-- 		for y = 1, gridHeight, 1 do
+-- 			local data = gridData[x][y]
+-- 			if data.type == "wall" then
+-- 				love.graphics.rectangle("fill", (x - 1)* tileWidth, (y - 1) * tileHeight, tileWidth, tileHeight)
+-- 			end
+-- 		end
+-- 	end
+-- 	love.graphics.setColor(1,1,1,1)
+-- end
 
 function tileMapRenderer:unload()
 
