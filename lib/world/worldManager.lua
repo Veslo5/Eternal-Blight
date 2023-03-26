@@ -6,6 +6,9 @@ worldManager.drawSystemFilter = nil
 worldManager.updateSystemFilter = nil
 worldManager.roundSystemFilter = nil
 
+worldManager.currentSelectedTile = nil
+worldManager.lastSelectedTile = nil
+
 
 worldManager.gridData = {}
 worldManager.gridWidth = 0
@@ -42,7 +45,7 @@ function worldManager:setupMapData(sizeX, sizeY, tileWidth, tileheight)
 	for x = 1, sizeX, 1 do
 		self.gridData[x] = {}
 		for y = 1, sizeY, 1 do
-			self.gridData[x][y] = {	type = "wall"}
+			self.gridData[x][y] = {	x = x, y = y, type = "empty", occupied = false}
 		end
 	end
 
@@ -79,16 +82,20 @@ function worldManager:setupObjects(worldObjects)
 
 		if object.properties["Type"] == "PORT" then
 			if tile ~= nil then
-				tile.type = "port"
-				tile.portalMap = object.properties["Map"]
+				tile.objects = {}
+				table.insert(tile.objects, {
+					type = "portal",
+					map = object.properties["Map"]
+				})				
 			end
 		elseif object.properties["Type"] == "SPAWN" then
 			if tile ~= nil then
-				tile.type = "spawn"
+				tile.objects = {}
+				table.insert(tile.objects, {
+					type = "spawn"
+				})				
 			end
 		end
-
-
 	end
 end
 
@@ -96,7 +103,7 @@ end
 ---@param worldX integer
 ---@param worldY integer
 function worldManager:getTileGridPosition(worldX,worldY)
-	return  worldX / self.tileWidth,  worldY /  self.tileHeight
+	return  math.floor(worldX / self.tileWidth),  math.floor(worldY /  self.tileHeight)
 end
 
 --- Return position of tile in world
@@ -148,7 +155,20 @@ function worldManager:nextRound()
 	Ecs.update(self.mapWorld, love.timer.getDelta(), self.roundSystemFilter)
 end
 
-function worldManager:update(dt)
+function worldManager:update(dt)		
+
+	--TODO: Refactor this to function!
+	-- should be usable with keyboard too
+	-- tiled  changed (mouse)
+	local tileworldx, tileworldy = self:getTileGridPosition(MainCamera.mouseWorldX, MainCamera.mouseWorldY)
+	self.currentSelectedTile = self:getTile(tileworldx, tileworldy)
+	if self.currentSelectedTile ~= self.lastSelectedTile then
+		if self.currentSelectedTile then
+			self.lastSelectedTile = self.currentSelectedTile
+			Observer:trigger(CONST_OBSERVE_GAMEPLAY_TILE_CHANGED, {self.currentSelectedTile})
+		end
+	end
+
 	--print("Update filter")
 	Ecs.update(self.mapWorld, dt, self.updateSystemFilter)
 end

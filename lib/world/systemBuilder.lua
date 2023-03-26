@@ -66,6 +66,7 @@ function systemBuilder.getMoveSystem()
 			end
 
 			if moved then
+				Observer:trigger(CONST_OBSERVE_UI_ADD_CONSOLE_TEXT, {"You moved."})
 				--TODO: uncomment
 				entity.ISimulated.onTurn = false
 
@@ -98,8 +99,7 @@ function systemBuilder.getRoundSystem()
 		end
 
 		Debug:log("Simulating" .. entity.name)
-		-- TODO: Simulate AI?
-
+		-- TODO: Simulate AI?		
 
 	end
 

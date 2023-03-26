@@ -1,7 +1,5 @@
 local uIImage = {}
 
-
-
 function uIImage:new(name, x, y, resource)
 	local newInstance = {}
 	setmetatable(newInstance, self)

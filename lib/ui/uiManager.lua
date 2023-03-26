@@ -2,6 +2,7 @@ local uIManager = {}
 uIManager.consolaFactory = require("lib.ui.uiConsola")
 uIManager.textBoxFactory = require("lib.ui.uiTextbox")
 uIManager.imageFactory = require("lib.ui.uiImage")
+uIManager.tooltipFactory = require("lib.ui.uiTooltip")
 
 uIManager.windowWidth = 0
 uIManager.windowHeight = 0
@@ -46,7 +47,6 @@ function uIManager:addTextBox(name, x, y, width ,height, alignHorizontal, alignV
 end
 
 function uIManager:addImage(name, resource, x, y, alignHorizontal, alignVertical)
-
 	local image = self.imageFactory:new(name, x, y, resource)
 
 	if(alignHorizontal and alignVertical) then		
@@ -56,6 +56,17 @@ function uIManager:addImage(name, resource, x, y, alignHorizontal, alignVertical
 	self.containerHolder[image.name] = image
 	return image
 
+end
+
+function uIManager:addToolTip(name, x,y, alignHorizontal, alignVertical)
+	local tooltip = self.tooltipFactory:new(name, x, y)
+
+	if(alignHorizontal and alignVertical) then		
+		self:align(tooltip, alignHorizontal, alignVertical)
+	end
+
+	self.containerHolder[tooltip.name] = tooltip
+	return tooltip
 end
 
 ---@alias alignHorizontal

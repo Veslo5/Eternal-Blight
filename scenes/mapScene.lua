@@ -58,6 +58,7 @@ function mapScene:_loadUI()
 	self.UI:load(UICamera.virtualResX, UICamera.virtualResY)
 	self.UI:addConsola(CONST_WIDGET_UI_CONSOLA, 0,0,500,250, "left", "bottom")
 	self.UI:addTextBox(CONST_WIDGET_UI_TEXTBOX, 0,0,500,30, "left", "bottom")
+	self.UI:addToolTip(CONST_WIDGET_UI_TOOLTIP, 0,0, "right", "bottom")
 end
 
 --TODO refactoring needed here!
@@ -108,14 +109,14 @@ function mapScene.update(dt)
 	mapScene.worldManager:update(dt)
 	
 	if (Input:isActionPressed("CONSOLE")) then
-		if mapScene.currentMap == "data/test_map002.lua" then
-			mapScene:_changeMap(CONST_INIT_MAP)
-		else
-			mapScene:_changeMap("data/test_map002.lua")
-		end
-		-- local textbox = mapScene.UI:getWidget(CONST_WIDGET_UI_TEXTBOX)
-		-- local currentFocus = textbox:getFocus()
-		-- textbox:setFocus(IIF(currentFocus == true, false, true))
+		-- if mapScene.currentMap == "data/test_map002.lua" then
+		-- 	mapScene:_changeMap(CONST_INIT_MAP)
+		-- else
+		-- 	mapScene:_changeMap("data/test_map002.lua")
+		-- end
+		local textbox = mapScene.UI:getWidget(CONST_WIDGET_UI_TEXTBOX)
+		local currentFocus = textbox:getFocus()
+		textbox:setFocus(IIF(currentFocus == true, false, true))
 	end 
 
 	
