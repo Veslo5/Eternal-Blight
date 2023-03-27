@@ -9,15 +9,21 @@ return {
   height = 10,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 7,
-  nextobjectid = 1,
+  nextlayerid = 10,
+  nextobjectid = 9,
   properties = {},
   tilesets = {
     {
-      name = "custom_map001",
+      name = "tutorial_tileset001",
       firstgid = 1,
-      filename = "custom_tileset001.tsj",
-      exportfilename = "custom_tileset001.lua"
+      filename = "../../!raw/tiled/tutorial_tileset001.tsj",
+      exportfilename = "tutorial_tileset001.lua"
+    },
+    {
+      name = "marks",
+      firstgid = 101,
+      filename = "../../!raw/tiled/marks.tsj",
+      exportfilename = "marks.lua"
     }
   },
   layers = {
@@ -182,6 +188,118 @@ return {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+          }
+        }
+      }
+    },
+    {
+      type = "group",
+      id = 8,
+      name = "Data",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      layers = {
+        {
+          type = "tilelayer",
+          x = 0,
+          y = 0,
+          width = 10,
+          height = 10,
+          id = 9,
+          name = "Walls",
+          class = "",
+          visible = true,
+          opacity = 1,
+          offsetx = 0,
+          offsety = 0,
+          parallaxx = 1,
+          parallaxy = 1,
+          properties = {},
+          encoding = "lua",
+          data = {
+            101, 0, 0, 101, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 101, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 101, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 101, 0, 0, 0,
+            101, 0, 0, 0, 0, 101, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 101, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 101, 0, 0,
+            0, 0, 101, 0, 0, 0, 0, 0, 0, 101
+          }
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 7,
+      name = "World",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 1,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 96,
+          y = 224,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 103,
+          visible = true,
+          properties = {
+            ["id"] = 0,
+            ["type"] = "spawn"
+          }
+        },
+        {
+          id = 7,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 288,
+          y = 224,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 102,
+          visible = true,
+          properties = {
+            ["map"] = "tutorial_map002.lua",
+            ["type"] = "port"
+          }
+        },
+        {
+          id = 8,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 288,
+          y = 256,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 102,
+          visible = true,
+          properties = {
+            ["map"] = "tutorial_map002.lua",
+            ["type"] = "port"
           }
         }
       }

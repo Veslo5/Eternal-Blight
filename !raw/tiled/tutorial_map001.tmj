@@ -1,4 +1,12 @@
 { "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"lua",
+         "target":"..\/..\/data\/maps\/tutorial_map001.lua"
+        }
+    },
  "height":10,
  "infinite":false,
  "layers":[
@@ -116,9 +124,120 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "id":8,
+         "layers":[
+                {
+                 "data":[101, 0, 0, 101, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 101, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 101, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 101, 0, 0, 0,
+                    101, 0, 0, 0, 0, 101, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 101, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 101, 0, 0,
+                    0, 0, 101, 0, 0, 0, 0, 0, 0, 101],
+                 "height":10,
+                 "id":9,
+                 "name":"Walls",
+                 "opacity":1,
+                 "type":"tilelayer",
+                 "visible":true,
+                 "width":10,
+                 "x":0,
+                 "y":0
+                }],
+         "name":"Data",
+         "opacity":1,
+         "type":"group",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":7,
+         "name":"World",
+         "objects":[
+                {
+                 "class":"",
+                 "gid":103,
+                 "height":32,
+                 "id":1,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"id",
+                         "type":"int",
+                         "value":0
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"spawn"
+                        }],
+                 "rotation":0,
+                 "visible":true,
+                 "width":32,
+                 "x":96,
+                 "y":224
+                }, 
+                {
+                 "class":"",
+                 "gid":102,
+                 "height":32,
+                 "id":7,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"map",
+                         "type":"string",
+                         "value":"tutorial_map002.lua"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"port"
+                        }],
+                 "rotation":0,
+                 "visible":true,
+                 "width":32,
+                 "x":288,
+                 "y":224
+                }, 
+                {
+                 "class":"",
+                 "gid":102,
+                 "height":32,
+                 "id":8,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"map",
+                         "type":"string",
+                         "value":"tutorial_map002.lua"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"port"
+                        }],
+                 "rotation":0,
+                 "visible":true,
+                 "width":32,
+                 "x":288,
+                 "y":256
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":7,
- "nextobjectid":1,
+ "nextlayerid":10,
+ "nextobjectid":9,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.2",
@@ -126,7 +245,11 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"custom_tileset001.tsj"
+         "source":"tutorial_tileset001.tsj"
+        }, 
+        {
+         "firstgid":101,
+         "source":"marks.tsj"
         }],
  "tilewidth":32,
  "type":"map",

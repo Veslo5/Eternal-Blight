@@ -81,7 +81,7 @@ function mapScene:_changeMap(mapName)
 		Debug:log("[CORE] Changing map to " .. mapName)
 		self.worldManager:unload()
 		self.tiled:unload()
-		self.tiled:load(mapName, self.loader)	
+		self.tiled:load("data/maps/" .. mapName, self.loader)	
 	end
 
 	collectgarbage("collect")

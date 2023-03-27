@@ -4,14 +4,15 @@
      "export":
         {
          "format":"lua",
-         "target":"custom_map001.lua"
+         "target":"tutorial_tileset001.lua"
         }
     },
- "image":"..\/resources\/eternal_blight.png",
+ "image":"..\/..\/resources\/maps\/tutorial.png",
  "imageheight":320,
  "imagewidth":320,
  "margin":0,
- "name":"custom_map001",
+ "name":"tutorial_tileset001",
+ "objectalignment":"topleft",
  "spacing":0,
  "tilecount":100,
  "tiledversion":"1.9.2",

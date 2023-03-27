@@ -44,8 +44,8 @@ function atlas:cutQuads()
 	end
 end
 
-function atlas:getAtlasQuadCount()
-	return (self.columns - 1) * (self.rows - 1)
+function atlas:getAtlasQuadCount()	
+	return (self.columns - IIF(self.columns == 1, 0, 1)) * (self.rows - IIF(self.rows == 1, 0, 1))
 end
 
 function atlas:unload()

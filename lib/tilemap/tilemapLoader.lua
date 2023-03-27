@@ -21,7 +21,7 @@ function tileMapLoader:loadMetadata(name)
 
 	-- loading all tilesets
 	for _, tileset in ipairs(tileMapMetadata.tilesets) do
-		local tilesetChunk = love.filesystem.load("data/" .. tileset.exportfilename)
+		local tilesetChunk = love.filesystem.load("data/maps/" .. tileset.exportfilename)
 		table.insert(self.tilesetMetadata, tilesetChunk())			
 	end
 	
@@ -33,7 +33,7 @@ function tileMapLoader:getResourcesFromTilesets()
 	local resourcesTable = {}
 
 	for _, tileset in ipairs(self.tilesetMetadata) do
-		table.insert(resourcesTable, {name = tileset.name, image = tileset.image:sub(4)})
+		table.insert(resourcesTable, {name = tileset.name, image = tileset.image:sub(7)})
 	end
 	
 	return resourcesTable

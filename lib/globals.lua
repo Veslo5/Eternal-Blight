@@ -50,7 +50,7 @@ Settings = require("lib.settings")
 CONST_FIRST_SCENE = "splashScreen"
 --CONST_SECOND_SCENE = IIF(Debug.IsOn, "debugMenu", "tilemap")
 CONST_SECOND_SCENE  = "mapScene"
-CONST_INIT_MAP = "data/test_map001.lua"
+CONST_INIT_MAP = "data/maps/tutorial_map001.lua"
 
 -- UI constants
 CONST_WIDGET_UI_CONSOLA = "UI_WIDGET_CONSOLA"
