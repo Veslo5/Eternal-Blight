@@ -6,8 +6,19 @@ debug.serpent = require("lib.external.serpent")
 debug.isOn = arg[2] == "debug"
 if debug.isOn then		
     debug.lldebugger = require("lldebugger")
-	debug.lldebugger.start()
+	-- debug.lldebugger.start()
 end
+
+function debug.start()
+	debug.lldebugger.start()
+	return "started debug hooks."
+end
+
+function debug.stop()
+	debug.lldebugger.stop()
+	return "stopped debug hooks."
+end
+
 --!DEBUG
 
 --- Logs message

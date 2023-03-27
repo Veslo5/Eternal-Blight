@@ -46,7 +46,7 @@ function worldManager:setupMapData(sizeX, sizeY, tileWidth, tileheight)
 	for x = 1, sizeX, 1 do
 		self.gridData[x] = {}
 		for y = 1, sizeY, 1 do
-			self.gridData[x][y] = { x = x, y = y, type = "empty", occupied = false, fog = false, playerVisible = false }
+			self.gridData[x][y] = { x = x, y = y, type = "empty", occupied = false, fog = true, playerVisible = false }
 		end
 	end
 
