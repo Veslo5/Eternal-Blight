@@ -25,6 +25,8 @@ function systemBuilder.getMoveSystem()
 		if entity.IDrawable then
 			entity.IDrawable.worldX = entity.IGridMovable.gridX * self.worldManager.tileWidth
 			entity.IDrawable.worldY = entity.IGridMovable.gridY  * self.worldManager.tileHeight
+
+			CurrentScene:_updateFog(10, entity.IGridMovable.gridX, entity.IGridMovable.gridY)
 		end
 	end
 
@@ -86,6 +88,8 @@ function systemBuilder.getMoveSystem()
 						entity.IDrawable.worldY = entity.IGridMovable.gridY * self.worldManager.tileHeight
 					end
 
+					CurrentScene:_updateFog(10, entity.IGridMovable.gridX,entity.IGridMovable.gridY )
+					
 					self.worldManager:nextRound()
 				elseif action == "portal" then
 					self:_changeMap(tile)

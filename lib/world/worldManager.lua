@@ -46,7 +46,7 @@ function worldManager:setupMapData(sizeX, sizeY, tileWidth, tileheight)
 	for x = 1, sizeX, 1 do
 		self.gridData[x] = {}
 		for y = 1, sizeY, 1 do
-			self.gridData[x][y] = {	x = x, y = y, type = "empty", occupied = false}
+			self.gridData[x][y] = { x = x, y = y, type = "empty", occupied = false, fog = false, playerVisible = false }
 		end
 	end
 
@@ -77,14 +77,13 @@ end
 
 function worldManager:setupObjects(worldObjects)
 	for _, object in ipairs(worldObjects.objects) do
-		
 		-- tileset object alignment must be set to top left!
 		local tileX, tileY = self:getTileGridPosition(object.x, object.y)
-		local tile = self:getTile(tileX , tileY)
+		local tile = self:getTile(tileX, tileY)
 
 		if object.properties["type"] == "port" then
 			if tile ~= nil then
-				local dataObject = 	 {
+				local dataObject = {
 					type = "portal",
 					map = object.properties["map"],
 					tile = tile
@@ -94,8 +93,8 @@ function worldManager:setupObjects(worldObjects)
 				table.insert(self.gridObjects, dataObject)
 			end
 		elseif object.properties["type"] == "spawn" then
-			if tile ~= nil then	
-				local dataObject = 	{
+			if tile ~= nil then
+				local dataObject = {
 					type = "spawn",
 					tile = tile
 				}
@@ -109,8 +108,8 @@ end
 --- Return position of tile in grid
 ---@param worldX integer
 ---@param worldY integer
-function worldManager:getTileGridPosition(worldX,worldY)
-	return  math.floor(worldX / self.tileWidth),  math.floor(worldY /  self.tileHeight)
+function worldManager:getTileGridPosition(worldX, worldY)
+	return math.floor(worldX / self.tileWidth), math.floor(worldY / self.tileHeight)
 end
 
 --- Return position of tile in world
@@ -135,11 +134,69 @@ end
 function worldManager:getTile(gridX, gridY)
 	-- + 1 because lua indexing starts from 1 and we are using 0 as start in grid
 	local tileX = self.gridData[gridX + 1]
-	if  tileX then
+	if tileX then
 		return tileX[gridY + 1]
 	else
 		return nil
 	end
+end
+
+function worldManager:forEachTile(callback)
+	for x = 1, self.gridWidth, 1 do
+		for y = 1, self.gridHeight, 1 do
+			callback(self.gridData[x][y])
+		end
+	end
+end
+
+function worldManager:getDiamondRange(range, tileX, tileY)
+	local tilesRef = {}
+	self:_getRangeTiles(range, tileX, tileY, tilesRef)
+	return tilesRef
+end
+
+function worldManager:_getRangeTiles(range, tileX, tileY, dataTilesRef)
+	range = range - 1
+
+	if range == 0 then
+		return;
+	end
+
+	local neighbours = self:getTileNeighbours(tileX, tileY)
+
+	for _, tile in ipairs(neighbours) do
+		table.insert(dataTilesRef, tile)
+		if tile.type ~= "wall" then
+			self:_getRangeTiles(range, tile.x - 1, tile.y - 1, dataTilesRef)
+		end
+	end
+end
+
+function worldManager:getTileNeighbours(tileX, tileY)
+	local tiles      = {}
+	local leftTile   = self:getTile(tileX - 1, tileY)
+	local rightTile  = self:getTile(tileX + 1, tileY)
+	local topTile    = self:getTile(tileX, tileY - 1)
+	local bottomTile = self:getTile(tileX, tileY + 1)
+
+
+	if leftTile then
+		table.insert(tiles, leftTile)
+	end
+
+	if rightTile then
+		table.insert(tiles, rightTile)
+	end
+
+	if topTile then
+		table.insert(tiles, topTile)
+	end
+
+	if bottomTile then
+		table.insert(tiles, bottomTile)
+	end
+
+	return tiles
 end
 
 function worldManager:getObjectOfType(type)
@@ -158,7 +215,7 @@ function worldManager:getObjectsOfType(type)
 			table.insert(objects, object)
 		end
 	end
-	return objects	
+	return objects
 end
 
 --- Checks if parameters are valid values in grid
@@ -181,8 +238,7 @@ function worldManager:nextRound()
 	Ecs.update(self.mapWorld, love.timer.getDelta(), self.roundSystemFilter)
 end
 
-function worldManager:update(dt)		
-
+function worldManager:update(dt)
 	--TODO: Refactor this to function!
 	-- should be usable with keyboard too
 	-- tiled  changed (mouse)
@@ -191,7 +247,7 @@ function worldManager:update(dt)
 	if self.currentSelectedTile ~= self.lastSelectedTile then
 		if self.currentSelectedTile then
 			self.lastSelectedTile = self.currentSelectedTile
-			Observer:trigger(CONST_OBSERVE_GAMEPLAY_TILE_CHANGED, {self.currentSelectedTile})
+			Observer:trigger(CONST_OBSERVE_GAMEPLAY_TILE_CHANGED, { self.currentSelectedTile })
 		end
 	end
 
@@ -206,13 +262,12 @@ end
 
 function worldManager:unload()
 	Ecs.clearEntities(self.mapWorld)
-	Ecs.clearSystems(self.mapWorld)	
+	Ecs.clearSystems(self.mapWorld)
 	Debug:log("[CORE] Unloaded ecs entities and systems")
 	self.gridData = {}
 	Debug:log("[CORE] Unloaded map grid data")
 	self.gridObjects = {}
 	Debug:log("[CORE] Unloaded grid objects")
-
 end
 
 return worldManager

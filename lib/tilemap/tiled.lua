@@ -19,9 +19,7 @@ function tiled:load(mapName, loader)
 		loader:newImage(tilemapImage.name, tilemapImage.image)
 	end
 
-	local data = loader:loadSync()
-
-	self.tilemapRenderer:createRenderers(self.tilemapLoader.tileMapMetadata, data)	
+	loader:newImage("fog","resources/maps/fog.png")
 end
 
 function tiled:update(dt)
