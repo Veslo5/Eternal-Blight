@@ -196,7 +196,7 @@ function tileMapRenderer:bakeFogData(worldData, gridwidth, gridHeight)
 			if tile.fog == true then
 				self.fogBatch:add(self.fogAtlas.quads[1], ((x - 1) * 32) - 1, ((y - 1) * 32) - 1)
 			else
-				if tile.playerVisible == false then
+				if tile.visited == false then
 					self.fogBatch:add(self.fogAtlas.quads[2], ((x - 1) * 32) - 1, ((y - 1) * 32) - 1)
 				end
 			end

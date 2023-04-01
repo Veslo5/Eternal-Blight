@@ -17,6 +17,9 @@ worldManager.gridHeight = 0
 worldManager.tileWidth = 0
 worldManager.tileHeight = 0
 
+worldManager.fogEnabled = false
+worldManager.visitedEnabled = true
+
 worldManager.currentRound = 0
 
 function worldManager:ecsInit()
@@ -46,7 +49,7 @@ function worldManager:setupMapData(sizeX, sizeY, tileWidth, tileheight)
 	for x = 1, sizeX, 1 do
 		self.gridData[x] = {}
 		for y = 1, sizeY, 1 do
-			self.gridData[x][y] = { x = x, y = y, type = "empty", occupied = false, fog = true, playerVisible = false }
+			self.gridData[x][y] = { x = x, y = y, type = "empty", occupied = false, fog = self.fogEnabled, visited = self.visitedEnabled}
 		end
 	end
 
@@ -229,6 +232,20 @@ function worldManager:isInGridRange(gridX, gridY)
 		return true
 	else
 		return false
+	end
+end
+
+function worldManager:updateFog(range, currentileX, currentileY)
+	local fogTiles = self:getDiamondRange(range, currentileX, currentileY)
+
+	for _, tile in ipairs(fogTiles) do
+		tile.fog = false
+	end
+
+	local visibleTiles = self:getDiamondRange(range - 3, currentileX, currentileY)
+
+	for _, tile in ipairs(visibleTiles) do
+		tile.visited = true
 	end
 end
 

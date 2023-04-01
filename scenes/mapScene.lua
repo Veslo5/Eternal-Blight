@@ -69,25 +69,13 @@ function mapScene:_loadUI()
 end
 
 function mapScene:_updateFog(range, currentileX, currentileY)
+	-- self.worldManager:updateFog(range, currentileX, currentileY)
+	-- self.tiled.tilemapRenderer:bakeFogData(self.worldManager.gridData, self.worldManager.gridWidth,
+	-- self.worldManager.gridHeight)
 
-	local fogTiles = self.worldManager:getDiamondRange(range, currentileX, currentileY)
-
-	for _, tile in ipairs(fogTiles) do
-		tile.fog = false
-	end
-
-	local visibleTiles = self.worldManager:getDiamondRange(range - 3, currentileX, currentileY)
-
-	for _, tile in ipairs(visibleTiles) do
-		tile.playerVisible = true
-	end
-
-	self.tiled.tilemapRenderer:bakeFogData(self.worldManager.gridData, self.worldManager.gridWidth, self.worldManager.gridHeight)
-	
-	self.worldManager:forEachTile(function (tile)
-		tile.playerVisible = false
-	end)
-
+	-- self.worldManager:forEachTile(function(tile)
+	-- 	tile.playerVisible = false
+	-- end)
 end
 
 --TODO refactoring needed here!
@@ -111,7 +99,7 @@ function mapScene:_changeMap(mapName)
 	local resources = self.loader:loadSync()
 	self.tiled.tilemapRenderer:createRenderers(self.tiled.tilemapLoader.tileMapMetadata, resources)
 	self.tiled.tilemapRenderer:createFogRenderer(table.find(resources, "name", "fog").value, self.worldManager.gridData,
-	self.worldManager.gridWidth, self.worldManager.gridHeight)
+		self.worldManager.gridWidth, self.worldManager.gridHeight)
 
 	self.currentMap = mapName
 	self.loading = false
