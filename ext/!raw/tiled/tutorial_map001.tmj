@@ -75,7 +75,27 @@
                  "width":10,
                  "x":0,
                  "y":0
-                }, 
+                }],
+         "name":"Ground",
+         "opacity":1,
+         "type":"group",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "id":15,
+         "layers":[],
+         "name":"Player",
+         "opacity":1,
+         "type":"group",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "id":11,
+         "layers":[
                 {
                  "data":[0, 0, 28, 29, 30, 18, 19, 20, 0, 0,
                     0, 0, 0, 0, 0, 28, 29, 30, 0, 0,
@@ -118,7 +138,7 @@
                  "x":0,
                  "y":0
                 }],
-         "name":"Ground",
+         "name":"Vegetation",
          "opacity":1,
          "type":"group",
          "visible":true,
@@ -229,6 +249,29 @@
                  "width":32,
                  "x":288,
                  "y":256
+                }, 
+                {
+                 "class":"",
+                 "gid":104,
+                 "height":32,
+                 "id":10,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"items",
+                         "type":"string",
+                         "value":"m0001"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"stash"
+                        }],
+                 "rotation":0,
+                 "visible":true,
+                 "width":32,
+                 "x":96,
+                 "y":160
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -236,8 +279,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":9,
+ "nextlayerid":16,
+ "nextobjectid":11,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.2",

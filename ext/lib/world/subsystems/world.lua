@@ -77,6 +77,16 @@ function world:setupObjects(worldObjects, grid)
 				tile.type = "spawn"
 				table.insert(self.worldObjects, dataObject)
 			end
+		elseif object.properties["type"] == "stash" then
+			if tile ~= nil then
+				local dataObject = {
+					type = "stash",
+					tile = tile,
+					items = object.properties["items"]
+				}
+				tile.type = "item"
+				table.insert(self.worldObjects,dataObject)
+			end
 		end
 	end
 end

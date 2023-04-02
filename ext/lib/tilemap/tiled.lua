@@ -28,9 +28,12 @@ function tiled:update(dt)
 	end
 end
 
-function tiled:draw()
-	self.tilemapRenderer:draw()
+function tiled:beginDraw()
+	self.tilemapRenderer:beginDraw()
 	--self.tilemapRenderer.drawWorldWalls(world.gridWidth, world.gridHeight, world.tileWidth, world.tileHeight, world.gridData)		
+end
+function tiled:endDraw()
+	self.tilemapRenderer:endDraw()
 end
 
 function tiled:unload()

@@ -9,8 +9,8 @@ return {
   height = 10,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 10,
-  nextobjectid = 9,
+  nextlayerid = 16,
+  nextobjectid = 11,
   properties = {},
   tilesets = {
     {
@@ -129,7 +129,36 @@ return {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 39, 0, 0, 0, 0, 0, 0, 40
           }
-        },
+        }
+      }
+    },
+    {
+      type = "group",
+      id = 15,
+      name = "Player",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      layers = {}
+    },
+    {
+      type = "group",
+      id = 11,
+      name = "Vegetation",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      layers = {
         {
           type = "tilelayer",
           x = 0,
@@ -300,6 +329,23 @@ return {
           properties = {
             ["map"] = "tutorial_map002.lua",
             ["type"] = "port"
+          }
+        },
+        {
+          id = 10,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 96,
+          y = 160,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 104,
+          visible = true,
+          properties = {
+            ["items"] = "m0001",
+            ["type"] = "stash"
           }
         }
       }

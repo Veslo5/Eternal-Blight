@@ -8,9 +8,9 @@ return {
   tileheight = 32,
   spacing = 0,
   margin = 0,
-  columns = 3,
+  columns = 5,
   image = "../../resources/maps/marks.png",
-  imagewidth = 96,
+  imagewidth = 160,
   imageheight = 32,
   objectalignment = "topleft",
   tilerendersize = "tile",
@@ -26,6 +26,6 @@ return {
   },
   properties = {},
   wangsets = {},
-  tilecount = 3,
+  tilecount = 5,
   tiles = {}
 }

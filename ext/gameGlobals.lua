@@ -1,4 +1,4 @@
-CONST_SECOND_SCENE  = "debugMenu"--"mapScene"
+CONST_SECOND_SCENE  = "mapScene"--"mapScene"
 CONST_INIT_MAP = "ext/data/maps/tutorial_map001.lua"
 
 -- UI constants

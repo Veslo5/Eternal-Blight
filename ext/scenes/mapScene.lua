@@ -56,9 +56,7 @@ function mapScene:_loadWorldManager(tilemapLoader)
 	mapScene.worldManager:addSystem(systemBuilder.getMoveSystem())
 	mapScene.worldManager:addSystem(systemBuilder.getDrawSystem())
 	mapScene.worldManager:addSystem(systemBuilder.getRoundSystem())
-	mapScene.worldManager:ecsInit()
-
-	local mob = Filesystem:loadMob("snake")
+	mapScene.worldManager:ecsInit()	
 end
 
 function mapScene:_loadUI()
@@ -153,8 +151,10 @@ function mapScene.draw()
 	-- Gameplay rendering
 	MainCamera:beginDraw()
 	do
-		mapScene.tiled:draw()
+		mapScene.tiled:beginDraw()
 		mapScene.worldManager:draw()
+		mapScene.tiled:endDraw()
+
 	end
 	MainCamera:endDraw()
 

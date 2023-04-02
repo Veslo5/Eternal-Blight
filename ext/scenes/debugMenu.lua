@@ -3,7 +3,7 @@ local debugMenu = {}
 function debugMenu.load()
 sliceTest = love.graphics.newImage("ext/resources/Slice9.png")
 sliceTest:setFilter("nearest", "nearest")
-sliceSprite = require("splash.sprites.slice9"):New(sliceTest, 1,1,1,1)
+sliceSprite = require("splash.sprites.slice9"):New(sliceTest, 5,5,5,5)
 x = 1
 y = 1
 end
@@ -29,7 +29,7 @@ end
 function debugMenu.draw()
 	love.graphics.setBackgroundColor(1,1,1,1)
 --love.graphics.print("DebugMenu", 0,0)
-sliceSprite:draw(0,0,x,y)
+sliceSprite:draw()
 end
 
 function debugMenu.keypressed(key, scancode, isrepeat)

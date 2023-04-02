@@ -3,7 +3,9 @@ local tileMapRenderer = {}
 tileMapRenderer.atlasFactory = require("splash.sprites.atlas")
 
 tileMapRenderer.tileSetAtlases = {}
-tileMapRenderer.groupRenderers = {}
+
+tileMapRenderer.beginGroupRenderers = {}
+tileMapRenderer.endGroupRenderers = {}
 
 tileMapRenderer.fogAtlas = nil
 tileMapRenderer.fogBatch = nil
@@ -102,6 +104,8 @@ function tileMapRenderer:_bake(spriteBatchData, tilesets, data, layerWidth, laye
 	end
 end
 
+local meetPlayerLayer = false
+
 --- Initialize renderers
 ---@param tileMapMetadata table metada of tilemap
 ---@param resources table talbe with resources
@@ -119,6 +123,11 @@ function tileMapRenderer:createRenderers(tileMapMetadata, resources)
 		if (layer.type == "group") then
 			-- only goto I will EVER use :P! (working as continue statement)
 			-- if (layer.name == "Data" and Debug.isOn == false) then goto continue end
+
+			if layer.name == "Player" then
+				meetPlayerLayer = true
+				goto continue
+			end
 
 			local renderer = {
 				name = layer.name,
@@ -144,7 +153,11 @@ function tileMapRenderer:createRenderers(tileMapMetadata, resources)
 				layerInGroup.height, tileMapMetadata.tilewidth, tileMapMetadata.tileheight)
 			end
 
-			table.insert(self.groupRenderers, renderer)
+			if meetPlayerLayer == false then
+				table.insert(self.beginGroupRenderers, renderer)
+			else
+				table.insert(self.endGroupRenderers, renderer)
+			end
 
 			::continue::
 		end
@@ -155,7 +168,16 @@ end
 ---@param name string
 ---@return boolean
 function tileMapRenderer:toggleLayerVisibility(name)
-	for _, groupRenderer in ipairs(self.groupRenderers) do
+	for _, groupRenderer in ipairs(self.beginGroupRenderers) do
+		for __, spritebatchdata in ipairs(groupRenderer.spriteBatchesData) do
+			if groupRenderer.name == name then
+				spritebatchdata.visible = IIF(spritebatchdata.visible, false, true)
+				return true
+			end
+		end
+	end
+
+	for _, groupRenderer in ipairs(self.endGroupRenderers) do
 		for __, spritebatchdata in ipairs(groupRenderer.spriteBatchesData) do
 			if groupRenderer.name == name then
 				spritebatchdata.visible = IIF(spritebatchdata.visible, false, true)
@@ -167,8 +189,18 @@ function tileMapRenderer:toggleLayerVisibility(name)
 	return false
 end
 
-function tileMapRenderer:draw()
-	for _, layerRenderer in ipairs(self.groupRenderers) do
+function tileMapRenderer:beginDraw()
+	for _, layerRenderer in ipairs(self.beginGroupRenderers) do
+		for __, spritebatchdata in ipairs(layerRenderer.spriteBatchesData) do
+			if spritebatchdata.visible then
+				love.graphics.draw(spritebatchdata.spritebatch, 0, 0)
+			end
+		end
+	end
+end
+
+function tileMapRenderer:endDraw()
+	for _, layerRenderer in ipairs(self.endGroupRenderers) do
 		for __, spritebatchdata in ipairs(layerRenderer.spriteBatchesData) do
 			if spritebatchdata.visible then
 				love.graphics.draw(spritebatchdata.spritebatch, 0, 0)
@@ -177,6 +209,7 @@ function tileMapRenderer:draw()
 	end
 
 	love.graphics.draw(tileMapRenderer.fogBatch, 0, 0)
+
 end
 
 function tileMapRenderer:createFogRenderer(resource, worldData, gridwidth, gridHeight)
@@ -204,9 +237,7 @@ function tileMapRenderer:bakeFogData(worldData, gridwidth, gridHeight)
 	end
 end
 
-function tileMapRenderer:bakeVisibility()
 
-end
 
 -- function tileMapRenderer.drawWorldWalls(gridWidth, gridHeight, tileWidth, tileHeight, gridData)	
 -- 	love.graphics.setColor(1,0,0,0.2)
@@ -222,13 +253,14 @@ end
 -- end
 
 function tileMapRenderer:unload()
+	meetPlayerLayer = false
 	for _, atlas in ipairs(self.tileSetAtlases) do
 		atlas:unload()
 	end
 	self.tileSetAtlases = {}
 	Debug:log("[CORE] Unloaded tileset atlases")
 
-	for _, layerRenderer in ipairs(self.groupRenderers) do
+	for _, layerRenderer in ipairs(self.beginGroupRenderers) do
 		for __, spritebatchdata in ipairs(layerRenderer.spriteBatchesData) do
 			spritebatchdata.spritebatch:clear()
 			spritebatchdata.spritebatch = nil
@@ -237,9 +269,19 @@ function tileMapRenderer:unload()
 		layerRenderer = nil
 	end
 
-	self.groupRenderers = {}
+	for _, layerRenderer in ipairs(self.endGroupRenderers) do
+		for __, spritebatchdata in ipairs(layerRenderer.spriteBatchesData) do
+			spritebatchdata.spritebatch:clear()
+			spritebatchdata.spritebatch = nil
+			spritebatchdata = nil
+		end
+		layerRenderer = nil
+	end
 
-	Debug:log("[CORE] Unloaded groupRenderes and spritebatches")
+	self.beginGroupRenderers = {}
+	self.endGroupRenderers = {}
+
+	Debug:log("[CORE] Unloaded begin and end groupRenderes and spritebatches")
 	self.fogBatch:clear()
 	self.fogBatch = nil
 
