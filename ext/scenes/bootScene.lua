@@ -1,6 +1,8 @@
 local splashScreen = {}
 
 function splashScreen.load()
+	require("gameGlobals")
+	
 	Settings.loadSettings()
 	Settings.loadBindings()
 	
