@@ -4,18 +4,23 @@ debug.serpent = require("lib.external.serpent")
 
 --!DEBUG:
 debug.isOn = arg[2] == "debug"
+debug.running = arg[3] ~= nil
 if debug.isOn then		
     debug.lldebugger = require("lldebugger")
-	-- debug.lldebugger.start()
+	if(debug.running) then
+		debug.lldebugger.start()
+	end
 end
 
 function debug.start()
 	debug.lldebugger.start()
+	debug.running = true
 	return "started debug hooks."
 end
 
 function debug.stop()
 	debug.lldebugger.stop()
+	debug.running = false
 	return "stopped debug hooks."
 end
 

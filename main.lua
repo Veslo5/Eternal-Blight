@@ -102,7 +102,7 @@ end
 --!DEBUG
 local love_errorhandler = love.errhand
 function love.errorhandler(msg)
-    if Debug.lldebugger then
+    if Debug.running == true then
         error(msg, 2)
     else
         return love_errorhandler(msg)

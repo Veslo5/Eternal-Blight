@@ -7,7 +7,7 @@
 		{
 			"type": "lua-local",
 			"request": "launch",
-			"name": "Debug",
+			"name": "Debug (without attach)",
 			"pullBreakpointsSupport": true,
 			"program": {
 				"command": "love"
@@ -15,6 +15,20 @@
 			"args": [
 				".",
 				"debug"
+			],
+		},
+		{
+			"type": "lua-local",
+			"request": "launch",
+			"name": "Debug (with attach)",
+			"pullBreakpointsSupport": true,
+			"program": {
+				"command": "love"
+			},
+			"args": [
+				".",
+				"debug",
+				"start"
 			],
 		},
 		{
