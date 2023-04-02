@@ -98,8 +98,8 @@ function mapScene:_changeMap(mapName)
 
 	local resources = self.loader:loadSync()
 	self.tiled.tilemapRenderer:createRenderers(self.tiled.tilemapLoader.tileMapMetadata, resources)
-	self.tiled.tilemapRenderer:createFogRenderer(table.find(resources, "name", "fog").value, self.worldManager.gridData,
-		self.worldManager.gridWidth, self.worldManager.gridHeight)
+	self.tiled.tilemapRenderer:createFogRenderer(table.find(resources, "name", "fog").value, self.worldManager.grid.gridData,
+		self.worldManager.grid.gridWidth, self.worldManager.grid.gridHeight)
 
 	self.currentMap = mapName
 	self.loading = false

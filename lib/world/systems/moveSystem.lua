@@ -8,8 +8,8 @@ function moveSystem.getSystem()
 
 	function system:onAdd(entity)
 		if entity.IDrawable then
-			entity.IDrawable.worldX = entity.IGridMovable.gridX * self.worldManager.tileWidth
-			entity.IDrawable.worldY = entity.IGridMovable.gridY * self.worldManager.tileHeight
+			entity.IDrawable.worldX = entity.IGridMovable.gridX * self.worldManager.grid.tileWidth
+			entity.IDrawable.worldY = entity.IGridMovable.gridY * self.worldManager.grid.tileHeight
 
 			CurrentScene:_updateFog(10, entity.IGridMovable.gridX, entity.IGridMovable.gridY)
 		end
@@ -68,8 +68,8 @@ function moveSystem.getSystem()
 					entity.ISimulated.onTurn = false
 
 					if entity.IDrawable then
-						entity.IDrawable.worldX = entity.IGridMovable.gridX * self.worldManager.tileWidth
-						entity.IDrawable.worldY = entity.IGridMovable.gridY * self.worldManager.tileHeight
+						entity.IDrawable.worldX = entity.IGridMovable.gridX * self.worldManager.grid.tileWidth
+						entity.IDrawable.worldY = entity.IGridMovable.gridY * self.worldManager.grid.tileHeight
 					end
 
 					CurrentScene:_updateFog(10, entity.IGridMovable.gridX, entity.IGridMovable.gridY)
