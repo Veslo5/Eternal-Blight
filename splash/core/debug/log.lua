@@ -1,6 +1,6 @@
 local debug = {}
 
-debug.serpent = require("lib.external.serpent")
+debug.serpent = require("splash.core.external.serpent")
 
 --!DEBUG:
 debug.isOn = arg[2] == "debug"

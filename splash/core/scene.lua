@@ -1,4 +1,4 @@
-local scenesFolder = "scenes"
+local scenesFolder = "ext/scenes"
 
 -- Scene is Global object
 Scene = {}

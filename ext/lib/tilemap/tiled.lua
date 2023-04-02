@@ -16,10 +16,10 @@ function tiled:load(mapName, loader)
 
 	for _, tilemapImage in ipairs(self.tilemapLoader:getResourcesFromTilesets()) do
 		-- adds resources to loading queue
-		loader:newImage(tilemapImage.name, tilemapImage.image)
+		loader:newImage(tilemapImage.name, "ext/"..tilemapImage.image)
 	end
 
-	loader:newImage("fog","resources/maps/fog.png")
+	loader:newImage("fog","ext/resources/maps/fog.png")
 end
 
 function tiled:update(dt)

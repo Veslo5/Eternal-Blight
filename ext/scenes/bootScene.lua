@@ -15,8 +15,8 @@ function splashScreen.load()
 	splashScreen.loader =  ResourceLoader:new()	
 	splashScreen.UI:load(UICamera.virtualResX, UICamera.virtualResY)
 
-	splashScreen.loader:newImage("VES", "resources/logo/ves.png")
-	--splashScreen.Loader:NewImage("LOVE", "resources/logo/love.png")
+	splashScreen.loader:newImage("VES", "ext/resources/logo/ves.png")
+	--splashScreen.Loader:NewImage("LOVE", "ext/resources/logo/love.png")
 
 	Timer.after(1, function()
 		Tween.to(splashScreen, 0.5, { currentAlpha = 0 }):oncomplete(function()

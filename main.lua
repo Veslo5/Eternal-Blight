@@ -1,9 +1,9 @@
 ---@diagnostic disable: redundant-parameter, undefined-field
-require "scene"
+require("splash.core.scene")
 
 function love.load()
-	--Loading global modules
-	require("lib.globals")
+	--Loading global modules	
+	require("splash.core.globals")	
 
 	local limits = love.graphics.getSystemLimits()
 	local name, version, vendor, device = love.graphics.getRendererInfo()	
@@ -12,7 +12,7 @@ function love.load()
 	Debug:log("[CORE] HW Limit max texture size(px): " .. limits.texturesize)	
 	
 
-	Scene.Load(CONST_FIRST_SCENE)
+	Scene.Load("bootScene")
 end
 
 local debugElapsed = 0

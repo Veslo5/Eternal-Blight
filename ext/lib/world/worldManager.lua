@@ -22,11 +22,9 @@ function worldManager:addSystem(system)
 	self.world:addSystem(system, self)
 end
 
-
 function worldManager:setupMapData(sizeX, sizeY, tileWidth, tileheight)
 	self.grid:setupMapData(sizeX, sizeY, tileWidth, tileheight)
 end
-
 
 function worldManager:setupWalls(dataTiles)
 	self.grid:setupWalls(dataTiles)

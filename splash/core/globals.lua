@@ -27,30 +27,29 @@ function table.find(table, property, value)
 end
 
 
-Debug = require ("lib.debug.log")
+Debug = require ("splash.core.debug.log")
+
+package.path = package.path .. ";./ext/?.lua"
+love.filesystem.setRequirePath(love.filesystem.getRequirePath() .. ";/ext/?.lua")
 
 --Global objects/modules
-local cameraFactory = require("lib.camera")
+local cameraFactory = require("splash.core.camera")
 
 MainCamera = cameraFactory:new()
 UICamera = cameraFactory:new(100, "fill", 1366, 768)
 
-Ecs = require("lib.external.tiny")
-Timer = require("lib.external.timer")
-Tween = require("lib.external.flux")
-Input = require("lib.bindMe")
-Observer = require("lib.observer")
+Ecs = require("splash.core.external.tiny")
+Timer = require("splash.core.external.timer")
+Tween = require("splash.core.external.flux")
+Input = require("splash.core.bindMe")
+Observer = require("splash.core.observer")
 Utf8 = require("utf8")
-Filesystem = require("lib.io.filesystem")
-ResourceLoader = require("lib.loader")
-Settings = require("lib.settings")
+ResourceLoader = require("splash.core.loader")
+Settings = require("splash.core.settings")
 
-
---Global constants
-CONST_FIRST_SCENE = "splashScreen"
 --CONST_SECOND_SCENE = IIF(Debug.IsOn, "debugMenu", "tilemap")
 CONST_SECOND_SCENE  = "mapScene"
-CONST_INIT_MAP = "data/maps/tutorial_map001.lua"
+CONST_INIT_MAP = "ext/data/maps/tutorial_map001.lua"
 
 -- UI constants
 CONST_WIDGET_UI_CONSOLA = "UI_WIDGET_CONSOLA"
@@ -74,5 +73,6 @@ CONST_INPUT_LEFT = "LEFT"
 CONST_INPUT_RIGHT = "RIGHT"
 CONST_INPUT_UP = "UP"
 CONST_INPUT_DOWN = "DOWN"
+
 
 return Globals
