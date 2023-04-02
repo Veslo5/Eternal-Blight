@@ -1,6 +1,6 @@
 local fileSystem = {}
 
-fileSystem.path = "data/"
+fileSystem.path = "ext/data/"
 fileSystem.mob = "mobs/"
 fileSystem.items = "items/"
 

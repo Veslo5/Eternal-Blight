@@ -1,6 +1,6 @@
 local tileMapRenderer = {}
 
-tileMapRenderer.atlasFactory = require("lib.sprites.atlas")
+tileMapRenderer.atlasFactory = require("splash.sprites.atlas")
 
 tileMapRenderer.tileSetAtlases = {}
 tileMapRenderer.groupRenderers = {}

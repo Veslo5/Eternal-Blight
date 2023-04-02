@@ -25,3 +25,4 @@ CONST_INPUT_RIGHT = "RIGHT"
 CONST_INPUT_UP = "UP"
 CONST_INPUT_DOWN = "DOWN"
 
+Filesystem = require("lib.io.filesystem")

@@ -58,7 +58,7 @@ function mapScene:_loadWorldManager(tilemapLoader)
 	mapScene.worldManager:addSystem(systemBuilder.getRoundSystem())
 	mapScene.worldManager:ecsInit()
 
-	-- local mob = Filesystem:loadMob("snake")
+	local mob = Filesystem:loadMob("snake")
 end
 
 function mapScene:_loadUI()
