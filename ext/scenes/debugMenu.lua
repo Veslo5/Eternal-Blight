@@ -1,17 +1,35 @@
 local debugMenu = {}
 
 function debugMenu.load()
-
+sliceTest = love.graphics.newImage("ext/resources/Slice9.png")
+sliceTest:setFilter("nearest", "nearest")
+sliceSprite = require("splash.sprites.slice9"):New(sliceTest, 1,1,1,1)
+x = 1
+y = 1
 end
 
 function debugMenu.update(dt) 
 	if Input:isActionPressed(CONST_INPUT_EXIT) then
 		love.event.quit()
 	end
+
+	if love.keyboard.isDown("d") then
+		x = x + dt		
+	end
+
+	if love.keyboard.isDown("a") then
+		x = x - dt		
+	end
+
+	if love.keyboard.isDown("s") then
+		y = y + dt		
+	end
 end
 
 function debugMenu.draw()
-love.graphics.print("DebugMenu", 0,0)
+	love.graphics.setBackgroundColor(1,1,1,1)
+--love.graphics.print("DebugMenu", 0,0)
+sliceSprite:draw(0,0,x,y)
 end
 
 function debugMenu.keypressed(key, scancode, isrepeat)
