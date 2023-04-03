@@ -1,6 +1,7 @@
 local world = {}
 world.mapWorld = Ecs.world()
 
+
 world.worldObjects = {}
 
 world.drawSystemFilter = nil

@@ -38,7 +38,9 @@ function debug:drawStats()
 	--if self.IsOn then		
 		local stats = love.graphics.getStats()
 		love.graphics.print(tostring(love.timer.getFPS()), 0, 0)
-		love.graphics.print(tostring(stats.drawcalls), 0, 10)
+		love.graphics.print(tostring(love.timer.getAverageDelta() * 1000), 0, 10)
+		love.graphics.print(tostring(stats.drawcalls), 0, 20)
+
 	--end
 end
 

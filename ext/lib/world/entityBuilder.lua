@@ -19,13 +19,22 @@ function entityBuilder:makeGridMovable(x,y)
 	return self
 end
 
-function entityBuilder:makeDrawable()
+function entityBuilder:makeDrawable(image, color)
 	self.IDrawable = {
 		worldX = 0,
 		worldY = 0,
-		image = nil
+		image = image or nil,
+		color =  color or {1,1,1,1} 
 	}
 
+	return self
+end
+
+function entityBuilder:addInventory(maxWeight)
+	self.Inventory = {
+		items = {},
+		maxWeight = maxWeight or 0
+	}
 	return self
 end
 

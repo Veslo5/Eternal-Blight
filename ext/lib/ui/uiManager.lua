@@ -1,8 +1,8 @@
 local uIManager = {}
-uIManager.consolaFactory = require("lib.ui.uiConsola")
-uIManager.textBoxFactory = require("lib.ui.uiTextbox")
-uIManager.imageFactory = require("lib.ui.uiImage")
-uIManager.tooltipFactory = require("lib.ui.uiTooltip")
+uIManager.consolaFactory = require("ext.lib.ui.uiConsola")
+uIManager.textBoxFactory = require("ext.lib.ui.uiTextbox")
+uIManager.imageFactory = require("ext.lib.ui.uiImage")
+uIManager.tooltipFactory = require("ext.lib.ui.uiTooltip")
 
 uIManager.windowWidth = 0
 uIManager.windowHeight = 0

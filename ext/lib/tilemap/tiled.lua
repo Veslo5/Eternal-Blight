@@ -5,13 +5,13 @@ function tiled:new()
 	setmetatable(newInstance, self)
 	self.__index = self
 
-	tiled.tilemapRenderer = require("lib.tilemap.tilemapRenderer")
-	tiled.tilemapLoader = require("lib.tilemap.tilemapLoader"):new()
+	-- tiled.tilemapRenderer = require("ext.lib.graphics.tilemapRenderer")
+	tiled.tilemapLoader = require("ext.lib.tilemap.tilemapLoader"):new()
 
 	return newInstance
 end
 
-function tiled:load(mapName, loader)
+function tiled:prepareResourcesForMap(mapName, loader)
 	self.tilemapLoader:loadMetadata(mapName)
 
 	for _, tilemapImage in ipairs(self.tilemapLoader:getResourcesFromTilesets()) do
@@ -23,21 +23,21 @@ function tiled:load(mapName, loader)
 end
 
 function tiled:update(dt)
-	if (Input:isActionPressed("DEBUG_WALLS")) then
-		self.tilemapRenderer:toggleLayerVisibility("Data")
-	end
+-- 	if (Input:isActionPressed("DEBUG_WALLS")) then
+-- 		self.tilemapRenderer:toggleLayerVisibility("Data")
+-- 	end
 end
 
-function tiled:beginDraw()
-	self.tilemapRenderer:beginDraw()
-	--self.tilemapRenderer.drawWorldWalls(world.gridWidth, world.gridHeight, world.tileWidth, world.tileHeight, world.gridData)		
-end
-function tiled:endDraw()
-	self.tilemapRenderer:endDraw()
-end
+-- function tiled:beginDraw()
+-- 	self.tilemapRenderer:beginDraw()
+-- 	--self.tilemapRenderer.drawWorldWalls(world.gridWidth, world.gridHeight, world.tileWidth, world.tileHeight, world.gridData)		
+-- end
+-- function tiled:endDraw()
+-- 	self.tilemapRenderer:endDraw()
+-- end
 
 function tiled:unload()
-	self.tilemapRenderer:unload()
+	-- self.tilemapRenderer:unload()
 	self.tilemapLoader:unload()
 end
 

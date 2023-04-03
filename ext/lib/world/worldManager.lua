@@ -3,15 +3,126 @@ local worldManager = {}
 worldManager.currentSelectedTile = nil
 worldManager.lastSelectedTile = nil
 
-worldManager.world = require("lib.world.subsystems.world")
-worldManager.grid = require("lib.world.subsystems.grid")
+worldManager.world = require("ext.lib.world.subsystems.world")
+worldManager.grid = require("ext.lib.world.subsystems.grid")
+worldManager.entityBuilder = require("ext.lib.world.entityBuilder")
+worldManager.systemBuilder = require("ext.lib.world.systemBuilder")
+worldManager.filesystem = require("ext.lib.filesystem.filesystem")
 
-worldManager.fogEnabled = false
-worldManager.visitedEnabled = true
+worldManager.currentMap = nil
+worldManager.tiledData = nil
 
+
+function worldManager:changeMap(mapName)
+	local loader = ResourceLoader:new()
+
+	if self.currentMap == nil then
+		self.tiledData = self.filesystem:loadTiledData(CONST_INIT_MAP)
+		mapName = CONST_INIT_MAP
+	else
+		Debug:log("[CORE] Changing map to " .. mapName)
+		self:unload()
+		CurrentScene.drawPipeline:unload()
+		self.tiledData = self.filesystem:loadTiledData(mapName)
+	end
+
+	for _, resource in ipairs(self.tiledData:getResourcesFromTilesets()) do
+		loader:newImage(resource.name, "ext/" .. resource.image)
+	end
+
+	
+	loader:newImage("fog","ext/resources/maps/fog.png")
+
+	collectgarbage("collect")
+
+	self:setupMapData(self.tiledData.tileMapMetadata.width,
+		self.tiledData.tileMapMetadata.height,
+		self.tiledData.tileMapMetadata.tilewidth,
+		self.tiledData.tileMapMetadata.tileheight)
+
+	local dataTileGroup = self.tiledData:getGroupLayer("Data")
+	local worldObjectGroup = self.tiledData:getObjectLayer("World")
+
+	if (dataTileGroup ~= nil) then
+		self:setupWalls(dataTileGroup)
+	end
+
+	if worldObjectGroup ~= nil then
+		self:setupObjects(worldObjectGroup)
+	end
+
+	self:addPlayer()
+	self:ecsInit()
+
+	local resources = loader:loadSync()
+
+	CurrentScene.drawPipeline:createTilemapRenderers(self.tiledData.tileMapMetadata, self.grid.gridData, self.grid.gridWidth, self.grid.gridHeight, resources)
+
+	self.currentMap = mapName
+
+	print("[CORE] World map changed: current mapScene textures " .. love.graphics.getStats().images)
+end
+
+function worldManager:updateFog(range, currentileX, currentileY)
+		
+	local fogTiles = self:getDiamondRange(range, currentileX, currentileY)
+
+	for _, tile in ipairs(fogTiles) do
+		tile.fog = false
+	end
+
+	local visibleTiles = self:getDiamondRange(range - 3, currentileX, currentileY)
+
+	for _, tile in ipairs(visibleTiles) do
+		tile.visited = true
+	end
+
+	CurrentScene.drawPipeline:bakeFogData(self.grid.gridData, self.grid.gridWidth, self.grid.gridHeight)
+
+	self.grid:forEachTile(function(tile)
+		tile.visited = false
+	end)
+end
 
 function worldManager:ecsInit()
+	self:addSystem(self.systemBuilder.getMoveSystem())
+	self:addSystem(self.systemBuilder.getDrawSystem())
+	self:addSystem(self.systemBuilder.getRoundSystem())
+
 	self.world:ecsInit()
+end
+
+function worldManager:addPlayer()
+	local playerEntity = self.entityBuilder:new("Player")
+
+	local spawnTile = self:getObjectOfType("spawn")
+	if spawnTile then
+		playerEntity:makeGridMovable(spawnTile.tile.x - 1, spawnTile.tile.y - 1)
+	else
+		--TODO: not like this. Every map should have spawn
+		playerEntity:makeGridMovable(1, 1)
+	end
+
+	playerEntity:makeControllable(true)
+	playerEntity:makeDrawable(nil, { 0, 1, 0, 1 })
+	playerEntity:makeSimulated(true)
+	playerEntity:addStats(1, 10, 10)
+
+	MainCamera:follow(playerEntity.IDrawable, "worldX", "worldY")
+
+	self:addEntity(playerEntity)
+end
+
+function worldManager:createStashEntity()
+	local stashEntity = self.entityBuilder:new("Stash")
+	stashEntity:addInventory()
+
+	return stashEntity
+end
+
+function worldManager:addItem(name)
+	local itemData = self.filesystem:loadItem(name)
+	local itemEntity = self.entityBuilder:new()
 end
 
 function worldManager:addEntity(entity)
@@ -74,19 +185,6 @@ function worldManager:isInGridRange(gridX, gridY)
 	return self.grid:isInGridRange(gridX, gridY)
 end
 
-function worldManager:updateFog(range, currentileX, currentileY)
-	local fogTiles = self:getDiamondRange(range, currentileX, currentileY)
-
-	for _, tile in ipairs(fogTiles) do
-		tile.fog = false
-	end
-
-	local visibleTiles = self:getDiamondRange(range - 3, currentileX, currentileY)
-
-	for _, tile in ipairs(visibleTiles) do
-		tile.visited = true
-	end
-end
 
 function worldManager:nextRound()
 	self.world:nextRound()
@@ -118,6 +216,10 @@ function worldManager:unload()
 	self.world:unload()
 	self.grid:unload()
 
+	self.tiledData:unload()
+	self.tiledData = {}
+
+	Debug:log("[GAMEPLAY] Unloaded worldManager")
 end
 
 return worldManager

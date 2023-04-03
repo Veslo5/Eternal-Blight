@@ -29,8 +29,9 @@ end
 
 Debug = require ("splash.core.debug.log")
 
-package.path = package.path .. ";./ext/?.lua"
-love.filesystem.setRequirePath(love.filesystem.getRequirePath() .. ";/ext/?.lua")
+-- Not working with debugger :/
+-- package.path = package.path .. ";./ext/?.lua"
+-- love.filesystem.setRequirePath(love.filesystem.getRequirePath() .. ";/ext/?.lua")
 
 --Global objects/modules
 local cameraFactory = require("splash.core.camera")

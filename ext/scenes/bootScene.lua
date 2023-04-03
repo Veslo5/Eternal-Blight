@@ -1,12 +1,12 @@
 local splashScreen = {}
 
 function splashScreen.load()
-	require("gameGlobals")
+	require("ext.gameGlobals")
 	
 	Settings.loadSettings()
 	Settings.loadBindings()
 	
-	splashScreen.UI = require("lib.ui.uiManager")
+	splashScreen.UI = require("ext.lib.ui.uiManager")
 
 	splashScreen.currentAlpha = 1
 

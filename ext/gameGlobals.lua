@@ -1,5 +1,8 @@
 CONST_SECOND_SCENE  = "mapScene"--"mapScene"
-CONST_INIT_MAP = "ext/data/maps/tutorial_map001.lua"
+CONST_INIT_MAP = "tutorial_map001.lua"
+
+CONST_SPRITE_SIZEX = 32
+CONST_SPRITE_SIZEY = 32
 
 -- UI constants
 CONST_WIDGET_UI_CONSOLA = "UI_WIDGET_CONSOLA"
@@ -23,5 +26,3 @@ CONST_INPUT_LEFT = "LEFT"
 CONST_INPUT_RIGHT = "RIGHT"
 CONST_INPUT_UP = "UP"
 CONST_INPUT_DOWN = "DOWN"
-
-Filesystem = require("lib.io.filesystem")

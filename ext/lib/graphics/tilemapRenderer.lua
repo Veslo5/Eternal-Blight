@@ -10,7 +10,6 @@ tileMapRenderer.endGroupRenderers = {}
 tileMapRenderer.fogAtlas = nil
 tileMapRenderer.fogBatch = nil
 
-
 function tileMapRenderer:_convertGIDToLocalIndex(gidIndex, tilesetMetadata)
 	local localIndex = gidIndex - IIF(tilesetMetadata.firstgid == 1, 0, tilesetMetadata.firstgid - 1)
 	localIndex = IIF(localIndex == 0, 1, localIndex)
@@ -208,7 +207,7 @@ function tileMapRenderer:endDraw()
 		end
 	end
 
-	love.graphics.draw(tileMapRenderer.fogBatch, 0, 0)
+	 love.graphics.draw(tileMapRenderer.fogBatch, 0, 0)
 
 end
 
