@@ -3,8 +3,9 @@ local mapScene = {}
 mapScene.UI = require("ext.lib.ui.uiManager")
 mapScene.worldManager = require("ext.lib.world.worldManager")
 mapScene.drawPipeline = require("ext.lib.graphics.drawPipeline")
+mapScene.loader = ResourceLoader:new()
 
-mapScene.loading = true
+mapScene.loading = false
 
 function mapScene:_loadUI()
 	self.UI:load(UICamera.virtualResX, UICamera.virtualResY)
@@ -24,6 +25,11 @@ function mapScene.update(dt)
 	if (Input:isActionPressed("EXIT")) then
 		love.event.quit()
 	end
+
+	if mapScene.loading == true then
+		mapScene.loader:update()
+		return
+	end
 	
 	mapScene.UI:update(dt)
 	mapScene.worldManager:update(dt)
@@ -36,7 +42,7 @@ function mapScene.update(dt)
 end
 
 function mapScene.draw()
-	mapScene.drawPipeline:draw(mapScene.worldManager, mapScene.UI)
+	mapScene.drawPipeline:draw(mapScene.worldManager, mapScene.UI, mapScene.loading)
 end
 
 --#####CALLBACKS######

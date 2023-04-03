@@ -14,7 +14,7 @@ worldManager.tiledData = nil
 
 
 function worldManager:changeMap(mapName)
-	local loader = ResourceLoader:new()
+	CurrentScene.loading = true	
 
 	if self.currentMap == nil then
 		self.tiledData = self.filesystem:loadTiledData(CONST_INIT_MAP)
@@ -27,40 +27,46 @@ function worldManager:changeMap(mapName)
 	end
 
 	for _, resource in ipairs(self.tiledData:getResourcesFromTilesets()) do
-		loader:newImage(resource.name, "ext/" .. resource.image)
+		CurrentScene.loader:newImage(resource.name, "ext/" .. resource.image)
 	end
 
 	
-	loader:newImage("fog","ext/resources/maps/fog.png")
+	CurrentScene.loader:newImage("fog","ext/resources/maps/fog.png")
 
 	collectgarbage("collect")
 
-	self:setupMapData(self.tiledData.tileMapMetadata.width,
-		self.tiledData.tileMapMetadata.height,
-		self.tiledData.tileMapMetadata.tilewidth,
-		self.tiledData.tileMapMetadata.tileheight)
+	CurrentScene.loader:loadAsync(worldManager._afterMapResourceLoaded, 1)
 
-	local dataTileGroup = self.tiledData:getGroupLayer("Data")
-	local worldObjectGroup = self.tiledData:getObjectLayer("World")
+	self.currentMap = mapName
+	
+	
+end
+
+function worldManager._afterMapResourceLoaded(resources)
+	worldManager:setupMapData(worldManager.tiledData.tileMapMetadata.width,
+		worldManager.tiledData.tileMapMetadata.height,
+		worldManager.tiledData.tileMapMetadata.tilewidth,
+		worldManager.tiledData.tileMapMetadata.tileheight)
+
+	local dataTileGroup = worldManager.tiledData:getGroupLayer("Data")
+	local worldObjectGroup = worldManager.tiledData:getObjectLayer("World")
 
 	if (dataTileGroup ~= nil) then
-		self:setupWalls(dataTileGroup)
+		worldManager:setupWalls(dataTileGroup)
 	end
 
 	if worldObjectGroup ~= nil then
-		self:setupObjects(worldObjectGroup)
+		worldManager:setupObjects(worldObjectGroup)
 	end
 
-	self:addPlayer()
-	self:ecsInit()
-
-	local resources = loader:loadSync()
-
-	CurrentScene.drawPipeline:createTilemapRenderers(self.tiledData.tileMapMetadata, self.grid.gridData, self.grid.gridWidth, self.grid.gridHeight, resources)
-
-	self.currentMap = mapName
+	CurrentScene.drawPipeline:createTilemapRenderers(worldManager.tiledData.tileMapMetadata, worldManager.grid.gridData, worldManager.grid.gridWidth, worldManager.grid.gridHeight, resources)
 
 	print("[CORE] World map changed: current mapScene textures " .. love.graphics.getStats().images)
+
+	worldManager:addPlayer()
+	worldManager:ecsInit()
+
+	CurrentScene.loading = false
 end
 
 function worldManager:updateFog(range, currentileX, currentileY)

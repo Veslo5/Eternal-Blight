@@ -4,14 +4,17 @@ loader.iDIndex = 0
 loader.threadCode = [[
 
 require("love.image")
+require("love.timer")
 
-local container, channelName = ...
+local container, channelName, pause = ...
 
 for i, resource in ipairs(container) do
 	if resource.type == "IMAGE" then
 		resource.rawData = love.image.newImageData(resource.path)
 	end
 end
+
+love.timer.sleep(pause)
 
 love.thread.getChannel(channelName):push(container)
 ]]
@@ -22,15 +25,15 @@ function loader:new(id)
 	local newInstance = {}
 	setmetatable(newInstance, self)
 	self.__index = self
-	
+
 	newInstance.ID = id or "Loader" .. tostring(self.iDIndex + 1)
 
-	newInstance.threadContainer = {}		
-	newInstance.finishCallback = nil	
+	newInstance.threadContainer = {}
+	newInstance.finishCallback = nil
 	newInstance.thread = nil
 	newInstance.threadStarted = false
 	newInstance.isDone = false
-	
+
 
 
 	return newInstance
@@ -42,28 +45,27 @@ end
 
 --- Load data asynchronously
 ---@param finishCallback function Callback function after loading finishes
-function loader:loadAsync(finishCallback)
+function loader:loadAsync(finishCallback, pause)
+	pause = pause or 0
 	self.finishCallback = finishCallback
-
 	Debug:log("[LOADER] Starting new thread " .. self.ID)
 	self.thread = love.thread.newThread(self.threadCode)
-	self.thread:start(self.threadContainer, self.ID)
+	self.thread:start(self.threadContainer, self.ID, pause)
 	self.threadStarted = true
 end
 
 --- Load data synchronously
 function loader:loadSync()
-
 	local dataContainer = {}
-		for index, resource in ipairs(self.threadContainer) do
-			if resource.type == "IMAGE" then
-				-- load rawdata and push them into GPU
-				table.insert(dataContainer, { name = resource.name, value = love.graphics.newImage(resource.path) })
-			end
+	for index, resource in ipairs(self.threadContainer) do
+		if resource.type == "IMAGE" then
+			-- load rawdata and push them into GPU
+			table.insert(dataContainer, { name = resource.name, value = love.graphics.newImage(resource.path) })
 		end
-		
-		--cleaning & finishing
-		self.isDone = true
+	end
+
+	--cleaning & finishing
+	self.isDone = true
 
 	return dataContainer
 end
@@ -90,13 +92,16 @@ function loader:update(dt)
 				resource.rawData = nil
 			end
 		end
-		
+
 		--cleaning & finishing
 		self.isDone = true
 		self.threadStarted = false
-		if self.finishCallback then 
-			self.finishCallback(dataContainer) 
+		if self.finishCallback then
+			self.finishCallback(dataContainer)
 		end
+
+		self.finishCallback = nil
+
 		Debug:log("[LOADER] Thread ended " .. self.ID)
 	end
 end

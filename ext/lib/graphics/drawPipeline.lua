@@ -3,7 +3,6 @@ local drawPipeline = {}
 drawPipeline.tilemapRenderer = require("ext.lib.graphics.tilemapRenderer")
 drawPipeline.objectRenderer = require("ext.lib.graphics.objectRenderer")
 
-
 function drawPipeline:createTilemapRenderers(tiledMapMetadata, gridData, gridWidth, gridHeight, resources)	
 	self.tilemapRenderer:createRenderers(tiledMapMetadata, resources)
 	self.tilemapRenderer:createFogRenderer(table.find(resources, "name", "fog").value, gridData, gridWidth, gridHeight)
@@ -14,12 +13,20 @@ function drawPipeline:bakeFogData(gridData, gridWidth, gridHeight)
 end
 
 
+
 function drawPipeline:update(dt)
 	
 end
 
-function drawPipeline:draw(worldManager, UI)
+function drawPipeline:draw(worldManager, UI, loading)
 	love.graphics.setBackgroundColor(0, 0, 0, 1)
+
+	if loading == true then
+		UICamera:beginDraw()
+			love.graphics.print("Loading...", 0,0)
+		UICamera:endDraw()
+		return
+	end
 
 	-- Gameplay rendering
 	MainCamera:beginDraw()
