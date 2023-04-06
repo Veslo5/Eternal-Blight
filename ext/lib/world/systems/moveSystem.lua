@@ -91,8 +91,8 @@ function moveSystem.getSystem()
 					entity.ISimulated.onTurn = false
 
 					if entity.IDrawable then
-						entity.IDrawable.worldX = entity.tile.x * self.worldManager.grid.tileWidth
-						entity.IDrawable.worldY = entity.tile.y * self.worldManager.grid.tileHeight
+						entity.IDrawable.worldX = entity.tile.x * self.worldManager.grid.tileWidth + entity.IDrawable.offsetX
+						entity.IDrawable.worldY = entity.tile.y * self.worldManager.grid.tileHeight + entity.IDrawable.offsetY
 					end
 
 					self.worldManager:updateFog(10, entity.tile.x, entity.tile.y)

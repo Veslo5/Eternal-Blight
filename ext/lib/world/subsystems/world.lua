@@ -36,13 +36,22 @@ function world:addPlayer()
 	table.insert(spawnTile.tile.objects, playerEntity)
 	playerEntity:makeGridMovable(true)
 	playerEntity:makeControllable(true)
-	playerEntity:makeDrawable(nil, { 0, 1, 0, 1 })
+	playerEntity:makeDrawable("ext/resources/npc/idle_armor_casual.png", nil, nil, nil, -2, -12, 999)
 	playerEntity:makeSimulated(true)
 	playerEntity:addStats(1, 10, 10)
 	
 	MainCamera:follow(playerEntity.IDrawable, "worldX", "worldY")
 
 	self:addEntity(playerEntity)
+end
+
+function world:addMob(name, tile, data)
+	local mobEntity = self.entityBuilder:new(name, nil, tile)
+	mobEntity:makeControllable(false)
+	mobEntity:makeSimulated()
+	-- TODO:
+	--mobEntity:makeDrawable(image, nil, nil, imageStates)
+
 end
 
 function world:addStash(name, tile, image, imageStates)
@@ -104,12 +113,16 @@ function world:setupObjects(worldObjects, grid)
 				local entity = self:addSpawn(object.name, tile)
 				table.insert(tile.objects, entity)
 
-			elseif objectType == "stash" then
-				-- TODO:
+			elseif objectType == "stash" then				
 				local item = self.filesystem:loadItem(object.properties["resource"])
 				CurrentScene.loader:newImage(item.image, item.image, "objects")
 				local entity = self:addStash(object.name, tile, item.image, item.imageStates)
 				table.insert(tile.objects, entity)
+
+			elseif objectType == "mob" then
+				local mob = self.filesystem:loadItem(object.properties["resource"])
+				CurrentScene.loader:newImage(mob.image, mob.image, "objects")
+				
 			end
 		end
 	end

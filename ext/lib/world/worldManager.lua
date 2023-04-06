@@ -30,6 +30,8 @@ function worldManager:changeMap(mapName)
 
 
 	CurrentScene.loader:newImage("fog", "ext/resources/maps/fog.png")
+	CurrentScene.loader:newImage("ext/resources/npc/idle_armor_casual.png", "ext/resources/npc/idle_armor_casual.png", "objects")
+
 
 	self:setupMapData(self.tiledData.tileMapMetadata.width,
 		self.tiledData.tileMapMetadata.height,

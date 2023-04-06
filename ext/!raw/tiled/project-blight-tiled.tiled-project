@@ -15,7 +15,9 @@
             "values": [
                 "spawn",
                 "portal",
-                "stash"
+                "stash",
+                "npc",
+                "mob"
             ],
             "valuesAsFlags": false
         }

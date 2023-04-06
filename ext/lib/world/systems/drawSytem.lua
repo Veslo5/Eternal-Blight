@@ -1,14 +1,18 @@
 local drawSystem = {}
 
 function drawSystem.getSystem()
-	local system = Ecs.processingSystem()
+	local system =  Ecs.sortedProcessingSystem()
 	system.name = "Draw"
 	system.drawSystem = true
 	system.filter = Ecs.requireAll("IDrawable")
 
+	function system:compare(entity1, entity2)
+		return entity1.IDrawable.zIndex < entity2.IDrawable.zIndex
+	end
+
 	function system:onAdd(entity)		
-			entity.IDrawable.worldX = entity.tile.x * self.worldManager.grid.tileWidth
-			entity.IDrawable.worldY = entity.tile.y * self.worldManager.grid.tileHeight			
+			entity.IDrawable.worldX = entity.tile.x * self.worldManager.grid.tileWidth + entity.IDrawable.offsetX
+			entity.IDrawable.worldY = entity.tile.y * self.worldManager.grid.tileHeight + entity.IDrawable.offsetY
 	end
 
 	function system:process(entity, dt)		

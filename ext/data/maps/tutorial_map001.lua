@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 16,
-  nextobjectid = 12,
+  nextobjectid = 15,
   properties = {},
   tilesets = {
     {
@@ -345,6 +345,42 @@ return {
           visible = true,
           properties = {
             ["items"] = "misc/0002_coin",
+            ["resource"] = "misc/0001_bag",
+            ["type"] = "stash"
+          }
+        },
+        {
+          id = 13,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 160,
+          y = 224,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 104,
+          visible = true,
+          properties = {
+            ["items"] = "",
+            ["resource"] = "misc/0001_bag",
+            ["type"] = "stash"
+          }
+        },
+        {
+          id = 14,
+          name = "",
+          class = "",
+          shape = "rectangle",
+          x = 128,
+          y = 256,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 104,
+          visible = true,
+          properties = {
+            ["items"] = "",
             ["resource"] = "misc/0001_bag",
             ["type"] = "stash"
           }
