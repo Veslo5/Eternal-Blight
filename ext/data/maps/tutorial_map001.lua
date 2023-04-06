@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 16,
-  nextobjectid = 13,
+  nextobjectid = 12,
   properties = {},
   tilesets = {
     {
@@ -344,7 +344,8 @@ return {
           gid = 104,
           visible = true,
           properties = {
-            ["items"] = "m0001",
+            ["items"] = "misc/0002_coin",
+            ["resource"] = "misc/0001_bag",
             ["type"] = "stash"
           }
         }

@@ -32,12 +32,14 @@ function entityBuilder:makeGridMovable(movable)
 	return self
 end
 
-function entityBuilder:makeDrawable(image, color)
+function entityBuilder:makeDrawable(image, color, state, states )
 	self.IDrawable = {
 		worldX = 0,
 		worldY = 0,
 		image = image or nil,
-		color =  color or {1,1,1,1} 
+		color =  color or {1,1,1,1},
+		currentState = state or 1,
+		states = states or 0
 	}
 
 	return self

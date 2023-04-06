@@ -5,7 +5,7 @@ drawPipeline.objectRenderer = require("ext.lib.graphics.objectRenderer")
 
 function drawPipeline:createTilemapRenderers(tiledMapMetadata, gridData, gridWidth, gridHeight, resources)	
 	self.tilemapRenderer:createRenderers(tiledMapMetadata, resources)
-	self.tilemapRenderer:createFogRenderer(table.find(resources, "name", "fog").value, gridData, gridWidth, gridHeight)
+	self.tilemapRenderer:createFogRenderer(table.find(resources.default, "name", "fog").value, gridData, gridWidth, gridHeight)
 end
 
 function drawPipeline:bakeFogData(gridData, gridWidth, gridHeight)

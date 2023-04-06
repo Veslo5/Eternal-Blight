@@ -39,8 +39,10 @@ function loader:new(id)
 	return newInstance
 end
 
-function loader:newImage(name, resourcePath)
-	table.insert(self.threadContainer, { name = name, path = resourcePath, rawData = nil, type = "IMAGE" })
+function loader:newImage(name, resourcePath, folder)
+	if table.find(self.threadContainer, "name", name) == nil then
+		table.insert(self.threadContainer,{ name = name, path = resourcePath, rawData = nil, type = "IMAGE", folder = folder or nil })		
+	end	
 end
 
 --- Load data asynchronously
@@ -56,11 +58,22 @@ end
 
 --- Load data synchronously
 function loader:loadSync()
-	local dataContainer = {}
+	local dataContainer = {default = {}}
 	for index, resource in ipairs(self.threadContainer) do
 		if resource.type == "IMAGE" then
-			-- load rawdata and push them into GPU
-			table.insert(dataContainer, { name = resource.name, value = love.graphics.newImage(resource.path) })
+			-- push rawData into GPU				
+			if resource.folder then
+				if dataContainer[resource.folder] == nil then
+					dataContainer[resource.folder] = {}
+				end
+				table.insert(dataContainer[resource.folder],
+					{ name = resource.name, value = love.graphics.newImage(resource.rawData) })
+			else
+				table.insert(dataContainer.default,
+					{ name = resource.name, value = love.graphics.newImage(resource.rawData) })
+			end
+
+			resource.rawData = nil
 		end
 	end
 
@@ -84,11 +97,21 @@ function loader:update(dt)
 
 		local loadedContainer = love.thread.getChannel(self.ID):pop()
 
-		local dataContainer = {}
+		local dataContainer = {default = {}}
 		for index, resource in ipairs(loadedContainer) do
 			if resource.type == "IMAGE" then
 				-- push rawData into GPU				
-				table.insert(dataContainer, { name = resource.name, value = love.graphics.newImage(resource.rawData) })
+				if resource.folder then
+					if dataContainer[resource.folder] == nil then
+						dataContainer[resource.folder] = {}
+					end
+					table.insert(dataContainer[resource.folder],
+						{ name = resource.name, value = love.graphics.newImage(resource.rawData) })
+				else
+					table.insert(dataContainer.default,
+						{ name = resource.name, value = love.graphics.newImage(resource.rawData) })
+				end
+
 				resource.rawData = nil
 			end
 		end

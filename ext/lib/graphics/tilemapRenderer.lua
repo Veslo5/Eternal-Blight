@@ -111,7 +111,7 @@ local meetPlayerLayer = false
 function tileMapRenderer:createRenderers(tileMapMetadata, resources)
 	-- creating atlas for every tileset
 	for _, tileset in ipairs(tileMapMetadata.tilesets) do
-		local resource = table.find(resources, "name", tileset.name)
+		local resource = table.find(resources.default, "name", tileset.name)
 		local atlas = self.atlasFactory:new(resource.value, 32, 32, true)
 		atlas:cutQuads()
 		self.tileSetAtlases[tileset.name] = atlas

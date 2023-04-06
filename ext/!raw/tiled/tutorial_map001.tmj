@@ -263,7 +263,12 @@
                         {
                          "name":"items",
                          "type":"string",
-                         "value":"m0001"
+                         "value":"misc\/0002_coin"
+                        }, 
+                        {
+                         "name":"resource",
+                         "type":"string",
+                         "value":"misc\/0001_bag"
                         }, 
                         {
                          "name":"type",

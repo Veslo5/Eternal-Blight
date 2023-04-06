@@ -27,14 +27,14 @@ function fileSystemPipeline:loadTiledData(name)
 end
 
 function fileSystemPipeline:loadItem(name)
-	if name:sub(1,1) == "m" then
-		return self._loadTableSafe(self.path .. self.items .. self.misc .. name)
-	end
+	return self._loadTableSafe(self.path .. self.items .. name .. self.extension)
+	-- if name:sub(1,1) == "m" then
+	-- end
 end
 
-function fileSystemPipeline:loadMob(name)
-	return self._loadTableSafe(self.path .. self.mob .. name .. self.extension)
-end	
+-- function fileSystemPipeline:loadMob(name)
+-- 	return self._loadTableSafe(self.path .. self.mob .. name .. self.extension)
+-- end	
 
 
 function fileSystemPipeline._loadTableSafe(path)	

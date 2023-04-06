@@ -15,8 +15,8 @@
             "scale": 5.5,
             "selectedLayer": 10,
             "viewCenter": {
-                "x": 121.72727272727272,
-                "y": 184.45454545454547
+                "x": 160,
+                "y": 159.90909090909093
             }
         },
         "tutorial_map002.tmj": {
@@ -26,8 +26,8 @@
             "scale": 0.75,
             "selectedLayer": 10,
             "viewCenter": {
-                "x": 467.3333333333333,
-                "y": 352.66666666666663
+                "x": 1600,
+                "y": 1599.3333333333333
             }
         },
         "tutorial_tileset001.tsj": {
@@ -44,7 +44,7 @@
         "tutorial_tileset001.tsj"
     ],
     "project": "project-blight-tiled.tiled-project",
-    "property.type": "object type",
+    "property.type": "string",
     "recentFiles": [
         "tutorial_tileset001.tsj",
         "marks.tsj",

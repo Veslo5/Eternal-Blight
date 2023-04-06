@@ -7,10 +7,7 @@ function moveSystem.getSystem()
 	system.filter = Ecs.requireAll("IGridMovable", "IControllable", "ISimulated")
 
 	function system:onAdd(entity)
-		if entity.IDrawable then
-			entity.IDrawable.worldX = entity.tile.x * self.worldManager.grid.tileWidth
-			entity.IDrawable.worldY = entity.tile.y * self.worldManager.grid.tileHeight
-
+		if (entity.IControllable.possesed == true) then
 			self.worldManager:updateFog(10, entity.tile.x, entity.tile.y)
 		end
 	end
@@ -48,7 +45,7 @@ function moveSystem.getSystem()
 			entity.tile.wall = false
 			table.remove(entity.tile.objects, indexToRemove)
 
-			
+
 			entity.tile = tile
 			tile.wall = true
 			table.insert(tile.objects, entity)
@@ -90,7 +87,7 @@ function moveSystem.getSystem()
 			if action then
 				if action == "moved" then
 					Observer:trigger(CONST_OBSERVE_UI_ADD_CONSOLE_TEXT, { "You moved." })
-					
+
 					entity.ISimulated.onTurn = false
 
 					if entity.IDrawable then

@@ -12,7 +12,7 @@ worldManager.tiledData = nil
 
 
 function worldManager:changeMap(mapName)
-	CurrentScene.loading = true	
+	CurrentScene.loading = true
 
 	if self.currentMap == nil then
 		self.tiledData = self.filesystem:loadTiledData(CONST_INIT_MAP)
@@ -28,38 +28,45 @@ function worldManager:changeMap(mapName)
 		CurrentScene.loader:newImage(resource.name, "ext/" .. resource.image)
 	end
 
-	
-	CurrentScene.loader:newImage("fog","ext/resources/maps/fog.png")
+
+	CurrentScene.loader:newImage("fog", "ext/resources/maps/fog.png")
+
+	self:setupMapData(self.tiledData.tileMapMetadata.width,
+		self.tiledData.tileMapMetadata.height,
+		self.tiledData.tileMapMetadata.tilewidth,
+		self.tiledData.tileMapMetadata.tileheight)
+
+	local dataTileGroup = self.tiledData:getGroupLayer("Data")
+	local worldObjectGroup = self.tiledData:getObjectLayer("World")
+
+	if (dataTileGroup ~= nil) then
+		self.grid:setupWalls(dataTileGroup)
+	end
+
+	if worldObjectGroup ~= nil then
+		self.world:setupObjects(worldObjectGroup, worldManager.grid)
+	end
+
 
 	collectgarbage("collect")
 
 	CurrentScene.loader:loadAsync(worldManager._afterMapResourceLoaded, 1)
 
 	self.currentMap = mapName
-	
-	
 end
 
 function worldManager._afterMapResourceLoaded(resources)
-	worldManager:setupMapData(worldManager.tiledData.tileMapMetadata.width,
-		worldManager.tiledData.tileMapMetadata.height,
-		worldManager.tiledData.tileMapMetadata.tilewidth,
-		worldManager.tiledData.tileMapMetadata.tileheight)
-
-	local dataTileGroup = worldManager.tiledData:getGroupLayer("Data")
-	local worldObjectGroup = worldManager.tiledData:getObjectLayer("World")
-
-	if (dataTileGroup ~= nil) then
-		worldManager.grid:setupWalls(dataTileGroup)
-	end
-
-	if worldObjectGroup ~= nil then
-		worldManager.world:setupObjects(worldObjectGroup, worldManager.grid)
-	end
-
-	CurrentScene.drawPipeline:createTilemapRenderers(worldManager.tiledData.tileMapMetadata, worldManager.grid.gridData, worldManager.grid.gridWidth, worldManager.grid.gridHeight, resources)
-
+	CurrentScene.drawPipeline:createTilemapRenderers(worldManager.tiledData.tileMapMetadata, worldManager.grid.gridData,
+	worldManager.grid.gridWidth, worldManager.grid.gridHeight, resources)
+	
 	print("[CORE] World map changed: current mapScene textures " .. love.graphics.getStats().images)
+
+	for _, objectResource in ipairs(resources.objects) do
+		CurrentScene.drawPipeline.objectRenderer:addAtlas(objectResource.name, objectResource.value)
+	end
+
+	print("[CORE] Objects loaded: current mapScene textures " .. love.graphics.getStats().images)
+
 
 	worldManager.world:ecsInit(worldManager)
 	worldManager.world:addPlayer()
@@ -68,7 +75,6 @@ function worldManager._afterMapResourceLoaded(resources)
 end
 
 function worldManager:updateFog(range, currentileX, currentileY)
-		
 	local fogTiles = self.grid:getDiamondRange(range, currentileX, currentileY)
 
 	for _, tile in ipairs(fogTiles) do
@@ -139,7 +145,6 @@ end
 function worldManager:isInGridRange(gridX, gridY)
 	return self.grid:isInGridRange(gridX, gridY)
 end
-
 
 function worldManager:nextRound()
 	self.world:nextRound()

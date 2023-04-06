@@ -27,7 +27,7 @@ function splashScreen.load()
 	end)
 
 	splashScreen.loader:loadAsync(function(data)
-		local image = splashScreen.UI:addImage("VES", data[1].value, 0, 0, "center", "center")				
+		local image = splashScreen.UI:addImage("VES", data.default[1].value, 0, 0, "center", "center")				
 		--splashScreen.UI:AddImage("LOVE", data[2].Value, 0,0, "center", "center")
 		splashScreen.loaded = true		
 	end)

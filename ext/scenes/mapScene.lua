@@ -17,6 +17,7 @@ end
 function mapScene.load()
 	Input:bind("DEBUG_WALLS", { "p" })
 
+	MainCamera:setZoom(0.8)
 	mapScene:_loadUI()
 	mapScene.worldManager:changeMap()
 end

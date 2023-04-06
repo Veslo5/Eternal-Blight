@@ -3,6 +3,7 @@ world.mapWorld = Ecs.world()
 
 world.entityBuilder = require("ext.lib.world.entityBuilder")
 world.systemBuilder = require("ext.lib.world.systemBuilder")
+world.filesystem = require("ext.lib.filesystem.filesystem")
 
 world.drawSystemFilter = nil
 world.updateSystemFilter = nil
@@ -44,10 +45,11 @@ function world:addPlayer()
 	self:addEntity(playerEntity)
 end
 
-function world:addStash(name, tile)
+function world:addStash(name, tile, image, imageStates)
 	local stashEntity = self.entityBuilder:new(name, nil, tile)
 	stashEntity:makeGridMovable(false)
 	stashEntity:addInventory()
+	stashEntity:makeDrawable(image, nil, nil, imageStates)
 
 	self:addEntity(stashEntity)
 
@@ -104,16 +106,10 @@ function world:setupObjects(worldObjects, grid)
 
 			elseif objectType == "stash" then
 				-- TODO:
-				-- local dataObject = {
-				-- 	type = "stash",
-				-- 	tile = tile,
-				-- 	items = object.properties["items"]
-				-- }
-				-- tile.type = "item"
-				-- local entity = self:addStash(object.name, tile)
-
-				local entity = self:addStash(object.name, tile)
-				-- table.insert(self.worldObjects, dataObject)
+				local item = self.filesystem:loadItem(object.properties["resource"])
+				CurrentScene.loader:newImage(item.image, item.image, "objects")
+				local entity = self:addStash(object.name, tile, item.image, item.imageStates)
+				table.insert(tile.objects, entity)
 			end
 		end
 	end

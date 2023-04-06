@@ -6,7 +6,7 @@ objectRenderer.atlases = {}
 objectRenderer.animations = {}
 
 function objectRenderer:addAtlas(name, resource)
-	if objectRenderer.atlases[name] then
+	if objectRenderer.atlases[name] == nil then
 		local atlas = self.atlasFactory:new(resource, CONST_SPRITE_SIZEX, CONST_SPRITE_SIZEY)
 		atlas:cutQuads()
 		objectRenderer.atlases[name] = atlas
@@ -21,8 +21,7 @@ end
 function objectRenderer:drawRectangle(mode, x, y, color)
 	love.graphics.setColor(color or {1,1,1,1})
 	love.graphics.rectangle(mode, x, y, 32, 32)
-	love.graphics.setColor(0,0,0,0)
-	
+	love.graphics.setColor(0,0,0,0)	
 end
 
 function  objectRenderer:unload()
