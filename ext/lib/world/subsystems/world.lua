@@ -1,6 +1,9 @@
 local world = {}
 world.mapWorld = Ecs.world()
 
+world.entityBuilder = require("ext.lib.world.entityBuilder")
+world.systemBuilder = require("ext.lib.world.systemBuilder")
+
 
 world.worldObjects = {}
 
@@ -10,7 +13,12 @@ world.roundSystemFilter = nil
 
 world.currentRound = 0
 
-function world:ecsInit()
+function world:ecsInit(worldManager)
+
+	self:addSystem(self.systemBuilder.getMoveSystem(), worldManager)
+	self:addSystem(self.systemBuilder.getDrawSystem(), worldManager)
+	self:addSystem(self.systemBuilder.getRoundSystem(), worldManager)
+
 	-- Here we require all DrawSystem marked systems
 	self.drawSystemFilter = Ecs.requireAll("drawSystem")
 	self.updateSystemFilter = Ecs.requireAll("updateSystem")
@@ -19,6 +27,27 @@ end
 
 function world:addEntity(entity)
 	Ecs.add(self.mapWorld, entity)
+end
+
+function world:addPlayer()
+	local playerEntity = self.entityBuilder:new("Player")
+
+	local spawnTile = self:getObjectOfType("spawn")
+	if spawnTile then
+		playerEntity:makeGridMovable(spawnTile.tile.x - 1, spawnTile.tile.y - 1)
+	else
+		--TODO: not like this. Every map should have spawn
+		playerEntity:makeGridMovable(1, 1)
+	end
+
+	playerEntity:makeControllable(true)
+	playerEntity:makeDrawable(nil, { 0, 1, 0, 1 })
+	playerEntity:makeSimulated(true)
+	playerEntity:addStats(1, 10, 10)
+
+	MainCamera:follow(playerEntity.IDrawable, "worldX", "worldY")
+
+	self:addEntity(playerEntity)
 end
 
 function world:addSystem(system, worldManager)

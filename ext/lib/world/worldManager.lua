@@ -5,8 +5,6 @@ worldManager.lastSelectedTile = nil
 
 worldManager.world = require("ext.lib.world.subsystems.world")
 worldManager.grid = require("ext.lib.world.subsystems.grid")
-worldManager.entityBuilder = require("ext.lib.world.entityBuilder")
-worldManager.systemBuilder = require("ext.lib.world.systemBuilder")
 worldManager.filesystem = require("ext.lib.filesystem.filesystem")
 
 worldManager.currentMap = nil
@@ -52,19 +50,19 @@ function worldManager._afterMapResourceLoaded(resources)
 	local worldObjectGroup = worldManager.tiledData:getObjectLayer("World")
 
 	if (dataTileGroup ~= nil) then
-		worldManager:setupWalls(dataTileGroup)
+		worldManager.grid:setupWalls(dataTileGroup)
 	end
 
 	if worldObjectGroup ~= nil then
-		worldManager:setupObjects(worldObjectGroup)
+		worldManager.world:setupObjects(worldObjectGroup, worldManager.grid)
 	end
 
 	CurrentScene.drawPipeline:createTilemapRenderers(worldManager.tiledData.tileMapMetadata, worldManager.grid.gridData, worldManager.grid.gridWidth, worldManager.grid.gridHeight, resources)
 
 	print("[CORE] World map changed: current mapScene textures " .. love.graphics.getStats().images)
 
-	worldManager:addPlayer()
-	worldManager:ecsInit()
+	worldManager.world:addPlayer()
+	worldManager.world:ecsInit(worldManager)
 
 	CurrentScene.loading = false
 end
@@ -90,35 +88,6 @@ function worldManager:updateFog(range, currentileX, currentileY)
 	end)
 end
 
-function worldManager:ecsInit()
-	self:addSystem(self.systemBuilder.getMoveSystem())
-	self:addSystem(self.systemBuilder.getDrawSystem())
-	self:addSystem(self.systemBuilder.getRoundSystem())
-
-	self.world:ecsInit()
-end
-
-function worldManager:addPlayer()
-	local playerEntity = self.entityBuilder:new("Player")
-
-	local spawnTile = self:getObjectOfType("spawn")
-	if spawnTile then
-		playerEntity:makeGridMovable(spawnTile.tile.x - 1, spawnTile.tile.y - 1)
-	else
-		--TODO: not like this. Every map should have spawn
-		playerEntity:makeGridMovable(1, 1)
-	end
-
-	playerEntity:makeControllable(true)
-	playerEntity:makeDrawable(nil, { 0, 1, 0, 1 })
-	playerEntity:makeSimulated(true)
-	playerEntity:addStats(1, 10, 10)
-
-	MainCamera:follow(playerEntity.IDrawable, "worldX", "worldY")
-
-	self:addEntity(playerEntity)
-end
-
 function worldManager:createStashEntity()
 	local stashEntity = self.entityBuilder:new("Stash")
 	stashEntity:addInventory()
@@ -141,14 +110,6 @@ end
 
 function worldManager:setupMapData(sizeX, sizeY, tileWidth, tileheight)
 	self.grid:setupMapData(sizeX, sizeY, tileWidth, tileheight)
-end
-
-function worldManager:setupWalls(dataTiles)
-	self.grid:setupWalls(dataTiles)
-end
-
-function worldManager:setupObjects(worldObjects)
-	self.world:setupObjects(worldObjects, self.grid)
 end
 
 function worldManager:getTileGridPosition(worldX, worldY)
