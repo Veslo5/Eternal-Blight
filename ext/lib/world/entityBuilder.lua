@@ -1,19 +1,32 @@
 local entityBuilder = {}
 
-function entityBuilder:new(name, worldManager)
+function entityBuilder:new(name, type, gridTile)
 	local newInstance = {}
 	setmetatable(newInstance, self)
 	self.__index = self
 
-	newInstance.name = name or "NewEntity"
-	newInstance.worldManager = worldManager
+	newInstance.name = name or "newentity"
+	newInstance.type = type or "undefined"	
+	newInstance.tile = gridTile or nil
+
 	return newInstance
 end
 
-function entityBuilder:makeGridMovable(x,y)
+function entityBuilder:makeSpawn(id)
+	self.Spawn = {
+		id = id
+	}
+end
+
+function entityBuilder:makePortal(map)
+	self.Portal = {
+		map = map
+	}
+end
+
+function entityBuilder:makeGridMovable(movable)
 	self.IGridMovable = {
-		gridX = x or 0,
-		gridY = y or 0
+		enabled = movable or false
 	}
 
 	return self

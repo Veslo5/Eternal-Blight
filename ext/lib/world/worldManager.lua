@@ -61,21 +61,21 @@ function worldManager._afterMapResourceLoaded(resources)
 
 	print("[CORE] World map changed: current mapScene textures " .. love.graphics.getStats().images)
 
-	worldManager.world:addPlayer()
 	worldManager.world:ecsInit(worldManager)
+	worldManager.world:addPlayer()
 
 	CurrentScene.loading = false
 end
 
 function worldManager:updateFog(range, currentileX, currentileY)
 		
-	local fogTiles = self:getDiamondRange(range, currentileX, currentileY)
+	local fogTiles = self.grid:getDiamondRange(range, currentileX, currentileY)
 
 	for _, tile in ipairs(fogTiles) do
 		tile.fog = false
 	end
 
-	local visibleTiles = self:getDiamondRange(range - 3, currentileX, currentileY)
+	local visibleTiles = self.grid:getDiamondRange(range - 3, currentileX, currentileY)
 
 	for _, tile in ipairs(visibleTiles) do
 		tile.visited = true
@@ -132,20 +132,8 @@ function worldManager:forEachTile(callback)
 	self.grid:forEachTile(callback)
 end
 
-function worldManager:getDiamondRange(range, tileX, tileY)
-	return self.grid:getDiamondRange(range, tileX, tileY)
-end
-
 function worldManager:getTileNeighbours(tileX, tileY)
 	return self.grid:getTileNeighbours(tileX, tileY)
-end
-
-function worldManager:getObjectOfType(type)
-	return self.world:getObjectOfType(type)
-end
-
-function worldManager:getObjectsOfType(type)
-	return self.world:getObjectsOfType(type)
 end
 
 function worldManager:isInGridRange(gridX, gridY)

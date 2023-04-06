@@ -822,7 +822,7 @@ return {
       objects = {
         {
           id = 1,
-          name = "",
+          name = "start",
           class = "",
           shape = "rectangle",
           x = 320,
@@ -851,7 +851,7 @@ return {
           visible = true,
           properties = {
             ["map"] = "tutorial_map001.lua",
-            ["type"] = "port"
+            ["type"] = "portal"
           }
         },
         {
@@ -868,7 +868,7 @@ return {
           visible = true,
           properties = {
             ["map"] = "tutorial_map001.lua",
-            ["type"] = "port"
+            ["type"] = "portal"
           }
         },
         {
@@ -885,7 +885,7 @@ return {
           visible = true,
           properties = {
             ["map"] = "tutorial_map001.lua",
-            ["type"] = "port"
+            ["type"] = "portal"
           }
         },
         {
@@ -902,7 +902,7 @@ return {
           visible = true,
           properties = {
             ["map"] = "tutorial_map001.lua",
-            ["type"] = "port"
+            ["type"] = "portal"
           }
         },
         {
@@ -919,7 +919,7 @@ return {
           visible = true,
           properties = {
             ["map"] = "tutorial_map001.lua",
-            ["type"] = "port"
+            ["type"] = "portal"
           }
         }
       }

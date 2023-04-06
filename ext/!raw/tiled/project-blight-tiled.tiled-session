@@ -1,0 +1,41 @@
+{
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "marks.tsj": {
+            "scaleInDock": 1
+        },
+        "tutorial_map001.tmj": {
+            "expandedObjectLayers": [
+                7
+            ],
+            "scale": 2.20578125,
+            "selectedLayer": 10,
+            "viewCenter": {
+                "x": 112.20514273570873,
+                "y": 141.67316001983423
+            }
+        },
+        "tutorial_map002.tmj": {
+            "scale": 8,
+            "selectedLayer": 10,
+            "viewCenter": {
+                "x": 335.9375,
+                "y": 271.9375
+            }
+        },
+        "tutorial_tileset001.tsj": {
+            "scaleInDock": 1
+        }
+    },
+    "last.exportedFilePath": "D:/Projects/Lua/Eternal Blight/Eternal-Blight/ext/data/maps",
+    "lastUsedTilesetExportFilter": "Lua files (*.lua)",
+    "openFiles": [
+    ],
+    "project": "project-blight-tiled.tiled-project",
+    "property.type": "object type",
+    "recentFiles": [
+        "tutorial_map001.tmj"
+    ]
+}

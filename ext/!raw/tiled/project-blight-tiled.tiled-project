@@ -1,0 +1,23 @@
+{
+    "automappingRulesFile": "",
+    "commands": [
+    ],
+    "extensionsPath": "extensions",
+    "folders": [
+        "."
+    ],
+    "propertyTypes": [
+        {
+            "id": 1,
+            "name": "object type",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "spawn",
+                "portal",
+                "stash"
+            ],
+            "valuesAsFlags": false
+        }
+    ]
+}

@@ -16,7 +16,7 @@ function grid:setupMapData(sizeX, sizeY, tileWidth, tileheight)
 	for x = 1, sizeX, 1 do
 		self.gridData[x] = {}
 		for y = 1, sizeY, 1 do
-			self.gridData[x][y] = { x = x, y = y, type = "empty", occupied = false, fog = true, visited = false}
+			self.gridData[x][y] = { x = x - 1, y = y - 1, objects = {}, wall = false, fog = true, visited = false}
 		end
 	end
 
@@ -37,7 +37,7 @@ function grid:setupWalls(dataTiles)
 					local index = ((row * layerHeight) + column) + 1
 					local tileNumber = layerInGroup.data[index]
 					if (tileNumber ~= 0) then
-						self.gridData[column + 1][row + 1].type = "wall"
+						self.gridData[column + 1][row + 1].wall = true
 					end
 				end
 			end
@@ -72,6 +72,7 @@ end
 ---@param gridY integer
 ---@return table?
 function grid:getTile(gridX, gridY)
+	-- grid 0,0 = lua table 1,1 
 	-- + 1 because lua indexing starts from 1 and we are using 0 as start in grid
 	local tileX = self.gridData[gridX + 1]
 	if tileX then
@@ -106,8 +107,8 @@ function grid:_getRangeTiles(range, tileX, tileY, dataTilesRef)
 
 	for _, tile in ipairs(neighbours) do
 		table.insert(dataTilesRef, tile)
-		if tile.type ~= "wall" then
-			self:_getRangeTiles(range, tile.x - 1, tile.y - 1, dataTilesRef)
+		if tile.wall ~= true then
+			self:_getRangeTiles(range, tile.x , tile.y , dataTilesRef)
 		end
 	end
 end

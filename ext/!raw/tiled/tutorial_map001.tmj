@@ -186,7 +186,7 @@
                  "gid":103,
                  "height":32,
                  "id":1,
-                 "name":"",
+                 "name":"start",
                  "properties":[
                         {
                          "name":"id",
@@ -195,6 +195,7 @@
                         }, 
                         {
                          "name":"type",
+                         "propertytype":"object type",
                          "type":"string",
                          "value":"spawn"
                         }],
@@ -218,8 +219,9 @@
                         }, 
                         {
                          "name":"type",
+                         "propertytype":"object type",
                          "type":"string",
-                         "value":"port"
+                         "value":"portal"
                         }],
                  "rotation":0,
                  "visible":true,
@@ -241,8 +243,9 @@
                         }, 
                         {
                          "name":"type",
+                         "propertytype":"object type",
                          "type":"string",
-                         "value":"port"
+                         "value":"portal"
                         }],
                  "rotation":0,
                  "visible":true,
@@ -264,6 +267,7 @@
                         }, 
                         {
                          "name":"type",
+                         "propertytype":"object type",
                          "type":"string",
                          "value":"stash"
                         }],
@@ -280,7 +284,7 @@
          "y":0
         }],
  "nextlayerid":16,
- "nextobjectid":11,
+ "nextobjectid":12,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.2",

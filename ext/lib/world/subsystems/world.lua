@@ -4,9 +4,6 @@ world.mapWorld = Ecs.world()
 world.entityBuilder = require("ext.lib.world.entityBuilder")
 world.systemBuilder = require("ext.lib.world.systemBuilder")
 
-
-world.worldObjects = {}
-
 world.drawSystemFilter = nil
 world.updateSystemFilter = nil
 world.roundSystemFilter = nil
@@ -14,7 +11,6 @@ world.roundSystemFilter = nil
 world.currentRound = 0
 
 function world:ecsInit(worldManager)
-
 	self:addSystem(self.systemBuilder.getMoveSystem(), worldManager)
 	self:addSystem(self.systemBuilder.getDrawSystem(), worldManager)
 	self:addSystem(self.systemBuilder.getRoundSystem(), worldManager)
@@ -23,6 +19,8 @@ function world:ecsInit(worldManager)
 	self.drawSystemFilter = Ecs.requireAll("drawSystem")
 	self.updateSystemFilter = Ecs.requireAll("updateSystem")
 	self.roundSystemFilter = Ecs.requireAll("roundSystem")
+
+	Ecs.refresh(self.mapWorld)
 end
 
 function world:addEntity(entity)
@@ -30,24 +28,46 @@ function world:addEntity(entity)
 end
 
 function world:addPlayer()
-	local playerEntity = self.entityBuilder:new("Player")
-
-	local spawnTile = self:getObjectOfType("spawn")
-	if spawnTile then
-		playerEntity:makeGridMovable(spawnTile.tile.x - 1, spawnTile.tile.y - 1)
-	else
-		--TODO: not like this. Every map should have spawn
-		playerEntity:makeGridMovable(1, 1)
-	end
-
+	local spawnTile = self:getEntityByName("start")
+	local playerEntity = self.entityBuilder:new("Player", "character", spawnTile.tile)
+	table.insert(spawnTile.tile.objects, playerEntity)
+	playerEntity:makeGridMovable(true)
 	playerEntity:makeControllable(true)
 	playerEntity:makeDrawable(nil, { 0, 1, 0, 1 })
 	playerEntity:makeSimulated(true)
 	playerEntity:addStats(1, 10, 10)
-
+	
 	MainCamera:follow(playerEntity.IDrawable, "worldX", "worldY")
 
 	self:addEntity(playerEntity)
+end
+
+function world:addStash(name, tile)
+	local stashEntity = self.entityBuilder:new(name, nil, tile)
+	stashEntity:makeGridMovable(false)
+	stashEntity:addInventory()
+
+	self:addEntity(stashEntity)
+
+	return stashEntity
+end
+
+function world:addSpawn(name, tile)
+	local spawnEntity = self.entityBuilder:new(name, "spawn", tile)
+	spawnEntity:makeGridMovable(false)
+	spawnEntity:makeSpawn(0)
+
+	self:addEntity(spawnEntity)
+	return spawnEntity
+end
+
+function world:addPortal(name, map, tile)
+	local portalEntity = self.entityBuilder:new(name, "portal", tile)
+	portalEntity:makeGridMovable(false)
+	portalEntity:makePortal(map)
+
+	self:addEntity(portalEntity)
+	return portalEntity
 end
 
 function world:addSystem(system, worldManager)
@@ -62,65 +82,62 @@ function world:nextRound()
 	Ecs.update(self.mapWorld, love.timer.getDelta(), self.roundSystemFilter)
 end
 
-function world:getObjectOfType(type)
-	for _, object in pairs(self.worldObjects) do
-		if object.type == type then
-			return object
-		end
-	end
-	return nil
-end
-
-function world:getObjectsOfType(type)
-	local objects = {}
-	for _, object in pairs(self.worldObjects) do
-		if object.type == type then
-			table.insert(objects, object)
-		end
-	end
-	return objects
-end
-
 function world:setupObjects(worldObjects, grid)
 	for _, object in ipairs(worldObjects.objects) do
 		-- tileset object alignment must be set to top left!
 		local tileX, tileY = grid:getTileGridPosition(object.x, object.y)
-		local tile = grid:getTile(tileX, tileY)
+		local tile = grid:getTile(tileX ,tileY)
 
-		if object.properties["type"] == "port" then
-			if tile ~= nil then
-				local dataObject = {
-					type = "portal",
-					map = object.properties["map"],
-					tile = tile
-				}
-				tile.type = "portal"
-				tile.map = object.properties["map"]
-				table.insert(self.worldObjects, dataObject)
-			end
-		elseif object.properties["type"] == "spawn" then
-			if tile ~= nil then
-				local dataObject = {
-					type = "spawn",
-					tile = tile
-				}
-				tile.type = "spawn"
-				table.insert(self.worldObjects, dataObject)
-			end
-		elseif object.properties["type"] == "stash" then
-			if tile ~= nil then
-				local dataObject = {
-					type = "stash",
-					tile = tile,
-					items = object.properties["items"]
-				}
-				tile.type = "item"
-				table.insert(self.worldObjects,dataObject)
+		if tile ~= nil then
+			local objectType = object.properties["type"]
+			if objectType == "portal" then
+
+				local entity = self:addPortal(object.name, object.properties["map"], tile)
+				table.insert(tile.objects, entity)
+
+			elseif objectType == "spawn" then
+
+				local entity = self:addSpawn(object.name, tile)
+				table.insert(tile.objects, entity)
+
+			elseif objectType == "stash" then
+				-- TODO:
+				-- local dataObject = {
+				-- 	type = "stash",
+				-- 	tile = tile,
+				-- 	items = object.properties["items"]
+				-- }
+				-- tile.type = "item"
+				-- local entity = self:addStash(object.name, tile)
+
+
+				-- table.insert(self.worldObjects, dataObject)
 			end
 		end
 	end
 end
 
+function world:getEntitiesByType(type)
+	local entities = {}
+	for _, entity in ipairs(self.mapWorld.entities) do
+		if entity.type == type then
+			table.insert(entities, entity)
+		end
+	end
+	return entities
+end
+
+function world:getEntityByName(name)
+	return self:getEntity("name", name)
+end
+
+function world:getEntity(component, value)
+	for _, entity in ipairs(self.mapWorld.entities) do
+		if entity[component] == value then
+			return entity
+		end
+	end
+end
 
 function world:update(dt)
 	Ecs.update(self.mapWorld, dt, self.updateSystemFilter)

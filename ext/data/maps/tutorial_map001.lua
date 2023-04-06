@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 16,
-  nextobjectid = 11,
+  nextobjectid = 13,
   properties = {},
   tilesets = {
     {
@@ -282,7 +282,7 @@ return {
       objects = {
         {
           id = 1,
-          name = "",
+          name = "start",
           class = "",
           shape = "rectangle",
           x = 96,
@@ -311,7 +311,7 @@ return {
           visible = true,
           properties = {
             ["map"] = "tutorial_map002.lua",
-            ["type"] = "port"
+            ["type"] = "portal"
           }
         },
         {
@@ -328,7 +328,7 @@ return {
           visible = true,
           properties = {
             ["map"] = "tutorial_map002.lua",
-            ["type"] = "port"
+            ["type"] = "portal"
           }
         },
         {
