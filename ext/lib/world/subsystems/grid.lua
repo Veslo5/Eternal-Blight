@@ -155,7 +155,15 @@ function grid:isInGridRange(gridX, gridY)
 end
 
 function grid:unload()
+	for x = 1, self.gridWidth, 1 do
+		for y = 1, self.gridHeight, 1 do			
+			self.gridData[x][y].objects = nil
+			self.gridData[x][y] = nil
+		end
+	end
+
 	self.gridData = {}
+	
 	Debug:log("[CORE] Unloaded map grid data")
 end
 

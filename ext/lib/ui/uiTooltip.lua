@@ -16,11 +16,10 @@ function uiToolTip:new(name, x, y)
 	newInstance.nodeID = Observer:observe(CONST_OBSERVE_UI_DRAW, newInstance.name, function() newInstance:draw() end)
 	newInstance.nodeID2 = Observer:observe(CONST_OBSERVE_GAMEPLAY_TILE_CHANGED, newInstance.name, function(tile)
 		if(tile.fog == false) then			
-			newInstance.text = "???"
-			--newInstance.text = tile.type 
+			newInstance.text = "???"			
 		else
 			newInstance.text = "???"
-		end
+		end		
 	end)
 
 	return newInstance

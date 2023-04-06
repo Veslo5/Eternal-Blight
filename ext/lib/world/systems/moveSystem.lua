@@ -45,9 +45,12 @@ function moveSystem.getSystem()
 				end
 			end
 
+			entity.tile.wall = false
 			table.remove(entity.tile.objects, indexToRemove)
 
+			
 			entity.tile = tile
+			tile.wall = true
 			table.insert(tile.objects, entity)
 
 			return "moved", nil

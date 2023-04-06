@@ -23,6 +23,8 @@ function world:ecsInit(worldManager)
 	Ecs.refresh(self.mapWorld)
 end
 
+--- Add entity into ECS world
+---@param entity table
 function world:addEntity(entity)
 	Ecs.add(self.mapWorld, entity)
 end
@@ -110,7 +112,7 @@ function world:setupObjects(worldObjects, grid)
 				-- tile.type = "item"
 				-- local entity = self:addStash(object.name, tile)
 
-
+				local entity = self:addStash(object.name, tile)
 				-- table.insert(self.worldObjects, dataObject)
 			end
 		end
@@ -153,8 +155,6 @@ function world:unload()
 	Ecs.clearSystems(self.mapWorld)
 	Debug:log("[CORE] Unloaded ecs entities and systems")
 
-	self.worldObjects = {}
-	Debug:log("[CORE] Unloaded grid objects")
 end
 
 return world

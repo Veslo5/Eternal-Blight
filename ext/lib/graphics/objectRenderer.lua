@@ -18,6 +18,13 @@ function objectRenderer:drawAtlasQuad(name, index, x, y)
 	love.graphics.draw(atlas.texture,  atlas.quads[index], x, y)
 end
 
+function objectRenderer:drawRectangle(mode, x, y, color)
+	love.graphics.setColor(color or {1,1,1,1})
+	love.graphics.rectangle(mode, x, y, 32, 32)
+	love.graphics.setColor(0,0,0,0)
+	
+end
+
 function  objectRenderer:unload()
 	for _, atlas in pairs(self.atlases) do
 		atlas:unload()
