@@ -284,61 +284,27 @@
                 }, 
                 {
                  "class":"",
-                 "gid":104,
+                 "gid":105,
                  "height":32,
-                 "id":13,
+                 "id":15,
                  "name":"",
                  "properties":[
                         {
-                         "name":"items",
-                         "type":"string",
-                         "value":""
-                        }, 
-                        {
                          "name":"resource",
                          "type":"string",
-                         "value":"misc\/0001_bag"
+                         "value":"snake001"
                         }, 
                         {
                          "name":"type",
                          "propertytype":"object type",
                          "type":"string",
-                         "value":"stash"
+                         "value":"mob"
                         }],
                  "rotation":0,
                  "visible":true,
                  "width":32,
                  "x":160,
                  "y":224
-                }, 
-                {
-                 "class":"",
-                 "gid":104,
-                 "height":32,
-                 "id":14,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"items",
-                         "type":"string",
-                         "value":""
-                        }, 
-                        {
-                         "name":"resource",
-                         "type":"string",
-                         "value":"misc\/0001_bag"
-                        }, 
-                        {
-                         "name":"type",
-                         "propertytype":"object type",
-                         "type":"string",
-                         "value":"stash"
-                        }],
-                 "rotation":0,
-                 "visible":true,
-                 "width":32,
-                 "x":128,
-                 "y":256
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -347,7 +313,7 @@
          "y":0
         }],
  "nextlayerid":16,
- "nextobjectid":15,
+ "nextobjectid":16,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.2",

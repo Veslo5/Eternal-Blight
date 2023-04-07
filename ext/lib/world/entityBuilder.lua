@@ -42,7 +42,8 @@ function entityBuilder:makeDrawable(image, color, state, states, offsetX, offset
 		color =  color or {1,1,1,1},
 		currentState = state or 1,
 		states = states or nil,
-		zIndex = zIndex or 1
+		zIndex = zIndex or 1,
+		animation = require("splash.sprites.animation"):new(nil, nil, nil, nil, nil, nil, nil ,nil , true)
 	}
 
 	return self

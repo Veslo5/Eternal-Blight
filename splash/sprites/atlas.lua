@@ -1,11 +1,9 @@
 local atlas = {}
 
-function atlas:new(resource, quadWidth, quadHeight, useBatch)
+function atlas:new(resource, quadWidth, quadHeight)
 	local newInstance = {}
 	setmetatable(newInstance, self)
 	self.__index = self
-
-	newInstance.useBatch = useBatch
 
 	newInstance.texture = resource
 	newInstance.texture:setFilter("nearest", "nearest")
@@ -14,6 +12,7 @@ function atlas:new(resource, quadWidth, quadHeight, useBatch)
 
 	newInstance.quads = {}
 	newInstance.quadsCount = 0
+	newInstance.alreadyCutted = false
 	newInstance.quadWidth = quadWidth
 	newInstance.quadHeight = quadHeight
 
@@ -26,6 +25,10 @@ function atlas:new(resource, quadWidth, quadHeight, useBatch)
 end
 
 function atlas:cutQuads()
+	if self.alreadyCutted == true then
+		return
+	end
+
 	-- -1 because lua arrays starting from 1 and we are using starting index as 0
 	local columns = self.columns - 1
 	local rows = self.rows - 1
@@ -42,6 +45,8 @@ function atlas:cutQuads()
 			self.quadsCount = self.quadsCount + 1
 		end
 	end
+
+	self.alreadyCutted = true
 end
 
 function atlas:getAtlasQuadCount()	

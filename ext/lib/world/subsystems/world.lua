@@ -45,13 +45,16 @@ function world:addPlayer()
 	self:addEntity(playerEntity)
 end
 
-function world:addMob(name, tile, data)
+function world:addMob(name, tile, image, imageStates)
 	local mobEntity = self.entityBuilder:new(name, nil, tile)
+	mobEntity:makeGridMovable(true)
 	mobEntity:makeControllable(false)
 	mobEntity:makeSimulated()
-	-- TODO:
-	--mobEntity:makeDrawable(image, nil, nil, imageStates)
+	mobEntity:makeDrawable(image, nil, nil, imageStates)
+	
+	self:addEntity(mobEntity)
 
+	return mobEntity
 end
 
 function world:addStash(name, tile, image, imageStates)
@@ -120,9 +123,10 @@ function world:setupObjects(worldObjects, grid)
 				table.insert(tile.objects, entity)
 
 			elseif objectType == "mob" then
-				local mob = self.filesystem:loadItem(object.properties["resource"])
+				local mob = self.filesystem:loadMob(object.properties["resource"])
 				CurrentScene.loader:newImage(mob.image, mob.image, "objects")
-				
+				local entity = self:addMob(object.name, tile, mob.image, mob.imageStates )
+				table.insert(tile.objects, entity)
 			end
 		end
 	end

@@ -16,8 +16,11 @@ function drawSystem.getSystem()
 	end
 
 	function system:process(entity, dt)		
+		entity.IDrawable.animation:update(dt)
+
 		if entity.IDrawable.image then 
-			CurrentScene.drawPipeline.objectRenderer:drawAtlasQuad(entity.IDrawable.image, entity.IDrawable.currentState, entity.IDrawable.worldX, entity.IDrawable.worldY)			
+			CurrentScene.drawPipeline.objectRenderer:drawAnimation(entity.IDrawable.animation, entity.IDrawable.image, entity.IDrawable.worldX, entity.IDrawable.worldY)
+			--CurrentScene.drawPipeline.objectRenderer:drawAtlasQuad(entity.IDrawable.image, entity.IDrawable.currentState, entity.IDrawable.worldX, entity.IDrawable.worldY)			
 		else
 			CurrentScene.drawPipeline.objectRenderer:drawRectangle("fill", entity.IDrawable.worldX, entity.IDrawable.worldY, entity.IDrawable.color)			
 		end

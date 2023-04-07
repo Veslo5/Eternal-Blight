@@ -13,6 +13,10 @@ function objectRenderer:addAtlas(name, resource)
 	end
 end
 
+function objectRenderer:drawAnimation(animation, name, x,y)
+	animation:drawAtlas(objectRenderer.atlases[name], x, y)
+end
+
 function objectRenderer:drawAtlasQuad(name, index, x, y)
 	local atlas = objectRenderer.atlases[name]
 	love.graphics.draw(atlas.texture,  atlas.quads[index], x, y)

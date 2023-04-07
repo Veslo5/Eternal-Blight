@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 16,
-  nextobjectid = 15,
+  nextobjectid = 16,
   properties = {},
   tilesets = {
     {
@@ -350,7 +350,7 @@ return {
           }
         },
         {
-          id = 13,
+          id = 15,
           name = "",
           class = "",
           shape = "rectangle",
@@ -359,30 +359,11 @@ return {
           width = 32,
           height = 32,
           rotation = 0,
-          gid = 104,
+          gid = 105,
           visible = true,
           properties = {
-            ["items"] = "",
-            ["resource"] = "misc/0001_bag",
-            ["type"] = "stash"
-          }
-        },
-        {
-          id = 14,
-          name = "",
-          class = "",
-          shape = "rectangle",
-          x = 128,
-          y = 256,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 104,
-          visible = true,
-          properties = {
-            ["items"] = "",
-            ["resource"] = "misc/0001_bag",
-            ["type"] = "stash"
+            ["resource"] = "snake001",
+            ["type"] = "mob"
           }
         }
       }

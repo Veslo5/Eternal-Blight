@@ -32,9 +32,9 @@ function fileSystemPipeline:loadItem(name)
 	-- end
 end
 
--- function fileSystemPipeline:loadMob(name)
--- 	return self._loadTableSafe(self.path .. self.mob .. name .. self.extension)
--- end	
+function fileSystemPipeline:loadMob(name)
+	return self._loadTableSafe(self.path .. self.mob .. name .. self.extension)
+end	
 
 
 function fileSystemPipeline._loadTableSafe(path)	
